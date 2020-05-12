@@ -107,7 +107,7 @@ module.exports = async function (app, middleware) {
 	router.use('/', controllers.home.rewrite);
 
 	// homepage handled by `action:homepage.get:[route]`
-	setupPageRoute(router, '/', middleware, [], controllers.home.pluginHook);
+	// setupPageRoute(router, '/', middleware, [], controllers.home.pluginHook);
 
 	await plugins.reloadRoutes({ router: router });
 	await authRoutes.reloadRoutes({ router: router });

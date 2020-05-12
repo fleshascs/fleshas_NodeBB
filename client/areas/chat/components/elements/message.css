@@ -1,0 +1,32 @@
+.secondMsgFromSameSender {
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+}
+
+.previousMsgFromSameSender {
+  margin-top: 1px;
+  padding-top: 0px;
+}
+
+.secondMsgFromSameSender.left {
+  border-bottom-left-radius: 0px;
+}
+
+.previousMsgFromSameSender.left {
+  border-top-left-radius: 0px;
+}
+
+.secondMsgFromSameSender.right {
+  border-bottom-right-radius: 0px;
+}
+
+.previousMsgFromSameSender.right {
+  border-top-right-radius: 0px;
+}
+
+.secondMsgFromSameSender .chat-oponent-details {
+  visibility: hidden;
+}
+.previousMsgFromSameSender .chat-oponent-name {
+  display: none;
+}

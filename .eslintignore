@@ -1,4 +1,5 @@
 node_modules/
+client/
 *.sublime-project
 *.sublime-workspace
 .project

@@ -1,0 +1,63 @@
+@font-face {
+  font-family: bauerg;
+  src: url('/static/fonts/Bauer.woff') format('truetype');
+}
+
+// @font-face {
+//   font-family: Lakes;
+//   src: url("/static/fonts/TTLakes-Medium.otf") format("truetype");
+// }
+
+#__next,
+body,
+html {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  // font-family: Lakes !important;
+}
+
+.fadeMe {
+  animation: fadeIn 0.5s linear;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+/* userblock menu icons fix(logout buttom had padding from bottom) */
+.material-icons {
+  line-height: unset !important;
+}
+
+.img-responsive {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.red-btn {
+  background: linear-gradient(315deg, #58424a 0, #e0003e 100%);
+  color: #fff !important;
+  border: 1px solid #2d73c0;
+  border-radius: 2px;
+}
+
+.emoji {
+  height: 20px;
+  width: 20px;
+}
+@media (max-width: 768px) {
+  .mobile-d-none {
+    display: none !important;
+  }
+}
