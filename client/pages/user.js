@@ -174,7 +174,7 @@ class UserProfile extends Component {
                 </Box>
               ) : null}
               {user.nsRewards && user.nsRewards.length ? (
-                <Box headerText={'Medals'} className='mt-3'>
+                <Box headerText={t('medals-title')} className='mt-3'>
                   <Medals medals={user.nsRewards} />
                 </Box>
               ) : null}

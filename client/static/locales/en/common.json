@@ -145,5 +145,6 @@
   "show-more": "Show More",
   "show-less": "Show Less",
   "no-chat-rooms": "You have no messages",
-  "pages-account-edit": "Profile: {{arg0}}"
+  "pages-account-edit": "Profile: {{arg0}}",
+  "medals-title": "Medals"
 }

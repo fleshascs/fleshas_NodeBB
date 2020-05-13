@@ -145,5 +145,6 @@
   "show-more": "Rodyti Daugiau",
   "show-less": "Rodyti Mažiau",
   "no-chat-rooms": "Žinučių sąrašas tuščias",
-  "pages-account-edit": "Profilis: {{arg0}}"
+  "pages-account-edit": "Profilis: {{arg0}}",
+  "medals-title": "Medaliai"
 }
