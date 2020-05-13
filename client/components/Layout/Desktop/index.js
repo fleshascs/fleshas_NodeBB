@@ -22,9 +22,7 @@ const AntdStyle = createGlobalStyle`
   h1, h2, h3, h4, h5, h6 {
     color: ${defaultFontColor};
   }
-  // .ant-form-item-has-error .ant-input {
-  //   background: none;
-  // } 
+
 
   .ant-btn-primary[disabled] {
     color: ${disabledPrimaryButtomColor};
@@ -35,6 +33,26 @@ const AntdStyle = createGlobalStyle`
   ${(props) =>
     props.theme.mode === 'dark'
       ? `
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover, 
+    input:-webkit-autofill:focus,
+    textarea:-webkit-autofill,
+    textarea:-webkit-autofill:hover,
+    textarea:-webkit-autofill:focus,
+    select:-webkit-autofill,
+    select:-webkit-autofill:hover,
+    select:-webkit-autofill:focus {
+      border: 1px solid green;
+      -webkit-text-fill-color: #c3bfbf;
+      -webkit-box-shadow: 0 0 0px 1000px none inset;
+      transition: background-color 5000s ease-in-out 0s;
+    }
+
+    .ant-form-item-has-error .ant-input {
+        background: none;
+    }
+
     .ant-form-item-control-input-content input {
       background: none;
       color: #c3bfbf;
