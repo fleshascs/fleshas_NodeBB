@@ -4,10 +4,6 @@ const recent = require('../../src/controllers/recent');
 const user = require('../../src/user');
 const utils = require('./utils');
 const meta = require('../../src/meta');
-// const headerMiddleware = async (req, res, next) => {
-//   res.headerData = await generateHeaderAsync(req, res, res.screenData ?? {});
-//   next();
-// }
 const getRecentPosts = utils.promisify(recent.getData);
 const setupPageRoute = function (router, name, middleware, middlewares, controller) {
   middlewares = [
@@ -21,22 +17,6 @@ const setupPageRoute = function (router, name, middleware, middlewares, controll
 module.exports.setupHomePageRoute = (app) =>
   async function handleHomePageRoute(params) {
     console.log('params', Object.keys(params));
-
-    // const generateHeaderAsync = utils.promisify(params.middleware.generateHeader);
-    // const [recent, header] = await Promise.all([
-    //   getRecentPosts(params.req, 'recent', 'recent'),
-    //   generateHeaderAsync(params.req, params.res, params.res.screenData)
-    // ]);
-    // app.render(params.req, params.res, '/index', {
-    //   recent: await getRecentPosts(params.req, 'recent', 'recent'),
-    //   tags: await meta.tags.parse(
-    //     params.req,
-    //     {},
-    //     params.res.locals.metaTags,
-    //     params.res.locals.linkTags
-    //   ),
-    //   header: {}
-    // });
   };
 module.exports.setupRoutes = function (app, server, middleware) {
   const generateHeaderAsync = utils.promisify(middleware.generateHeader);
@@ -44,7 +24,7 @@ module.exports.setupRoutes = function (app, server, middleware) {
     const [recent, tags, header] = await Promise.all([
       getRecentPosts(req, 'recent', 'recent'),
       meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
-      generateHeaderAsync(req, res, {}) //res.screenData
+      generateHeaderAsync(req, res, {})
     ]);
     app.render(req, res, '/index', {
       recent,

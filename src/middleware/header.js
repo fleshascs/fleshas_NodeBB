@@ -52,6 +52,10 @@ module.exports = function (middleware) {
 	};
 
 	middleware.generateHeader = function generateHeader(req, res, data, callback) {
+		if (!data) {
+			console.log('***** data undefined middleware.generateHeader', req.url);
+			data = {};
+		}
 		var registrationType = meta.config.registrationType || 'normal';
 		res.locals.config = res.locals.config || {};
 		var templateValues = {

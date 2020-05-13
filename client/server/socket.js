@@ -18,8 +18,6 @@ async function onlineUsersSocket(socket) {
 }
 
 async function youtubeVideoPlayer(socket) {
-  console.log('server init youtube socket ');
-
   socket.on('event:playVideo', async ({ url }) => {
     console.log('server event:playVideo ', url);
     if (!url || !socket.uid) return;
