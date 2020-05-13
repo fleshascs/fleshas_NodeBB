@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { Username } from 'ui';
 import moment from 'moment';
-import { Comment, Tooltip, Avatar } from 'antd';
+import { Comment, Tooltip } from 'antd';
+import { Username, Avatar } from 'ui';
 
 const MessageWrapper = styled.div`
   width: 100%;
@@ -36,16 +36,7 @@ class Message extends PureComponent {
         className='ml-1'
         //actions={actions}
         author={<Username user={user}>{user.username}</Username>}
-        avatar={
-          <Avatar
-            src={
-              user.picture ||
-              'http://www.gravatar.com/avatar/ae69fa0d674d490c99c4d8fdca23f1e2?s=100&r=x&d=retro'
-            }
-            shape='square'
-            alt={user.username}
-          />
-        }
+        avatar={<Avatar user={user} imgUrl={user.picture} showIndicator={true} />}
         content={<MessageWrapper dangerouslySetInnerHTML={content} />}
         datetime={
           <Tooltip title={moment(timestamp).format('YYYY-MM-DD HH:mm:ss')}>
