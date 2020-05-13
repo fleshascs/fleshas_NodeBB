@@ -72,12 +72,23 @@ class MyAppPure extends App {
       this.props.store.dispatch(setConnectionFailed());
       console.log('reconnect_failed', args);
     });
-    socket.on('checkSession', (...args) => {
-      console.log('checkSession', args);
-      //if(!isLogedIn){
-      //
-      //}
-    });
+    // socket.on('checkSession', function (uid) {
+    //   // import { Modal } from 'antd';
+    //   // const { confirm } = Modal;
+    //   if (uid !== currentUid) {
+    //     confirm({
+    //       title: 'Do you Want to delete these items?',
+    //       //icon: <ExclamationCircleOutlined />,
+    //       content: 'Some descriptions',
+    //       onOk() {
+    //         console.log('OK');
+    //       },
+    //       onCancel() {
+    //         console.log('Cancel');
+    //       }
+    //     });
+    //   }
+    // });
     socket.on('setHostname', (...args) => {
       console.log('hostname' + args);
     });

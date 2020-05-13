@@ -4,7 +4,7 @@ import Topic from 'areas/forum/components/Topic';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import Router from 'next/router';
-import { Pagination, Modal } from 'antd';
+import { Pagination, Modal, Result } from 'antd';
 import Head from 'next/head';
 import { Breadcrumbs } from 'ui';
 import * as actions from 'areas/forum/actions';
@@ -44,15 +44,15 @@ class TopicScreenPure extends React.Component {
       query.browserTitle = query.header.browserTitle;
     }
 
-    store.dispatch(actions.setCurrentPagePosts(query.screenData.posts));
+    store.dispatch(actions.setCurrentPagePosts(query.screenData?.posts));
     store.dispatch(actions.setCurrentTopic(query.screenData));
 
     return {
       browserTitle: query.browserTitle,
       post_index: post_index,
       slug: query.slug,
-      breadcrumbs: query.screenData.breadcrumbs,
-      pagination: query.screenData.pagination,
+      breadcrumbs: query.screenData?.breadcrumbs,
+      pagination: query.screenData?.pagination,
       namespacesRequired: ['common']
     };
   }
@@ -133,6 +133,9 @@ class TopicScreenPure extends React.Component {
 
   render() {
     const { topic, currentPagePosts, pagination, browserTitle, t } = this.props;
+    if (!currentPagePosts) {
+      return <Result status='404' title='404' subTitle='Topic does not exist' />;
+    }
     return (
       <div className='container mt-3'>
         <Head>
