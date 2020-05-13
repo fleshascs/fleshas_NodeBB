@@ -39,7 +39,7 @@ const ToggleButton = styled.div`
   bottom: 14%;
   right: 22px;
   padding: 10px;
-  border-radius: 17%;
+  border-radius: 50%;
   background: #292c35;
   width: 40px;
   display: flex;

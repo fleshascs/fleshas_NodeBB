@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { avatarHoverShadowColor } from '_theme';
-import { getOnlineUsersObj } from 'areas/user/selectors';
+import { isOnline } from 'areas/user/selectors';
 
 const AvatarImg = styled.img`
   box-shadow: rgba(139, 139, 139, 0.32) 1px 1px 3px 0px;
@@ -12,7 +12,7 @@ const AvatarImg = styled.img`
   border-style: solid;
   border-color: rgb(255, 255, 255);
   border-image: initial;
-  border-radius:${(props) => (props.circle ? '50%' : '5px')};
+  border-radius:${(props) => (props.circle ? '50%' : '3px')} !important;
 
   /* &:hover {
     box-shadow: ${avatarHoverShadowColor} 0px 0px 4px
@@ -38,48 +38,27 @@ const Indicator = styled.div`
   top: -3px;
 `;
 
+const DEFAULT_AVATAR =
+  'http://www.gravatar.com/avatar/ae69fa0d674d490c99c4d8fdca23f1e2?s=100&r=x&d=retro';
+
 const Avatar = (props) => {
-  let isOnline = false;
-  const {
-    showIndicator,
-    users,
-    user = { username: '' },
-
-    className,
-    size,
-    circle,
-    onClick
-  } = props;
-  const imgUrl =
-    props.imgUrl ||
-    'http://www.gravatar.com/avatar/ae69fa0d674d490c99c4d8fdca23f1e2?s=100&r=x&d=retro';
-
-  if (showIndicator && user && user.uid) {
-    isOnline = !!users[user.uid];
-  }
-
-  if (!imgUrl) {
-    return (
-      <Container className={className}>
-        <PlaceHolder size={getSize(size)} className={` ${className}`} circle={circle} />
-
-        {isOnline ? <Indicator /> : null}
-      </Container>
-    );
-  }
-
+  const { className, size, circle, onClick, isOnline } = props;
+  const imgUrl = props.imgUrl || DEFAULT_AVATAR;
   return (
     <Container className={className}>
-      <AvatarImg size={getSize(size)} src={imgUrl} onClick={onClick} circle={circle} />
-
+      {imgUrl ? (
+        <AvatarImg size={getSize(size)} src={imgUrl} onClick={onClick} circle={circle} />
+      ) : (
+        <PlaceHolder size={getSize(size)} className={className} circle={circle} />
+      )}
       {isOnline ? <Indicator /> : null}
     </Container>
   );
 };
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
   return {
-    users: getOnlineUsersObj(state)
+    isOnline: props.showIndicator && isOnline(state, props.user?.uid)
   };
 }
 
