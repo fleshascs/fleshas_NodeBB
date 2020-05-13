@@ -92,7 +92,7 @@ class Post extends Component {
                       {group.name}
                     </Tag>
                   ))
-                : null}
+                : null}{' '}
               {t('post-commented')} {messageDate(post.timestamp)}
             </span>
 
