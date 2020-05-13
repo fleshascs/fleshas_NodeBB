@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import UsersList from './elements/UsersList';
-import { searchUsers, getOnlineUsers } from 'areas/user/services';
-import socket from 'areas/socket/services';
 import { connect } from 'react-redux';
-import { i18n, withTranslation } from '_core/i18n';
-import { setCookie } from '_core/utils';
 import { message, Switch } from 'antd';
 import moment from 'moment';
 import throttle from 'lodash.throttle';
-import * as usersSelectors from 'areas/user/selectors';
+import { getOnlineUsers as getOnlineUsersSelector } from 'areas/user/selectors';
 import { setOnlineUsers, addToOnlineList, removeFromOnlineList } from 'areas/user/actions';
 import { primaryColor, leftBarBGColor, leftBarIconColor, leftBarInputColor } from '_theme';
+import { searchUsers, getOnlineUsers } from 'areas/user/services';
+import { i18n, withTranslation } from '_core/i18n';
+import { setCookie } from '_core/utils';
+import socket from 'areas/socket/services';
 import { MoonIcon } from '../MoonIcon';
 import { setTheme } from 'areas/general/actions';
 import { getTheme } from 'areas/general/selectors';
+import UsersList from '../UsersList';
 
 const SIDEBAR_WIDTH = '70px';
 
@@ -210,7 +210,7 @@ class Left extends Component {
 
 function mapStateToProps(state) {
   return {
-    onlineUsers: usersSelectors.getOnlineUsers(state),
+    onlineUsers: getOnlineUsersSelector(state),
     theme: getTheme(state)
   };
 }

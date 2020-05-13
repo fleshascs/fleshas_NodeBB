@@ -3,36 +3,15 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { NavBar, LoginRegisterBlock, UserBlock } from 'ui';
 import { withRouter } from 'next/router';
-import { Drawer, Button } from 'antd';
-import { Switch } from 'antd';
-import moment from 'moment';
-import { LINKS } from './NavBar/links';
+import { Button } from 'antd';
+import { locale } from 'moment';
 import { i18n, withTranslation } from '_core/i18n';
-import { primaryColor, headerTopColor, leftBarIconColor } from '_theme';
+import { primaryColor, headerTopColor } from '_theme';
 import { setTheme } from 'areas/general/actions';
 import { getTheme } from 'areas/general/selectors';
 import { setCookie } from '_core/utils';
 import { getIsLoggedIn } from 'areas/session/selectors';
-import { renderLink } from 'ui/NavBar/renderLink';
-import { MoonIcon } from './MoonIcon';
-
-const MenuListItem = styled.div`
-  & .active {
-    color: #ff665a;
-  }
-`;
-
-const NavLink = styled.a`
-  padding: 10px 0px;
-  display: flex;
-  height: 100%;
-  flex-direction: row;
-  text-decoration: none;
-  font-size: 14px;
-  text-transform: uppercase;
-  font-weight: bold;
-  transition: all 0.2s ease;
-`;
+import LeftDrawer from './LeftDrawer';
 
 const Container = styled.header`
   color: #fff;
@@ -79,23 +58,11 @@ const LogoContainer = styled.div`
   }
 `;
 
-const CollapseButtonIcon = styled.i`
-  color: ${leftBarIconColor};
-`;
-
-const CollapseButton = styled.div`
+export const MessagesButtonContainer = styled.div`
+  position: relative;
+  bottom: 0;
+  display: flex;
   cursor: pointer;
-  &:hover {
-    background: ${primaryColor};
-  }
-  &:hover ${CollapseButtonIcon} {
-    color: #06183c;
-  }
-
-  &.lul {
-    text-align: right;
-    padding-right: 2rem;
-  }
 `;
 
 class Header extends Component {
@@ -115,7 +82,7 @@ class Header extends Component {
 
   onLangChange = () => {
     const lang = i18n.language === 'en' ? 'lt' : 'en';
-    moment.locale(lang === 'en' ? 'es-us' : 'lt');
+    locale(lang === 'en' ? 'es-us' : 'lt');
     i18n.changeLanguage(lang);
   };
 
@@ -126,7 +93,7 @@ class Header extends Component {
   };
 
   render() {
-    const { loggedIn } = this.props;
+    const { loggedIn, theme } = this.props;
     return (
       <>
         <Container>
@@ -145,49 +112,13 @@ class Header extends Component {
           </Top>
           <NavBar />
         </Container>
-
-        <Drawer
-          title='Navigation'
-          placement='left'
-          closable={false}
+        <LeftDrawer
           onClose={this.onClose}
           visible={this.state.visible}
-        >
-          {LINKS.map((url, index) => (
-            <MenuListItem key={url.to + index}>
-              {renderLink(
-                url,
-                <NavLink
-                  className={
-                    url.paths && url.paths.includes(this.props.router.pathname) && 'active'
-                  }
-                >
-                  {this.props.t(url.textId)}
-                </NavLink>
-              )}
-            </MenuListItem>
-          ))}
-          <CollapseButton className='mt-2' onClick={this.onLangChange}>
-            <CollapseButtonIcon>
-              <img src={`/static/images/locale/${this.props.i18n.language}.png`} className='py-3' />
-            </CollapseButtonIcon>
-          </CollapseButton>
-          <div
-            className='mt-2 mb-4'
-            style={{
-              display: 'flex',
-              alignItems: 'center'
-            }}
-          >
-            <MoonIcon className='material-icons'>brightness_3</MoonIcon>
-            Dark Theme
-            <Switch
-              defaultChecked={this.props.theme === 'dark'}
-              onChange={this.toggleTheme}
-              className='ml-3'
-            />
-          </div>
-        </Drawer>
+          toggleTheme={this.toggleTheme}
+          theme={theme}
+          onLangChange={this.onLangChange}
+        />
       </>
     );
   }
