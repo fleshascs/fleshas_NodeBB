@@ -31,12 +31,8 @@ class MyAppPure extends App {
     const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
     const isServer = ctx.req;
     let llang = 'en-us';
-
-    // console.log('isServer', isServer);
-    // console.log('ctx.query', ctx.query.header);
-    
     if (isServer && ctx.query && ctx.query.header) {
-      const { user, unreadCount, config } = ctx.query.header;    
+      const { user, unreadCount, config } = ctx.query.header;
       ctx.store.dispatch(loginSuccess(user));
       ctx.store.dispatch(updateUnreadCount(unreadCount.chat));
       ctx.store.dispatch(csrfActions.setCSRF(config.csrf_token)); //usless dublicate of general config
@@ -45,7 +41,7 @@ class MyAppPure extends App {
       llang = ctx.req.cookies['next-i18next'] || llang;
     }
 
-    return { pageProps, query: ctx.query, llang };
+    return { pageProps, llang, tags: ctx.query.tags };
   }
 
   constructor(props) {
@@ -131,21 +127,14 @@ class MyAppPure extends App {
   renderMetaTag = (tag) => renderMetaTag(tag, this.translateMetaTag);
 
   render() {
-    const {
-      Component,
-      pageProps,
-      store,
-      query: { header }
-    } = this.props;
-    // console.log('header', header);
-    
+    const { Component, pageProps, store, tags } = this.props;
     return (
       <>
         <Head>
-          {/* {header && header.metaTags.map(this.renderMetaTag)} */}
+          {tags && tags.meta.map(this.renderMetaTag)}
           <meta name='theme-color' content='#1e2327'></meta>
           <meta name='verify-paysera' content='26362ca8db03c45c75e3ea24bb5b8329' />
-          {/* {header && header.linkTags.map(renderLinkTag)} */}
+          {tags && tags.link.map(renderLinkTag)}
           <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet' />
         </Head>
         <Provider store={store}>

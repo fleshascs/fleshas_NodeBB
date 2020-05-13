@@ -101,8 +101,11 @@ Tags.parse = async (req, data, meta, link) => {
 
 	const results = await utils.promiseParallel({
 		tags: plugins.fireHook('filter:meta.getMetaTags', { req: req, data: data, tags: defaultTags }),
-		links: plugins.fireHook('filter:meta.getLinkTags', { req: req, data: data, links: defaultLinks }),
+		// links: plugins.fireHook('filter:meta.getLinkTags', { req: req, data: data, links: defaultLinks }),
 	});
+	results.links = {
+		links: defaultLinks,
+	};
 
 	meta = results.tags.tags.concat(meta || []).map(function (tag) {
 		if (!tag || typeof tag.content !== 'string') {

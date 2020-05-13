@@ -157,7 +157,7 @@ module.exports = function (Messaging) {
 	Messaging.getUsersInRoom = async (roomId, start, stop) => {
 		const uids = await Messaging.getUidsInRoom(roomId, start, stop);
 		const [users, ownerId] = await Promise.all([
-			user.getUsersFields(uids, ['uid', 'username', 'picture', 'status']),
+			user.getUsersFields(uids, ['uid', 'username', 'userslug', 'picture', 'status']),
 			db.getObjectField('chat:room:' + roomId, 'owner'),
 		]);
 
