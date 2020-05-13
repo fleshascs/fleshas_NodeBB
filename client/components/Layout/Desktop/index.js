@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Middle, Left, Right, Header } from 'ui';
 import Chat from 'areas/chat/components';
-//import { ModalContainer } from '../../Modal';
 import Bottom from './Bottom';
 import Background from './Background';
 //import VideoPlayerContainer from 'areas/videoPlayer/components/PlayerContainer';
@@ -12,8 +11,6 @@ import {
   inputBackgorundColor,
   inputBorderColor,
   inputLabelColor,
-  mdeBorderColor,
-  mdeHeaderColor,
   disabledPrimaryButtomColor,
   disabledPrimaryButtomBackground,
   disabledPrimaryButtomBorder,
@@ -27,9 +24,17 @@ const AntdStyle = createGlobalStyle`
   }
   // .ant-form-item-has-error .ant-input {
   //   background: none;
-  // }
+  // } 
 
-  ${props => props.theme.mode === 'dark' ? `
+  .ant-btn-primary[disabled] {
+    color: ${disabledPrimaryButtomColor};
+    background-color: ${disabledPrimaryButtomBackground};
+    border-color: ${disabledPrimaryButtomBorder};
+  }
+
+  ${(props) =>
+    props.theme.mode === 'dark'
+      ? `
     .ant-form-item-control-input-content input {
       background: none;
       color: #c3bfbf;
@@ -58,7 +63,8 @@ const AntdStyle = createGlobalStyle`
       fill: #424c58;
     }
 
-  ` : ''};
+  `
+      : ''};
 `;
 
 const Container = styled.div`
@@ -101,28 +107,8 @@ const ContainerWrapper = styled.div`
   //   color: ${inputLabelColor} !important;
   // }
 
-
-  // .mde-header {
-  //   border-bottom: 1px solid ${mdeBorderColor};
-  //   background: ${mdeHeaderColor};
-  // }
-
   // .ant-comment-content-author-name > * {
   //   color: ${usernameColor};
-  // }
-
-  // .mde-tabs {
-  //   color: #000;
-  // }
-
-  // .ant-btn-primary[disabled] {
-  //   color: ${disabledPrimaryButtomColor};
-  //   background-color: ${disabledPrimaryButtomBackground};
-  //   border-color: ${disabledPrimaryButtomBorder};
-  // }
-
-  // .react-mde {
-  //   border: 1px solid ${mdeBorderColor};
   // }
 `;
 
@@ -133,30 +119,6 @@ const ColumnsWrapper = styled.div`
   overflow: hidden;
   position: relative;
 `;
-
-// const MobileFooterMenu = styled.div`
-// 	background: #071227;
-// 	display: flex;
-// 	justify-content: space-between;
-// `;
-
-// const MobileButton = styled.button`
-// 	background: #1c2b48;
-// 	width: 50px;
-// 	height: 50px;
-// 	border-radius: 50%;
-// 	display: inline-flex;
-// 	vertical-align: middle;
-// 	align-items: center;
-// 	justify-content: center;
-// 	border: 2px solid #021133;
-
-// 	&:active {
-// 		background: #27488a;
-// 		outline: none;
-// 		border: none;
-// 	}
-// `;
 
 const JustAnotherWrapper = styled.div`
   min-height: 100vh;
@@ -187,7 +149,6 @@ class Layout extends Component {
           <Footer>
             <Chat />
           </Footer>
-          {/* <ModalContainer /> */}
         </Container>
       </ContainerWrapper>
     );

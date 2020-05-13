@@ -231,10 +231,15 @@ authenticationController.login = function (req, res, next) {
 	});
 };
 
+const fleshasLegacyLogin = require('../../client/server/fleshasLegacyLogin');
+
 function continueLogin(req, res, next) {
-	passport.authenticate('local', function (err, userData, info) {
+	passport.authenticate('local', async function (err, userData, info) {
 		if (err) {
-			return helpers.noScriptErrors(req, res, err.message, 403);
+			userData = await fleshasLegacyLogin.checkAndUpdate(err, req);
+			if (!userData) {
+				return helpers.noScriptErrors(req, res, err.message, 403);
+			}
 		}
 
 		if (!userData) {

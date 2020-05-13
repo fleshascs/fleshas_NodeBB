@@ -118,7 +118,7 @@ module.exports.setupRoutes = function (app, server, middleware) {
   setupPageRoute(server, '/new-topic/:cid', middleware, [], async (req, res) => {
     app.render(req, res, '/new_topic', {
       cid: req.params.cid,
-      header: await generateHeaderAsync(req, res, res.screenData),
+      header: await generateHeaderAsync(req, res, {}),
     });
   });
   const registerMiddleware = [

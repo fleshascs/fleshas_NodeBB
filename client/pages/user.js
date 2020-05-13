@@ -13,6 +13,7 @@ import ProfileCover from 'areas/user/components/ProfileCover';
 import { updateUserCoverImage } from 'areas/user/actions';
 import { withTranslation, translateNodeBBTemplate } from '_core/i18n';
 import { LatestPosts } from 'areas/user';
+import Medals from 'ui/Medals';
 
 const ProfileAvatar = styled(Avatar)`
   border-radius: 0px;
@@ -83,7 +84,6 @@ class UserProfile extends Component {
     if (!user) {
       return <Result status='404' title='404' subTitle={t('user-not-exists')} />;
     }
-
     const userSettingsUrl = buildUserSettingsUrl(user.userslug);
     return (
       <div>
@@ -152,7 +152,12 @@ class UserProfile extends Component {
                   <br />
                   {user.groups.length ? <span className='text-muted'>{t('groups')}: </span> : ''}
                   {user.groups.map((group) => (
-                    <Tag color={group.labelColor} key={group.name} className='mr-1'>
+                    <Tag
+                      color={group.labelColor}
+                      key={group.name}
+                      style={{ color: group.textColor }}
+                      className='mr-1'
+                    >
                       {group.name}
                     </Tag>
                   ))}
@@ -168,7 +173,11 @@ class UserProfile extends Component {
                   <div dangerouslySetInnerHTML={{ __html: user.signature }} className='p-2' />
                 </Box>
               ) : null}
-              {/*<Box> <Medals /></Box> */}
+              {user.nsRewards && user.nsRewards.length ? (
+                <Box headerText={'Medals'} className='mt-3'>
+                  <Medals medals={user.nsRewards} />
+                </Box>
+              ) : null}
             </Col>
           </Row>
         </div>
@@ -186,7 +195,7 @@ const actionsToProps = {
   startConversation
 };
 
-function mapStateToProps(state, props) {
+function mapStateToProps(state) {
   return {
     auth: state.authentication,
     chatsOpened: state.chat.chatsOpened
@@ -194,116 +203,3 @@ function mapStateToProps(state, props) {
 }
 
 export default connect(mapStateToProps, actionsToProps)(withTranslation('common')(UserProfile));
-
-const MedalsContainer = styled.div`
-  & img {
-    padding: 10px;
-  }
-`;
-const BoxHeaderContainer = styled.div`
-  padding-top: 15px;
-  padding-bottom: 15px;
-  padding-left: 24px;
-  border-bottom: 1px solid #e4e7ed;
-`;
-
-const BoxHeaderTitle = styled.h4`
-  font-size: 16px;
-  line-height: 1.2em;
-  letter-spacing: -0.02em;
-  margin-bottom: 0;
-  text-transform: uppercase;
-  font-style: normal;
-`;
-
-const BoxHeader = (props) => (
-  <BoxHeaderContainer>
-    <BoxHeaderTitle>{props.title}</BoxHeaderTitle>
-  </BoxHeaderContainer>
-);
-
-class Medals extends Component {
-  render() {
-    return (
-      <MedalsContainer>
-        <BoxHeader title='Medaliai' />
-        <img
-          src='http://fleshas.lt/infusions/awards/images/awards/medal_4.gif'
-          title='Už 100 pranešimų forume'
-        />
-        <img
-          src='http://fleshas.lt/infusions/awards/images/awards/medal3.gif'
-          title='Už 300 pranešimų forume'
-        />
-        <img
-          src='http://fleshas.lt/infusions/awards/images/awards/medal6.gif'
-          title='Už 500 pranešimų forume'
-        />
-        <img
-          src='http://fleshas.lt/infusions/awards/images/awards/medal8.gif'
-          title='Už 750 pranešimų forume'
-        />
-        <img
-          src='http://fleshas.lt/infusions/awards/images/awards/ac374185663a2c07ad316b419efb6cb1644.gif'
-          title='Už 1000 pranešimų forume'
-        />
-        <img
-          src='http://fleshas.lt/infusions/awards/images/awards/2581aad77334f650ff7f00f07e18b9bc698.gif'
-          title='Už +20 rep surinkima'
-        />
-        <img
-          src='http://fleshas.lt/infusions/awards/images/awards/2fe1d987eade7ac446c3fc8585071157628.gif'
-          title='Už +40 rep surinkima'
-        />
-        <img
-          src='http://fleshas.lt/infusions/awards/images/awards/149d351dfcf775295d28645351ac7bfe588.gif'
-          title='Už randamus ir tvarkomus bugus bei klaidas fleshas.lt projektui'
-        />
-        <img
-          src='http://fleshas.lt/infusions/awards/images/awards/e099acfed19a6779be1acfa2bf152c5f566.gif'
-          title='Už tai, kad yra išbuvęs ilgiau nei metus forume'
-        />
-        <img
-          src='http://fleshas.lt/infusions/awards/images/awards/f108fb088a38a3b221669a1f5a5a2371666.gif'
-          title='Už greitą reakciją'
-        />
-        <img
-          src='http://fleshas.lt/infusions/awards/images/awards/474645a66728496bf6e19728028d28d5556.gif'
-          title='Už aktyvią forumo veikla'
-        />
-        <img
-          src='http://fleshas.lt/infusions/awards/images/awards/medal9.gif'
-          title='Už pagalba forumo nariams'
-        />
-        <img
-          src='http://fleshas.lt/infusions/awards/images/awards/medal-019.gif'
-          title='Už tai, kad puikiai prigauna čyterius'
-        />
-        <img
-          src='http://fleshas.lt/infusions/awards/images/awards/medal-017.gif'
-          title='Už konkurso pravedimą'
-        />
-        <img
-          src='http://fleshas.lt/infusions/awards/images/awards/medal0.gif'
-          title='Už 10eur parama fleshas.lt'
-        />
-        <img
-          src='http://fleshas.lt/infusions/awards/images/awards/medal-012.gif'
-          title='Už 20eur parama fleshas.lt'
-        />
-        <img
-          src='http://fleshas.lt/infusions/awards/images/awards/399320c4157278ccdcf13b55c53e40ce882.gif'
-          title='Už 2 vietos laimėjima fleshas.lt konkurse giveaway 4mil xp'
-        />
-        <img
-          src='http://fleshas.lt/infusions/awards/images/awards/c465c15881732850edeed24791755214747.gif'
-          title='Už 1 vietos laimėjima fleshas.lt konkurse 2x2'
-        />
-        <img
-          src='http://fleshas.lt/infusions/awards/images/awards/medal11.gif'
-          title='Už tai, kad yra išbuvęs ilgiau nei du metus forume'
-        />
-      </MedalsContainer>
-    );
-  }
-}

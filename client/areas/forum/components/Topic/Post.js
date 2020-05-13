@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Link from 'next/link';
 import { messageDate, buildUserUrl } from '_core/utils';
-import { Modal } from 'antd';
+import { Modal, Tag } from 'antd';
 import { connect } from 'react-redux';
 import { Avatar, Username } from 'ui';
 import MarkdownEditor from 'ui/markdownEditor';
@@ -70,6 +70,8 @@ class Post extends Component {
 
   render() {
     const { post, deleted, t } = this.props;
+    console.log('post.user', post);
+
     return (
       <ContainerWrapper ref={this.container}>
         <AvatarContainer className={deleted ? 'deleted' : ''}>
@@ -78,9 +80,22 @@ class Post extends Component {
         <Container classname='clearfix'>
           <CommentTitle>
             <span className={`${deleted ? 'deleted' : ''} my-2`}>
-              <Username user={post.user}>{post.user.username}</Username> {t('post-commented')}{' '}
-              {messageDate(post.timestamp)}
+              <Username user={post.user}>{post.user.username}</Username>
+              {post.user.selectedGroups
+                ? post.user.selectedGroups.map((group) => (
+                    <Tag
+                      color={group.labelColor}
+                      style={{ color: group.textColor }}
+                      key={group.name}
+                      className='ml-1 mr-1'
+                    >
+                      {group.name}
+                    </Tag>
+                  ))
+                : null}
+              {t('post-commented')} {messageDate(post.timestamp)}
             </span>
+
             <Tools className='ml-auto post-tools my-1 mr-1'>
               {post.display_edit_tools ? (
                 <ActionsMenu post={this.props.post} onChoose={this.onToolChoose} />

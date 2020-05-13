@@ -85,14 +85,6 @@ export const disabledPrimaryButtomBorder = theme('mode', {
   light: themeLight.DISABLED_PRIMARY_BUTTON_BORDER,
   dark: themeDark.DISABLED_PRIMARY_BUTTON_BORDER
 });
-export const mdeHeaderColor = theme('mode', {
-  light: '#f9f9f9',
-  dark: `#f6f8fa;`
-});
-export const mdeBorderColor = theme('mode', {
-  light: '#c8ccd0',
-  dark: '#dedede'
-});
 export const inputLabelColor = theme('mode', {
   light: 'rgba(0, 0, 0, 0.85)',
   dark: 'rgba(232, 232, 232, 0.85)'

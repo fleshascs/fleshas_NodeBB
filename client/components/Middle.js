@@ -7,13 +7,23 @@ import throttle from 'lodash.throttle';
 
 const Container = styled.div`
   flex: 1;
-  height: 100%;
 `;
+
+// const Container = styled.div`
+//   flex: 1;
+//   display: flex;
+// `;
+
+// const NativeScrollBar = styled.div`
+//   overflow-y: auto;
+//   flex: 1;
+// `;
 
 class Middle extends Component {
   render() {
     return (
       <Container>
+        {/* <NativeScrollBar className='middle-container'>{this.props.children}</NativeScrollBar> */}
         <ScrollBar>{this.props.children}</ScrollBar>
       </Container>
     );
