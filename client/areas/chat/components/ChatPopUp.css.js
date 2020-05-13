@@ -55,15 +55,6 @@ export const MessagesContainer = styled.div`
   overflow-y: scroll;
   flex: 1;
 `;
-export const OnlineIcon = styled.div`
-  background: ${(props) => (props.isOnline ? '#42b72a' : 'grey')};
-  border-radius: 50%;
-  height: 6px;
-  margin: 0 3px 1px 0;
-  vertical-align: middle;
-  width: 6px;
-  display: inline-block;
-`;
 
 export const CloseButton = styled.i`
   border: none;

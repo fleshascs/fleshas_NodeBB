@@ -9,15 +9,13 @@ import socket from 'areas/socket/services';
 import { whenAllImagesLoads } from '_core/utils';
 import { GetConversationHistory } from 'areas/chat/services';
 import { getUser } from 'areas/session/selectors';
-import { getOnlineUsersObj } from 'areas/user/selectors';
 import { getChatsOpened } from '../selectors';
-
+import OnlineIndicator from './elements/OnlineIndicator';
 import {
   ChatContainer,
   PopUpHeader,
   PopUpContainer,
   MessagesContainer,
-  OnlineIcon,
   CloseButton
 } from './ChatPopUp.css';
 
@@ -71,10 +69,6 @@ class Chat extends Component {
     }
   }
 
-  isAnyoneOnline() {
-    return this.state.users.some((user) => this.props.users[user.uid]);
-  }
-
   scrollToBottomWhenImagesLoads = (messages) => {
     whenAllImagesLoads(messages).then(() => {
       this.scrollToBottom();
@@ -82,15 +76,12 @@ class Chat extends Component {
   };
 
   render() {
-    const isOnline = this.isAnyoneOnline();
-    //console.log('this.state.messages', this.state.messages);
-
     return (
       <ChatContainer>
         <PopUpContainer>
           <PopUpHeader>
             <div className='d-flex pl-1' style={{ alignItems: 'center' }}>
-              <OnlineIcon isOnline={isOnline} />
+              <OnlineIndicator usersInChat={this.state.users} />
               <UsernamesList users={this.state.users} />
               <CloseButton className='material-icons ml-auto' onClick={this.handleChatClose}>
                 close
@@ -150,8 +141,6 @@ class Chat extends Component {
           start: start
         },
         (err, messages) => {
-          console.log('response');
-
           if (err) {
             this.setState({ loading: false });
             this.loading = false;
@@ -216,8 +205,7 @@ class Chat extends Component {
 function mapStateToProps(state) {
   return {
     user: getUser(state),
-    chatsOpened: getChatsOpened(state),
-    users: getOnlineUsersObj(state)
+    chatsOpened: getChatsOpened(state)
   };
 }
 
