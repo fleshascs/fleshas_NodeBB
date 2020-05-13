@@ -44,7 +44,7 @@ class Chat extends Component {
   //public/src/modules/chat.js
   componentDidMount() {
     this.getConversationHistory();
-    socket.on('event:chats.receive', this.onNewMessage.bind(this));
+    socket.on('event:chats.receive', this.onNewMessage);
     socket.emit('modules.chats.markRead', this.props.room.roomId);
     window.addEventListener('resize', this.scrollToBottom);
   }
@@ -54,7 +54,7 @@ class Chat extends Component {
   }
 
   onNewMessage = (data) => {
-    if (this.props.room.roomId != data.roomId) return;
+    if (this.props.room.roomId != data.roomId || data.system) return;
 
     this.setState((prevState) => {
       return { messages: [...prevState.messages, data.message] };
@@ -83,6 +83,8 @@ class Chat extends Component {
 
   render() {
     const isOnline = this.isAnyoneOnline();
+    //console.log('this.state.messages', this.state.messages);
+
     return (
       <ChatContainer>
         <PopUpContainer>

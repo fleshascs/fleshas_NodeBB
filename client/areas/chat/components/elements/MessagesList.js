@@ -8,6 +8,7 @@ class Messages extends Component {
       <div className='mx-2'>
         {this.props.loading ? <Spinner /> : null}
         {this.props.messages.map((message, index) => {
+          if (message.system) return;
           const previosMessage = this.props.messages[index - 1];
           const secondMessage = this.props.messages[index + 1];
 
