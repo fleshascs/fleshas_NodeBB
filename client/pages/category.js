@@ -3,7 +3,7 @@ import axios from 'axios';
 import Head from 'next/head';
 import styled from 'styled-components';
 import Link from 'next/link';
-import { Pagination } from 'antd';
+import { Pagination, Result } from 'antd';
 import Router from 'next/router';
 import { Button, Breadcrumbs } from 'ui';
 import Topics from 'areas/forum/components/Topics';
@@ -50,25 +50,27 @@ class Category extends React.Component {
     return {
       browserTitle: query.browserTitle,
       screenData: query.screenData,
-      query: query.screenData,
-      topics: query.screenData.topics,
-      pagination: query.screenData.pagination,
+      topics: query.screenData?.topics,
+      pagination: query.screenData?.pagination,
       tratata: query.screenData,
-      breadcrumbs: query.screenData.breadcrumbs,
+      breadcrumbs: query.screenData?.breadcrumbs,
       csrfToken: query.csrfToken,
       namespacesRequired: ['common']
     };
   }
 
   onChange = (pageNumber) => {
-    const { query } = this.props;
-    const page = buildCategoryUrl(pageNumber, query.slug);
+    const { screenData } = this.props;
+    const page = buildCategoryUrl(pageNumber, screenData.slug);
     Router.push(page.path, page.url);
   };
 
   render() {
-    const { query, breadcrumbs, browserTitle, t } = this.props;
-    const newTopicPage = buildNewTopicUrl(query.cid);
+    const { screenData, topics, pagination, breadcrumbs, browserTitle, t } = this.props;
+    if (!topics) {
+      return <Result status='404' title='404' subTitle='Category does not exist' />;
+    }
+    const newTopicPage = buildNewTopicUrl(screenData.cid);
     return (
       <div className='container mt-3'>
         <Head>
@@ -82,12 +84,12 @@ class Category extends React.Component {
             </Link>
           </ButtonsContainer>
         </PanelHeader>
-        <Topics topics={this.props.topics} />
+        <Topics topics={topics} />
         <PaginationContainer>
           <Pagination
-            defaultCurrent={this.props.query.pagination.currentPage}
+            defaultCurrent={screenData.pagination.currentPage}
             pageSize={20}
-            total={this.props.pagination.pageCount * 20}
+            total={pagination.pageCount * 20}
             onChange={this.onChange}
           />
         </PaginationContainer>
