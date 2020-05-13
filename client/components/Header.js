@@ -14,6 +14,7 @@ import { getTheme } from 'areas/general/selectors';
 import { setCookie } from '_core/utils';
 import { getIsLoggedIn } from 'areas/session/selectors';
 import { renderLink } from 'ui/NavBar/renderLink';
+import { MoonIcon } from './MoonIcon';
 
 const MenuListItem = styled.div`
   & .active {
@@ -178,7 +179,7 @@ class Header extends Component {
               alignItems: 'center'
             }}
           >
-            <i className='material-icons'>brightness_3</i>
+            <MoonIcon className='material-icons'>brightness_3</MoonIcon>
             Dark Theme
             <Switch
               defaultChecked={this.props.theme === 'dark'}

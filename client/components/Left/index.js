@@ -6,15 +6,15 @@ import socket from 'areas/socket/services';
 import { connect } from 'react-redux';
 import { i18n, withTranslation } from '_core/i18n';
 import { setCookie } from '_core/utils';
-import { message } from 'antd';
+import { message, Switch } from 'antd';
+import moment from 'moment';
 import throttle from 'lodash.throttle';
 import * as usersSelectors from 'areas/user/selectors';
 import { setOnlineUsers, addToOnlineList, removeFromOnlineList } from 'areas/user/actions';
 import { primaryColor, leftBarBGColor, leftBarIconColor, leftBarInputColor } from '_theme';
-import { Switch } from 'antd';
+import { MoonIcon } from '../MoonIcon';
 import { setTheme } from 'areas/general/actions';
 import { getTheme } from 'areas/general/selectors';
-import moment from 'moment';
 
 const SIDEBAR_WIDTH = '70px';
 
@@ -171,7 +171,7 @@ class Left extends Component {
                 color: '#7f7676'
               }}
             >
-              <i className='material-icons'>brightness_3</i>
+              <MoonIcon className='material-icons'>brightness_3</MoonIcon>
               Dark Theme
               <Switch
                 defaultChecked={this.props.theme === 'dark'}
