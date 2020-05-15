@@ -25,6 +25,7 @@ const Box = styled.div`
   box-shadow: rgba(109, 103, 95, 0.22) 1px 3px 6px;
   position: relative;
   background: ${boxBGColor};
+  overflow-wrap: break-word;
 
   // &:after,
   // &:before {
