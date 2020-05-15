@@ -72,8 +72,6 @@ class Post extends Component {
 
   render() {
     const { post, deleted, t } = this.props;
-    console.log('post.user', post.user);
-
     return (
       <ContainerWrapper ref={this.container}>
         <AvatarContainer className={deleted ? 'deleted' : ''}>
