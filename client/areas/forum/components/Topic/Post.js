@@ -12,7 +12,9 @@ import {
   CommnetMessage,
   PostFooterText,
   AvatarContainer,
-  Tools
+  Tools,
+  SignatureSeparator,
+  SignatureContainer
 } from './Post.css.js';
 import { editPost, deletePost, restorePost } from '../../actions';
 import { getMarkdownString } from '../../services';
@@ -70,6 +72,8 @@ class Post extends Component {
 
   render() {
     const { post, deleted, t } = this.props;
+    console.log('post.user', post.user);
+
     return (
       <ContainerWrapper ref={this.container}>
         <AvatarContainer className={deleted ? 'deleted' : ''}>
@@ -112,7 +116,10 @@ class Post extends Component {
               {post.deleted ? (
                 <div>{t('post-deleted')}</div>
               ) : (
-                <div dangerouslySetInnerHTML={this.createMarkup()} />
+                <>
+                  <div dangerouslySetInnerHTML={{ __html: this.props.post.content }} />
+                  {this.renderUserSignature()}
+                </>
               )}
               {post.edited ? this.editedPostFooter() : null}
             </CommnetMessage>
@@ -136,6 +143,19 @@ class Post extends Component {
         </Container>
       </ContainerWrapper>
     );
+  }
+
+  renderUserSignature() {
+    const { post } = this.props;
+    if (post.user?.signature) {
+      return (
+        <>
+          <SignatureSeparator />
+          <SignatureContainer dangerouslySetInnerHTML={{ __html: post.user.signature }} />
+        </>
+      );
+    }
+    return null;
   }
 
   editedPostFooter = () => {

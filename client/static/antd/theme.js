@@ -85,6 +85,10 @@ export const disabledPrimaryButtomBorder = theme('mode', {
   light: themeLight.DISABLED_PRIMARY_BUTTON_BORDER,
   dark: themeDark.DISABLED_PRIMARY_BUTTON_BORDER
 });
+export const separatorColor = theme('mode', {
+  light: '#eeeeee',
+  dark: '#424c58'
+});
 export const inputLabelColor = theme('mode', {
   light: 'rgba(0, 0, 0, 0.85)',
   dark: 'rgba(232, 232, 232, 0.85)'

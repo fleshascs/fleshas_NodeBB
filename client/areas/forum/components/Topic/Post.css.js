@@ -1,5 +1,11 @@
 import styled from 'styled-components';
-import { postBGColor, boxBorderColor, BoxTopFontColor, postTopMessageColor } from '_theme';
+import {
+  postBGColor,
+  boxBorderColor,
+  BoxTopFontColor,
+  postTopMessageColor,
+  separatorColor
+} from '_theme';
 
 export const AvatarContainer = styled.div`
   padding-right: 20px;
@@ -7,6 +13,18 @@ export const AvatarContainer = styled.div`
   @media (max-width: 600px) {
     display: none;
   }
+`;
+
+export const SignatureContainer = styled.div`
+  overflow-y: hidden;
+  max-height: 800px;
+`;
+
+export const SignatureSeparator = styled.hr`
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 0;
+  border-top: 1px solid ${separatorColor};
 `;
 
 export const ContainerWrapper = styled.div`
