@@ -9,7 +9,7 @@ export function newPosts(data) {
   data.posts.map((post) => {
     notification.open({
       message: post.user.username + ' ' + translate('new-post-notification'),
-      description: escapeHTML(post.content), // it's always wrapped in <p> tag, we don't want that
+      description: escapeHTML(post.content).substring(0, 60), // it's always wrapped in <p> tag, we don't want that
       icon: <Avatar shape='square' src={post.user.picture} />,
       onClick: () => handleNotificationClick(post)
     });
