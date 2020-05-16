@@ -31,7 +31,7 @@ class GifButton extends Component {
 
   onSelected = (gif) => {
     if (typeof this.props.onEmojiSelect === 'function') {
-      const text = `![](${gif.preview_gif.url})`;
+      const text = `[![](${gif.fixed_height.url})](${gif.original.url})`;
       this.props.onEmojiSelect(text);
     }
 
