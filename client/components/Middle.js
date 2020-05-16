@@ -70,7 +70,8 @@ class ScrollBar extends Component {
     Router.events.off('routeChangeComplete', this.onRouteChange);
   }
 
-  onRouteChange = () => {
+  onRouteChange = (path) => {
+    if (path.startsWith('/topic')) return;
     const _scrollContainer = this.scrollContainer.current._container;
     _scrollContainer.scrollTop = 0;
   };
