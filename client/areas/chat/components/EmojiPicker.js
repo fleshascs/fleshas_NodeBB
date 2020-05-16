@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
+import { Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
 const EmojiPickerContainer = styled.div`
@@ -24,42 +26,58 @@ const EmojiPickerContainer = styled.div`
 const EMOJI_PATH = '/plugins/nodebb-plugin-emoji/emoji';
 
 async function fetchEmojis() {
-  const response = await axios.get(EMOJI_PATH + '/table.json'); //customizations
+  const response = await axios.get(EMOJI_PATH + '/table.json');
   const filtered = Object.keys(response.data).reduce((emojis, emojiKey) => {
     const emoji = response.data[emojiKey];
     if (emoji.pack === 'customizations') {
-      emijos.push({
+      emojis.push({
         name: emoji.name,
-        short_names: [emoji.name],
+        short_names: emoji.aliases,
         text: '',
         emoticons: [],
         keywords: emoji.keywords ?? [],
         imageUrl: `${EMOJI_PATH}/${emoji.pack}/${emoji.image}`
       });
     }
+    return emojis;
   }, []);
   return filtered;
 }
 
 class EmojiPicker extends Component {
   state = {
-    customEmojis: []
+    customEmojis: [],
+    customEmojiLoading: true
   };
   async componentDidMount() {
-    const emojis = await fetchEmojis();
-    this.setState({ customEmojis: emojis });
+    try {
+      const emojis = await fetchEmojis();
+      this.setState({ customEmojis: emojis, customEmojiLoading: false });
+    } catch {
+      this.setState({ customEmojis: [], customEmojiLoading: false });
+    }
   }
+
+  placeholder() {
+    const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+    return <Spin indicator={antIcon} />;
+  }
+
   render() {
     return (
       <EmojiPickerContainer>
-        <Picker
-          theme='dark'
-          onSelect={this.props.onEmojiSelect}
-          native={true}
-          emojiSize={18}
-          custom={this.state.customEmojis}
-          //set={'apple'}
-        />
+        {this.state.customEmojiLoading ? (
+          this.placeholder()
+        ) : (
+          <Picker
+            onSelect={this.props.onEmojiSelect}
+            native={true}
+            emojiSize={18}
+            custom={this.state.customEmojis}
+            //set={'apple'}
+            title=''
+          />
+        )}
       </EmojiPickerContainer>
     );
   }
