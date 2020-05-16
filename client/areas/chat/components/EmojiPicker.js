@@ -10,17 +10,6 @@ const EmojiPickerContainer = styled.div`
   position: absolute;
   bottom: 125%;
   z-index: 3;
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 10px;
-    margin-left: -5px;
-    border-width: 10px;
-    border-style: solid;
-    border-color: #555 transparent transparent transparent;
-  }
 `;
 
 const EMOJI_PATH = '/plugins/nodebb-plugin-emoji/emoji';
