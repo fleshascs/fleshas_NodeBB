@@ -22,7 +22,7 @@ async function fetchEmojis() {
       emojis.push({
         name: emoji.name,
         short_names: emoji.aliases,
-        text: '',
+        text: emoji.character,
         emoticons: [],
         keywords: emoji.keywords ?? [],
         imageUrl: `${EMOJI_PATH}/${emoji.pack}/${emoji.image}`
