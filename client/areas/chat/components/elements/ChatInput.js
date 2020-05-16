@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import EmojiButton from '../EmojiButton';
+import { EmojiButton } from 'ui/EmojiButton';
 import { withTranslation } from '_core/i18n';
 //https://www.npmjs.com/package/emoji-picker-react
 import { primaryColor, chatBackgroundColor, chatInnerBorderColor } from '_theme';

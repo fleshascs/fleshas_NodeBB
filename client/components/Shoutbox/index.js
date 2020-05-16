@@ -16,7 +16,9 @@ import ShoutsPlaceHolder from './ShoutsPlaceHolder';
 import socket from 'areas/socket/services';
 import { withTranslation } from '_core/i18n';
 import { whenAllImagesLoads } from '_core/utils';
-import { EmojiButton, OnlineUsersBadge } from 'ui';
+import { OnlineUsersBadge } from 'ui';
+import { EmojiButton } from 'ui/EmojiButton';
+import { GifButton } from 'ui/GifButton';
 import { messageDate } from '_core/utils';
 import { getIsLoggedIn } from 'areas/session/selectors';
 import { getOnlineUsers } from 'areas/user/selectors';
@@ -43,6 +45,8 @@ class ShoutboxComponent extends Component {
   }
 
   onEmojiSelect = (emoji) => {
+    console.log('emoji', emoji);
+
     this.setState((prevState, props) => {
       return { message: prevState.message + emoji };
     });
@@ -141,6 +145,7 @@ class ShoutboxComponent extends Component {
           />
           <div className='d-flex'>
             <EmojiButton onEmojiSelect={this.onEmojiSelect} />
+            <GifButton onEmojiSelect={this.onEmojiSelect} />
             <Button
               type='primary'
               disabled={!(this.state.message && loggedIn)}
@@ -154,9 +159,6 @@ class ShoutboxComponent extends Component {
       </Container>
     );
   }
-
-  //   <EmojiButton onEmojiSelect={this.onEmojiSelect} />
-  //   <PhotoUploadButton />
 
   toggleSound = () => {
     this.setState((prevState, props) => {

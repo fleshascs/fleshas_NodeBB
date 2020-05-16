@@ -14,7 +14,6 @@ export { default as Avatar } from './Avatar';
 export { default as Username } from './Username';
 export { default as Spinner } from './Spinner';
 export { default as AvatarUpload } from './AvatarUpload';
-export { default as EmojiButton } from '../areas/chat/components/EmojiButton';
 export { default as PhotoUploadButton } from '../areas/chat/components/PhotoUploadButton';
 export { default as Button } from './Button';
 export { default as Breadcrumbs } from './Breadcrumbs';
