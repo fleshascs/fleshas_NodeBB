@@ -25,7 +25,8 @@ const EMOJI_PATH = '/plugins/nodebb-plugin-emoji/emoji';
 
 async function fetchEmojis() {
   const response = await axios.get(EMOJI_PATH + '/table.json'); //customizations
-  const filtered = Object.keys(response.data).reduce((emojis, emoji) => {
+  const filtered = Object.keys(response.data).reduce((emojis, emojiKey) => {
+    const emoji = response.data[emojiKey];
     if (emoji.pack === 'customizations') {
       emijos.push({
         name: emoji.name,
