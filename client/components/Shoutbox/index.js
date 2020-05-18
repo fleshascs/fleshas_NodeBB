@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import throttle from 'lodash.throttle';
 import { connect } from 'react-redux';
-import { Button } from 'antd';
+import { Button, Modal } from 'antd';
 import Message from './Message';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import {
   ShoutboxContainer,
   MessgesList,
@@ -23,6 +24,7 @@ import { messageDate } from '_core/utils';
 import { getIsLoggedIn } from 'areas/session/selectors';
 import { getOnlineUsers } from 'areas/user/selectors';
 //https://codesandbox.io/s/04v892702v
+const { confirm } = Modal;
 
 class ShoutboxComponent extends Component {
   constructor(props) {
@@ -45,8 +47,6 @@ class ShoutboxComponent extends Component {
   }
 
   onEmojiSelect = (emoji) => {
-    console.log('emoji', emoji);
-
     this.setState((prevState, props) => {
       return { message: prevState.message + emoji };
     });
@@ -183,7 +183,18 @@ class ShoutboxComponent extends Component {
     this.setState({ showScrollHelper });
   };
 
-  renderMessage(msg) {
+  onMessageDelete = (sid) => {
+    confirm({
+      title: 'Do you Want to delete this message?',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Message will be deleted permanently',
+      onOk() {
+        socket.emit('plugins.shoutbox.remove', { sid });
+      }
+    });
+  };
+
+  renderMessage = (msg) => {
     return (
       <Message
         likes={0}
@@ -193,9 +204,11 @@ class ShoutboxComponent extends Component {
         friendlyDate={messageDate(msg.timestamp)}
         content={msg.content}
         key={msg.sid}
+        sid={msg.sid}
+        onDelete={this.onMessageDelete}
       />
     );
-  }
+  };
 
   addMessage = (msg) => {
     if (this.state.soundEnabled) {

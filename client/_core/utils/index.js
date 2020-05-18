@@ -4,3 +4,6 @@ export { default as axiosHandler } from './axiosHandler';
 import * as error from './error';
 
 export { error };
+export * from './date';
+export * from './routes';
+export * from './scrollToBottom';
