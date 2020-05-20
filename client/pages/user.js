@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Head from 'next/head';
 import { connect } from 'react-redux';
 import { Col, Row, Button, Result, Tag } from 'antd';
-import { MailOutlined, HeartOutlined, SmileOutlined } from '@ant-design/icons';
+import { MailOutlined, HeartTwoTone, DislikeTwoTone } from '@ant-design/icons';
 import { startConversation } from 'areas/chat/actions';
 import { buildUserUrl, messageDate, dateTime, buildUserSettingsUrl } from '_core/utils';
 import ProfileCover from 'areas/user/components/ProfileCover';
@@ -23,19 +23,23 @@ const ProfileBox = styled.div`
   position: relative;
 `;
 
-const Reputation = (props) => {
-  const rep = props.children;
+const RepLink = styled.a`
+  color: rgb(55, 170, 213);
+  font-style: oblique;
+`;
+
+const Reputation = ({ rep }) => {
   if (rep > 0) {
     return (
       <>
-        <HeartOutlined theme='twoTone' twoToneColor='#eb2f96' className='mr-2' />
+        <HeartTwoTone twoToneColor='#eb2f96' className='mr-2' />
         <span style={{ color: '#eb2f96' }}>+{rep}</span>
       </>
     );
   } else if (rep < 0) {
     return (
       <>
-        <SmileOutlined theme='twoTone' twoToneColor='red' rotate={180} className='mr-2' />
+        <DislikeTwoTone twoToneColor='red' className='mr-2' />
         <span style={{ color: 'red' }}>{rep}</span>
       </>
     );
@@ -139,7 +143,11 @@ class UserProfile extends Component {
                   {this.renderProfileElement(t('email'), user.email)}
                   {this.renderProfileElement(t('age'), user.age)}
                   <span className='text-muted'>{t('reputation')}:</span>{' '}
-                  <Reputation>{user.reputation}</Reputation>
+                  <Link href={`/user/${user.userslug}/reputation`} passHref>
+                    <RepLink>
+                      <Reputation rep={user.reputation} /> {t('reputation-give-title')}
+                    </RepLink>
+                  </Link>
                   <br />
                   <span className='text-muted'>{t('join-date')}:</span> {messageDate(user.joindate)}
                   <br />

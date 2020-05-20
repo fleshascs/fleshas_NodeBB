@@ -195,6 +195,8 @@ class ShoutboxComponent extends Component {
   };
 
   renderMessage = (msg) => {
+    const { auth } = this.props;
+    const canDelete = auth?.user.isAdmin || auth?.user.isGlobalMod || auth?.user.isMod;
     return (
       <Message
         likes={0}
@@ -205,6 +207,7 @@ class ShoutboxComponent extends Component {
         content={msg.content}
         key={msg.sid}
         sid={msg.sid}
+        canDelete={canDelete}
         onDelete={this.onMessageDelete}
       />
     );
@@ -290,7 +293,8 @@ class ShoutboxComponent extends Component {
 function mapStateToProps(state) {
   return {
     onlineUsers: getOnlineUsers(state),
-    loggedIn: getIsLoggedIn(state)
+    loggedIn: getIsLoggedIn(state),
+    auth: state.authentication
   };
 }
 

@@ -35,7 +35,7 @@ class Message extends PureComponent {
   };
 
   render() {
-    const { user, timestamp, content: rawContent, deleted, friendlyDate } = this.props;
+    const { user, timestamp, content: rawContent, deleted, friendlyDate, canDelete } = this.props;
     const content = {
       __html: this.messageContent(rawContent, deleted)
     };
@@ -51,7 +51,7 @@ class Message extends PureComponent {
             <Tooltip title={moment(timestamp).format('YYYY-MM-DD HH:mm:ss')}>
               <span>{friendlyDate}</span>
             </Tooltip>
-            {user.isAdmin || user.isMod ? (
+            {canDelete ? (
               <DeleteButton className='ml-3' onClick={this.delete}>
                 Delete
               </DeleteButton>

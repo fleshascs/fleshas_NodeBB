@@ -23,7 +23,6 @@ const AntdStyle = createGlobalStyle`
     color: ${defaultFontColor};
   }
 
-
   .ant-btn-primary[disabled] {
     color: ${disabledPrimaryButtomColor};
     background-color: ${disabledPrimaryButtomBackground};
@@ -33,6 +32,10 @@ const AntdStyle = createGlobalStyle`
   ${(props) =>
     props.theme.mode === 'dark'
       ? `
+
+    .ant-list-item {
+      border-color: #424c58 !important;
+    }
 
     input:-webkit-autofill,
     input:-webkit-autofill:hover, 
@@ -59,8 +62,17 @@ const AntdStyle = createGlobalStyle`
       border-color: #424c58;
     }
 
-    .ant-checkbox-wrapper, .ant-form, .ant-result-title {
+    .ant-list-item-meta-description, .ant-checkbox-wrapper, .ant-form, .ant-result-title {
       color: #c3bfbf;
+    }
+
+    .ant-radio-inner {
+      background-color: #292c35;
+      border-color: #5a5252;
+    }
+
+    .ant-radio-checked .ant-radio-inner {
+      border-color: #0074ff;
     }
 
     .ant-form a {

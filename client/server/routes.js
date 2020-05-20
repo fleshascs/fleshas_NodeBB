@@ -51,6 +51,24 @@ module.exports.setupRoutes = function (app, server, middleware) {
       screenData: res.screenData
     });
   });
+  setupPageRoute(
+    server,
+    '/user/:userslug/reputation',
+    middleware,
+    profileMiddleware,
+    async (req, res) => {
+      const [tags, header] = await Promise.all([
+        meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
+        generateHeaderAsync(req, res, res.screenData)
+      ]);
+      app.render(req, res, '/reputation', {
+        id: req.params.userslug,
+        header,
+        tags,
+        screenData: res.screenData
+      });
+    }
+  );
 
   const accountMiddlewares = [
     middleware.exposeUid,
@@ -215,6 +233,27 @@ module.exports.setupRoutes = function (app, server, middleware) {
       });
     }
   );
+  setupPageRoute(server, '/lost-priv/:id', middleware, [], async (req, res) => {
+    const [tags, header] = await Promise.all([
+      meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
+      generateHeaderAsync(req, res, {})
+    ]);
+    app.render(req, res, '/lost_priv_request', {
+      header,
+      tags,
+      id: req.params.id
+    });
+  });
+  setupPageRoute(server, '/lost-priv', middleware, [], async (req, res) => {
+    const [tags, header] = await Promise.all([
+      meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
+      generateHeaderAsync(req, res, {})
+    ]);
+    app.render(req, res, '/lost_priv', {
+      header,
+      tags
+    });
+  });
   setupPageRoute(server, '/csdownloads.php', middleware, [], async (req, res) => {
     const [tags, header] = await Promise.all([
       meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),

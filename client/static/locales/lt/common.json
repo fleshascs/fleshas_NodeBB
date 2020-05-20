@@ -146,5 +146,11 @@
   "show-less": "Rodyti Mažiau",
   "no-chat-rooms": "Žinučių sąrašas tuščias",
   "pages-account-edit": "Profilis: {{arg0}}",
-  "medals-title": "Medaliai"
+  "medals-title": "Medaliai",
+  "zero-reputation": "Šiam naudotojui niekas dar nedavė reputacijos.",
+  "reputation-already-gave": "Nebegali duoti daugiau reputacijos.",
+  "reputation-not-enouth-posts": "Kad galėtum duoti reputacijos turi tureti bent 15 pranešimų.",
+  "reputation-added": "Reputacija sėkmingai pridėta.",
+  "reputation-give-title": "Duoti reputacijos",
+  "reputation-testimonials-title": "Atsiliepimai"
 }
