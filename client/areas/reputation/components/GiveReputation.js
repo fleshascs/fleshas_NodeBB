@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Radio } from 'antd';
 import MarkdownEditor from 'ui/markdownEditor';
 import { useTranslation } from '_core/i18n';
-import RepType from 'areas/reputation/components/RepType';
+import RepType from './RepType';
 
 export default function GiveReputation(props) {
   const { onSubmit, notEnoughPosts, canGive, alreadyGave } = props;
