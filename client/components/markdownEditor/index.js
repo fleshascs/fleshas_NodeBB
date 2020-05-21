@@ -3,7 +3,7 @@ import ReactMde from 'react-mde';
 import { Converter } from 'showdown';
 import 'react-mde/lib/styles/css/react-mde-all.css';
 import { Button } from 'antd';
-import styled, { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle, css } from 'styled-components';
 import { useTranslation } from '_core/i18n';
 import { defaultFontColor } from '_theme';
 
@@ -15,54 +15,58 @@ const converter = new Converter({
 });
 
 const Container = styled.div`
-   ${props => props.theme.mode === 'dark' ? `
-
-    & .react-mde {
-      background: #292c35
-    }
-
-    ` : ''};
+  ${(props) =>
+    props.theme.mode === 'dark'
+      ? css`
+          & .react-mde {
+            background: #292c35;
+          }
+        `
+      : ''};
 `;
 
 const MDEStyle = createGlobalStyle`
-  ${props => props.theme.mode === 'dark' ? `
-    .react-mde {
-      border-color: #424c58;
-    }
+  ${(props) =>
+    props.theme.mode === 'dark'
+      ? css`
+          .react-mde {
+            border-color: #424c58;
+          }
 
-    .react-mde .mde-tabs button {
-      color: #e0e0e0;
-    }
+          .react-mde .mde-tabs button {
+            color: #e0e0e0;
+          }
 
-    .react-mde .mde-tabs button.selected {
-      color: #e0e0e0;
-      background-color: #292c35;
-      border-color: #424c58;
-    }
+          .react-mde .mde-tabs button.selected {
+            color: #e0e0e0;
+            background-color: #292c35;
+            border-color: #424c58;
+          }
 
-    .mde-header {
-      background: none;
-      border-color: #424c58;
-    }
+          .mde-header {
+            background: none;
+            border-color: #424c58;
+          }
 
-    .react-mde .grip > svg > path {
-      fill: #424c58;
-    }
+          .react-mde .grip > svg > path {
+            fill: #424c58;
+          }
 
-    .react-mde textarea {
-      background: none;
-      color: ${defaultFontColor};
-    }
+          .react-mde textarea {
+            background: none;
+            color: ${defaultFontColor};
+          }
 
-    .react-mde .grip {
-      background: none;
-      border-color: #424c58;
-    }
+          .react-mde .grip {
+            background: none;
+            border-color: #424c58;
+          }
 
-    .mde-header-item  svg > path {
-      fill: #ececec;
-    }
-  ` : ''};
+          .mde-header-item svg > path {
+            fill: #ececec;
+          }
+        `
+      : ''};
 `;
 
 const ActionButtons = styled.div`
@@ -102,12 +106,7 @@ function MarkdownEditor(props, ref) {
       />
       {props.onSave && loggedIn ? (
         <ActionButtons>
-          <Button
-            type='primary'
-            disabled={!value}
-            onClick={onSave}
-            className='ml-auto mt-2'
-          >
+          <Button type='primary' disabled={!value} onClick={onSave} className='ml-auto mt-2'>
             {t('submit-message')}
           </Button>
         </ActionButtons>

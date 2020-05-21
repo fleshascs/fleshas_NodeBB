@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Middle, Left, Right, Header } from 'ui';
 import Chat from 'areas/chat/components';
 import Bottom from './Bottom';
@@ -31,69 +31,70 @@ const AntdStyle = createGlobalStyle`
 
   ${(props) =>
     props.theme.mode === 'dark'
-      ? `
+      ? css`
+          .ant-list-item {
+            border-color: #424c58 !important;
+          }
 
-    .ant-list-item {
-      border-color: #424c58 !important;
-    }
+          input:-webkit-autofill,
+          input:-webkit-autofill:hover,
+          input:-webkit-autofill:focus,
+          textarea:-webkit-autofill,
+          textarea:-webkit-autofill:hover,
+          textarea:-webkit-autofill:focus,
+          select:-webkit-autofill,
+          select:-webkit-autofill:hover,
+          select:-webkit-autofill:focus {
+            border: 1px solid green;
+            -webkit-text-fill-color: #c3bfbf;
+            -webkit-box-shadow: 0 0 0px 1000px none inset;
+            transition: background-color 5000s ease-in-out 0s;
+          }
 
-    input:-webkit-autofill,
-    input:-webkit-autofill:hover, 
-    input:-webkit-autofill:focus,
-    textarea:-webkit-autofill,
-    textarea:-webkit-autofill:hover,
-    textarea:-webkit-autofill:focus,
-    select:-webkit-autofill,
-    select:-webkit-autofill:hover,
-    select:-webkit-autofill:focus {
-      border: 1px solid green;
-      -webkit-text-fill-color: #c3bfbf;
-      -webkit-box-shadow: 0 0 0px 1000px none inset;
-      transition: background-color 5000s ease-in-out 0s;
-    }
+          .ant-form-item-has-error .ant-input {
+            background: none;
+          }
 
-    .ant-form-item-has-error .ant-input {
-        background: none;
-    }
+          .ant-form-item-control-input-content input {
+            background: none;
+            color: #c3bfbf;
+            border-color: #424c58;
+          }
 
-    .ant-form-item-control-input-content input {
-      background: none;
-      color: #c3bfbf;
-      border-color: #424c58;
-    }
+          .ant-list-item-meta-description,
+          .ant-checkbox-wrapper,
+          .ant-form,
+          .ant-result-title {
+            color: #c3bfbf;
+          }
 
-    .ant-list-item-meta-description, .ant-checkbox-wrapper, .ant-form, .ant-result-title {
-      color: #c3bfbf;
-    }
+          .ant-radio-inner {
+            background-color: #292c35;
+            border-color: #5a5252;
+          }
 
-    .ant-radio-inner {
-      background-color: #292c35;
-      border-color: #5a5252;
-    }
+          .ant-radio-checked .ant-radio-inner {
+            border-color: #0074ff;
+          }
 
-    .ant-radio-checked .ant-radio-inner {
-      border-color: #0074ff;
-    }
+          .ant-form a {
+            color: rgb(55, 170, 213);
+          }
 
-    .ant-form a {
-      color: rgb(55,170,213);
-    }
+          .ant-picker {
+            background: none;
+            border-color: #424c58;
+          }
 
-    .ant-picker {
-      background: none;
-      border-color: #424c58;
-    }
+          .ant-picker-clear {
+            color: #424c58 !important;
+            background: none;
+          }
 
-    .ant-picker-clear{
-      color: #424c58 !important;
-      background: none;
-    }
-
-    span.ant-picker-suffix > span > svg {
-      fill: #424c58;
-    }
-
-  `
+          span.ant-picker-suffix > span > svg {
+            fill: #424c58;
+          }
+        `
       : ''};
 `;
 
