@@ -72,9 +72,7 @@ class Index extends React.Component {
           <HelperButton href='/category/12/demo-ss-ir-wg-failai'>{t('ss-and-demo')}</HelperButton>
         </Col>
         <Col xs={{ span: 24 }} lg={{ span: 8 }} className='mt-3'>
-          <HelperButton href='http://fleshas.lt/lost_priv.php'>
-            {t('recover-privilegies')}
-          </HelperButton>
+          <HelperButton href='/lost-priv'>{t('recover-privilegies')}</HelperButton>
         </Col>
         <Col xs={{ span: 24 }} lg={{ span: 8 }} className='mt-3'>
           <HelperButton href='/category/5/unban'>{t('unban-request')}</HelperButton>
