@@ -36,15 +36,22 @@ function getPaymentTypeLabel(value) {
   }
 }
 
-const initialValues = {
-  server: 'swarm2',
-  boughtOn: 'nickname',
-  paymentType: 'sms',
-  g_date: moment()
-};
-
 export const PaymentDetails = (props) => {
-  const [state, dispatch] = useReducer(reducer, initialValues);
+  const {
+    g_boughton = '',
+    g_phone = '',
+    email = '',
+    server = 'swarm2',
+    boughtOn = 'nickname',
+    paymentType = 'sms',
+    g_date = moment()
+  } = props;
+  const [state, dispatch] = useReducer(reducer, {
+    server,
+    boughtOn,
+    paymentType,
+    g_date
+  });
   const [form] = Form.useForm();
   const setValue = (field, value) => {
     dispatch({ field, value });
@@ -53,8 +60,22 @@ export const PaymentDetails = (props) => {
     props.onSubmit(values);
   };
 
+  console.log('props', props);
+
   return (
-    <Form initialValues={initialValues} form={form} onFinish={onFinish}>
+    <Form
+      initialValues={{
+        email,
+        g_boughton,
+        g_phone,
+        server,
+        boughtOn,
+        paymentType,
+        g_date
+      }}
+      form={form}
+      onFinish={onFinish}
+    >
       <Form.Item
         label='Purchase date'
         name='g_date'

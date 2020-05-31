@@ -2,18 +2,27 @@ import React from 'react';
 import { Form, Input, Button, Select } from 'antd';
 const { Option } = Select;
 
-const initialValues = {
-  server: 'swarm2'
-};
+// const initialValues = {
+//   server: 'swarm2'
+// };
 
 export const InGameDetails = (props) => {
+  const { server = 'swarm2', g_name = '', g_steamid = '' } = props;
   const [form] = Form.useForm();
   const onFinish = (values) => {
     props.onSubmit(values);
   };
 
   return (
-    <Form initialValues={initialValues} form={form} onFinish={onFinish}>
+    <Form
+      initialValues={{
+        g_name,
+        g_steamid,
+        server
+      }}
+      form={form}
+      onFinish={onFinish}
+    >
       <Form.Item
         label='Nickname'
         name='g_name'

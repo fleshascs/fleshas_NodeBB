@@ -22,7 +22,7 @@ import { EmojiButton } from 'ui/EmojiButton';
 import { GifButton } from 'ui/GifButton';
 import { messageDate } from '_core/utils';
 import { getIsLoggedIn } from 'areas/session/selectors';
-import { getOnlineUsers } from 'areas/user/selectors';
+//import { getOnlineUsers } from 'areas/user/selectors';
 //https://codesandbox.io/s/04v892702v
 const { confirm } = Modal;
 
@@ -106,7 +106,8 @@ class ShoutboxComponent extends Component {
   }
 
   render() {
-    const { loggedIn, t, onlineUsers } = this.props;
+    //const { loggedIn, t, onlineUsers } = this.props;
+    const { loggedIn, t } = this.props;
     if (this.state.loadingError) {
       return <div>{t('technical-error')}</div>;
     }
@@ -124,7 +125,7 @@ class ShoutboxComponent extends Component {
           <i className='material-icons text-muted' style={{ fontSize: '18px' }}>
             {this.state.soundEnabled ? 'volume_up' : 'volume_off'}
           </i>
-          <OnlineUsersBadge online={onlineUsers.length} />
+          {/* <OnlineUsersBadge online={onlineUsers.length} /> */}
         </Top>
         <ShoutboxContainer onScroll={this.handleScroll} ref={this.scrollableBox}>
           {MessagesHTML}
@@ -292,7 +293,7 @@ class ShoutboxComponent extends Component {
 
 function mapStateToProps(state) {
   return {
-    onlineUsers: getOnlineUsers(state),
+    //onlineUsers: getOnlineUsers(state),
     loggedIn: getIsLoggedIn(state),
     auth: state.authentication
   };

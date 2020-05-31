@@ -9,6 +9,7 @@ const withLess = require('@zeit/next-less');
 const withPlugins = require('next-compose-plugins');
 const { getThemeVariables } = require('antd/dist/theme');
 //const AntDesignThemePlugin = require('antd-theme-webpack-plugin');
+const FilterWarningsPlugin = require('webpack-filter-warnings-plugin');
 
 const themeVariables = lessToJS(
   fs.readFileSync(path.resolve(__dirname, './static/antd/antd-custom.less'), 'utf8')
@@ -62,6 +63,13 @@ const plugins = [
 
       webpack: (config, { isServer }) => {
         const webpack = require('webpack');
+
+        config.plugins.push(
+          new FilterWarningsPlugin({
+            // ignore ANTD chunk styles [mini-css-extract-plugin] warning
+            exclude: /mini-css-extract-plugin[^]*Conflicting order between:/
+          })
+        );
 
         //remove unneeded locales github.com/moment/moment/issues/1435
         const contentReplacement = new webpack.ContextReplacementPlugin(

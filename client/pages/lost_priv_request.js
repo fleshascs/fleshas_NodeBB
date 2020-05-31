@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Head from 'next/head';
 import axios from 'axios';
-import { Tag, Comment, Tooltip, Avatar, Row, Col, Divider, Card, Steps } from 'antd';
-import { UserOutlined, SolutionOutlined, LoadingOutlined, SmileOutlined } from '@ant-design/icons';
-import { withTranslation, translateNodeBBTemplate } from '_core/i18n';
+import { Row, Col } from 'antd';
+import { withTranslation } from '_core/i18n';
 import { Chat } from 'areas/lost_priv/components/Chat';
-import { RequestDataRow } from 'areas/lost_priv/components/RequestDataRow';
 import { RequestInfo } from 'areas/lost_priv/components/RequestInfo';
 import { Box, Breadcrumbs } from 'ui';
+import { getCSRF } from 'areas/general/selectors';
+import { error } from '_core/utils';
 
 class Settings extends Component {
   static async getInitialProps({ query, req }) {
@@ -29,21 +29,13 @@ class Settings extends Component {
 
   async componentDidMount() {
     try {
-      const response = await axios.get(
-        `http://fleshas.lt/php/api/lostPriv/request_info.php?id=${this.props.id}`
-      );
-      console.log('response.data', response.data);
-
+      const response = await axios.get(`/api/lost-priv/${this.props.id}`);
       this.setState({ request: response.data, requestLoading: false, requestFailed: false });
     } catch (error) {
       this.setState({ request: {}, requestLoading: false, requestFailed: true });
     }
     try {
-      const response = await axios.get(
-        `http://fleshas.lt/php/api/lostPriv/request_messages.php?id=${this.props.id}`
-      );
-      console.log('response.data', response.data);
-
+      const response = await axios.get(`/api/lost-priv/chat/${this.props.id}`);
       this.setState({
         messages: response.data || [],
         messagesLoading: false,
@@ -54,8 +46,34 @@ class Settings extends Component {
     }
   }
 
+  onSendMessage = async (data) => {
+    try {
+      const response = await axios.post('/api/lost-priv/chat/send', data, {
+        headers: { 'x-csrf-token': this.props.csrf }
+      });
+      if (response.data !== true) {
+        throw new Error(response.data);
+      }
+      this.setState({
+        messages: [
+          ...this.state.messages,
+          {
+            message: data.message,
+            created_at: new Date().getTime(),
+            fromuser: this.props.user
+          }
+        ]
+      });
+      return true;
+    } catch (e) {
+      error.showError(e);
+      console.log('error', e);
+      return false;
+    }
+  };
+
   render() {
-    const { t, id } = this.props;
+    const { t, id, loggedIn } = this.props;
     const {
       request,
       requestLoading,
@@ -66,24 +84,63 @@ class Settings extends Component {
     } = this.state;
     console.log('request', request);
 
+    if (!loggedIn) {
+      return (
+        <div className='container mt-3' style={{ maxWidth: '700px' }}>
+          <Head>
+            <title>Lost priv</title>
+          </Head>
+          <Breadcrumbs
+            breadcrumbs={[
+              {
+                text: '[[global:home]]',
+                url: '/'
+              },
+              { url: '/lost-priv', text: 'Lost priv' },
+              { text: '#' + id }
+            ]}
+          />
+          <Box>
+            <div className='p-2'>Only Logged in users can see this request</div>
+          </Box>
+        </div>
+      );
+    }
+
     return (
       <div className='container mt-3'>
         <Head>
           <title>Lost Priv</title>
         </Head>
+        <Breadcrumbs
+          breadcrumbs={[
+            {
+              text: '[[global:home]]',
+              url: '/'
+            },
+            { url: '/lost-priv', text: 'Lost priv' },
+            { text: '#' + id }
+          ]}
+        />
         <Row gutter={24}>
           <Col xs={{ span: 24 }} lg={{ span: 15 }}>
-            {!requestLoading && !requestFailed ? <RequestInfo request={request} /> : null}
+            {!requestFailed ? <RequestInfo request={request} loading={requestLoading} /> : null}
           </Col>
           <Col xs={{ span: 24 }} lg={{ span: 8 }}>
-            <Box headerText='Chat' className='p-2'>
-              <Chat
-                loading={messagesLoading}
-                failed={messagesFailed}
-                messages={messages}
-                requestId={id}
-              />
-            </Box>
+            {!messagesFailed ? (
+              <Box headerText='Chat'>
+                <div className='p-2'>
+                  <Chat
+                    onSendMessage={this.onSendMessage}
+                    loading={messagesLoading}
+                    failed={messagesFailed}
+                    messages={messages}
+                    requestId={id}
+                    isRequestOpen={request.Checked === '0'}
+                  />
+                </div>
+              </Box>
+            ) : null}
           </Col>
         </Row>
       </div>
@@ -95,7 +152,8 @@ function mapStateToProps(state) {
   const { loggedIn, user } = state.authentication;
   return {
     loggedIn,
-    user
+    user,
+    csrf: getCSRF(state)
   };
 }
 export default connect(mapStateToProps)(withTranslation('common')(Settings));

@@ -1,15 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Input, Button } from 'antd';
 const { TextArea } = Input;
 
 export const WhereToPut = (props) => {
+  const { onGoBack, onSubmit, g_moveto = '', g_movetopw = '', g_message = '' } = props;
   const [form] = Form.useForm();
-  const onFinish = (values) => {
-    props.onSubmit(values);
+  const [loading, setLoading] = useState(false);
+  const onFinish = async (values) => {
+    setLoading(true);
+    await onSubmit(values);
+    setLoading(false);
   };
 
   return (
-    <Form form={form} onFinish={onFinish}>
+    <Form
+      form={form}
+      initialValues={{
+        g_moveto,
+        g_movetopw,
+        g_message
+      }}
+      onFinish={onFinish}
+    >
       <Form.Item
         label={'Where to put (your nickname / steamID / IP)'}
         name={'g_moveto'}
@@ -23,8 +35,8 @@ export const WhereToPut = (props) => {
       <Form.Item label={'Extra details (not required)'} name={'g_message'}>
         <TextArea rows={4} />
       </Form.Item>
-      <Button onClick={props.onGoBack}>Go Back</Button>
-      <Button className='ml-2' htmlType='submit' type='primary'>
+      <Button onClick={onGoBack}>Go Back</Button>
+      <Button className='ml-2' htmlType='submit' type='primary' loading={loading}>
         Submit
       </Button>
     </Form>

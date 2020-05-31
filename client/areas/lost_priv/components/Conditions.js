@@ -2,12 +2,9 @@ import React from 'react';
 import { Form, Button, Select } from 'antd';
 const { Option } = Select;
 
-const initialValues = {
-  g_privilegie: 'xp',
-  condition: '1'
-};
-
 export const Conditions = (props) => {
+  const { g_privilegie = 'xp', condition = '1' } = props;
+
   const [form] = Form.useForm();
   const onFinish = (values) => {
     switch (values.condition) {
@@ -23,7 +20,14 @@ export const Conditions = (props) => {
   };
 
   return (
-    <Form initialValues={initialValues} form={form} onFinish={onFinish}>
+    <Form
+      initialValues={{
+        g_privilegie,
+        condition
+      }}
+      form={form}
+      onFinish={onFinish}
+    >
       <Form.Item
         label='Request type'
         name='g_privilegie'

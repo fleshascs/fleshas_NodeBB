@@ -1,8 +1,5 @@
-import React, { createElement, useState } from 'react';
-import { Comment, Tooltip, Avatar, Button } from 'antd';
-import moment from 'moment';
+import React from 'react';
 import styled from 'styled-components';
-import { DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-design/icons';
 import { shoutboxInputBorderColor } from '_theme';
 
 export const Row = styled.div`
@@ -18,7 +15,7 @@ export const RequestDataRow = ({ title, value }) => {
   return (
     <Row>
       <Col>{title}</Col>
-      <Col>{value}</Col>
+      <Col>{value ?? ''}</Col>
     </Row>
   );
 };
