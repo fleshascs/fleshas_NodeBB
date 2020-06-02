@@ -3,6 +3,7 @@ const user = require('../../src/user');
 const axios = require('axios');
 const async = require('async');
 const FormData = require('form-data');
+const { promisify } = require('./utils');
 
 const ROOT_URL = 'http://fleshas.lt';
 
@@ -97,7 +98,9 @@ module.exports.setupRoutes = function (app, router, middleware) {
       return res.status(401).json('not-authorized');
     }
     try {
-      const url = ROOT_URL + '/amxbans/actions/lost_priv_templates/submit.php';
+      const url = ROOT_URL + '/php/api/lostPriv/request_create.php';
+      const userData = await promisify(getUser)(req.uid);
+      req.body.username = userData.username;
       req.body.g_user = req.uid;
       req.body.ip = req.ip;
       const form = formUrlencoded(req.body);

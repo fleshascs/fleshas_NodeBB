@@ -188,6 +188,7 @@ class Settings extends Component {
               <WhereToPut
                 onSubmit={this.onWhereToPutSubmit}
                 onGoBack={this.goBack}
+                showPasswordInput={formValues.g_privilegie !== 'xp'}
                 {...this.state['stepData' + formStep]}
               />
             </div>

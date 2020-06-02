@@ -12,6 +12,8 @@ import { ServerList } from 'ui';
 import FaceBookPanel from 'ui/FaceBookPanel';
 //import Placeholder from 'areas/videoPlayer/components/Placeholder';
 import { withTranslation, translateNodeBBTemplate } from '_core/i18n';
+import { buildCategoryUrl } from '_core/utils';
+import Link from 'next/link';
 
 const HelperButton = styled.a`
   display: block;
@@ -66,16 +68,24 @@ class Index extends React.Component {
 
   renderHelpButtons() {
     const { t } = this.props;
+    const ssDemo = buildCategoryUrl(1, '12/demo-ss-ir-wg-failai');
+    const unban = buildCategoryUrl(1, '5/unban');
     return (
       <Row gutter={24}>
         <Col xs={{ span: 24 }} lg={{ span: 8 }} className='mt-3'>
-          <HelperButton href='/category/12/demo-ss-ir-wg-failai'>{t('ss-and-demo')}</HelperButton>
+          <Link href={ssDemo.path} as={ssDemo.url} passHref>
+            <HelperButton>{t('ss-and-demo')}</HelperButton>
+          </Link>
         </Col>
         <Col xs={{ span: 24 }} lg={{ span: 8 }} className='mt-3'>
-          <HelperButton href='/lost-priv'>{t('recover-privilegies')}</HelperButton>
+          <Link href={{ pathname: '/lost_priv' }} as='/lost-priv' passHref>
+            <HelperButton href='/lost-priv'>{t('recover-privilegies')}</HelperButton>
+          </Link>
         </Col>
         <Col xs={{ span: 24 }} lg={{ span: 8 }} className='mt-3'>
-          <HelperButton href='/category/5/unban'>{t('unban-request')}</HelperButton>
+          <Link href={unban.path} as={unban.url} passHref>
+            <HelperButton>{t('unban-request')}</HelperButton>
+          </Link>
         </Col>
       </Row>
     );

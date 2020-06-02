@@ -29,9 +29,11 @@ export const WhereToPut = (props) => {
       >
         <Input />
       </Form.Item>
-      <Form.Item label={'What password to set (not required)'} name={'g_movetopw'}>
-        <Input />
-      </Form.Item>
+      {props.showPasswordInput ? (
+        <Form.Item label={'What set_info _pw password to set (not required)'} name={'g_movetopw'}>
+          <Input />
+        </Form.Item>
+      ) : null}
       <Form.Item label={'Extra details (not required)'} name={'g_message'}>
         <TextArea rows={4} />
       </Form.Item>
