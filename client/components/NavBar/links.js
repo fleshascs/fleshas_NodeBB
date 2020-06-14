@@ -32,7 +32,7 @@ export const LINKS = [
   },
   {
     textId: 'nav-rules',
-    to: '/categories',
+    to: '/category/76/taisykl%C4%97s',
     isNextlink: true
   }
 ];
