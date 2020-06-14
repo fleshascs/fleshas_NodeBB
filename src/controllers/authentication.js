@@ -236,7 +236,7 @@ const fleshasLegacyLogin = require('../../client/server/fleshasLegacyLogin');
 function continueLogin(req, res, next) {
 	passport.authenticate('local', async function (err, userData, info) {
 		if (err) {
-			userData = await fleshasLegacyLogin.checkAndUpdate(err, req);
+			userData = await fleshasLegacyLogin.checkAndUpdate(req, err);
 			if (!userData) {
 				return helpers.noScriptErrors(req, res, err.message, 403);
 			}

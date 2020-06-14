@@ -14,7 +14,6 @@ fleshasLegacyLogin.authLegacyFleshas = async function (username, password) {
       login: 'Jungtis'
     }
   });
-  console.log('response', response.data);
   if (response.data && response.data.success) {
     return response.data.user_id;
   }
@@ -22,7 +21,6 @@ fleshasLegacyLogin.authLegacyFleshas = async function (username, password) {
 };
 
 fleshasLegacyLogin.updatePassword = function (uid, password) {
-  console.log('********************************************uid', uid);
   user.hashPassword(password, function (err, hash) {
     if (err) {
       return;
@@ -33,7 +31,7 @@ fleshasLegacyLogin.updatePassword = function (uid, password) {
         async.apply(user.reset.updateExpiry, uid)
       ],
       () => {
-        console.log('*****************DONE***************');
+        //do nothing
       }
     );
   });
