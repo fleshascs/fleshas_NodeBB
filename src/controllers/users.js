@@ -62,15 +62,15 @@ usersController.getOnlineUsers = async function (req, res) {
 		require('../socket.io/admin/rooms').getTotalGuestCount(),
 	]);
 
-	let hiddenCount = 0;
-	if (!userData.isAdminOrGlobalMod) {
-		userData.users = userData.users.filter(function (user) {
-			if (user && user.status === 'offline') {
-				hiddenCount += 1;
-			}
-			return user && user.status !== 'offline';
-		});
-	}
+	const hiddenCount = 0;
+	// if (!userData.isAdminOrGlobalMod) {
+	// 	userData.users = userData.users.filter(function (user) {
+	// 		if (user && user.status === 'offline') {
+	// 			hiddenCount += 1;
+	// 		}
+	// 		return user && user.status !== 'offline';
+	// 	});
+	// }
 
 	userData.anonymousUserCount = guests + hiddenCount;
 
