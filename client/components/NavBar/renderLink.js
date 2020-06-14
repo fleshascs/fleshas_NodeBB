@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { cloneElement } from 'react';
 import Link from 'next/link';
 
 export function renderLink(url, component) {
@@ -9,5 +9,6 @@ export function renderLink(url, component) {
       </Link>
     );
   }
-  return component;
+
+  return cloneElement(component, { href: url.to });
 }
