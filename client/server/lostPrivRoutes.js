@@ -3,7 +3,7 @@ const user = require('../../src/user');
 const axios = require('axios');
 const async = require('async');
 const FormData = require('form-data');
-const { promisify } = require('./utils');
+const { promisify, asyncUtil } = require('./utils');
 
 const ROOT_URL = 'http://fleshas.lt';
 
@@ -26,90 +26,117 @@ const setupRoute = function (router, name, middleware, controller) {
 };
 
 module.exports.setupRoutes = function (app, router, middleware) {
-  setupRoute(router, '/api/lost-priv', middleware, async (req, res) => {
-    try {
+  setupRoute(
+    router,
+    '/api/lost-priv',
+    middleware,
+    asyncUtil(async (req, res) => {
+      try {
+        if (!req.loggedIn) {
+          return res.status(401).json('not-authorized');
+        }
+        const url = ROOT_URL + '/php/api/lostPriv/requests_list.php?uid=' + req.uid;
+        const response = await axios.get(url);
+        res.send(response.data);
+      } catch (error) {
+        res.status(500).send(error.message);
+      }
+    })
+  );
+  setupRoute(
+    router,
+    '/api/lost-priv/:id',
+    middleware,
+    asyncUtil(async (req, res) => {
+      try {
+        if (!req.loggedIn) {
+          return res.status(401).json('not-authorized');
+        }
+        const url =
+          ROOT_URL + '/php/api/lostPriv/request_info.php?id=' + req.params.id + '&uid=' + req.uid;
+        const response = await axios.get(url);
+        res.send(response.data);
+      } catch (error) {
+        res.status(500).send(error.message);
+      }
+    })
+  );
+  setupRoute(
+    router,
+    '/api/lost-priv/chat/:id',
+    middleware,
+    asyncUtil(async (req, res) => {
       if (!req.loggedIn) {
         return res.status(401).json('not-authorized');
       }
-      const url = ROOT_URL + '/php/api/lostPriv/requests_list.php?uid=' + req.uid;
-      const response = await axios.get(url);
-      res.send(response.data);
-    } catch (error) {
-      res.status(500).send(error.message);
-    }
-  });
-  setupRoute(router, '/api/lost-priv/:id', middleware, async (req, res) => {
-    try {
-      if (!req.loggedIn) {
-        return res.status(401).json('not-authorized');
-      }
-      const url =
-        ROOT_URL + '/php/api/lostPriv/request_info.php?id=' + req.params.id + '&uid=' + req.uid;
-      const response = await axios.get(url);
-      res.send(response.data);
-    } catch (error) {
-      res.status(500).send(error.message);
-    }
-  });
-  setupRoute(router, '/api/lost-priv/chat/:id', middleware, async (req, res) => {
-    if (!req.loggedIn) {
-      return res.status(401).json('not-authorized');
-    }
-    try {
-      const url =
-        ROOT_URL + '/php/api/lostPriv/request_messages.php?id=' + req.params.id + '&uid=' + req.uid;
-      const response = await axios.get(url);
+      try {
+        const url =
+          ROOT_URL +
+          '/php/api/lostPriv/request_messages.php?id=' +
+          req.params.id +
+          '&uid=' +
+          req.uid;
+        const response = await axios.get(url);
 
-      if (Array.isArray(response.data)) {
-        async.map(
-          response.data,
-          function (msg, next) {
-            augmentMessage(msg, next);
-          },
-          function (error, testimonials) {
-            if (error) {
-              throw error;
+        if (Array.isArray(response.data)) {
+          async.map(
+            response.data,
+            function (msg, next) {
+              augmentMessage(msg, next);
+            },
+            function (error, testimonials) {
+              if (error) {
+                throw error;
+              }
+              res.send(response.data);
             }
-            res.send(response.data);
-          }
-        );
+          );
+        }
+      } catch (error) {
+        res.status(500).send(error.message);
       }
-    } catch (error) {
-      res.status(500).send(error.message);
-    }
-  });
+    })
+  );
   const middlewares = [middleware.applyCSRF, middleware.applyBlacklist];
-  router.post('/api/lost-priv/chat/send', middlewares, async (req, res) => {
-    if (!req.loggedIn) {
-      return res.status(401).json('not-authorized');
-    }
-    try {
-      const url = ROOT_URL + '/php/api/lostPriv/request_send_message.php';
-      req.body.fromUid = req.uid;
-      const form = formUrlencoded(req.body);
-      const response = await axios.post(url, form, { headers: form.getHeaders() });
-      res.send(response.data);
-    } catch (error) {
-      res.status(500).send(error.message);
-    }
-  });
-  router.post('/api/lost-priv/create', middlewares, async (req, res) => {
-    if (!req.loggedIn) {
-      return res.status(401).json('not-authorized');
-    }
-    try {
-      const url = ROOT_URL + '/php/api/lostPriv/request_create.php';
-      const userData = await promisify(getUser)(req.uid);
-      req.body.username = userData.username;
-      req.body.g_user = req.uid;
-      req.body.ip = req.ip;
-      const form = formUrlencoded(req.body);
-      const response = await axios.post(url, form, { headers: form.getHeaders() });
-      res.send(response.data);
-    } catch (error) {
-      res.status(500).send();
-    }
-  });
+  router.post(
+    '/api/lost-priv/chat/send',
+    middlewares,
+    asyncUtil(async (req, res) => {
+      if (!req.loggedIn) {
+        return res.status(401).json('not-authorized');
+      }
+      try {
+        const url = ROOT_URL + '/php/api/lostPriv/request_send_message.php';
+        req.body.fromUid = req.uid;
+        const form = formUrlencoded(req.body);
+        const response = await axios.post(url, form, { headers: form.getHeaders() });
+        res.send(response.data);
+      } catch (error) {
+        res.status(500).send(error.message);
+      }
+    })
+  );
+  router.post(
+    '/api/lost-priv/create',
+    middlewares,
+    asyncUtil(async (req, res) => {
+      if (!req.loggedIn) {
+        return res.status(401).json('not-authorized');
+      }
+      try {
+        const url = ROOT_URL + '/php/api/lostPriv/request_create.php';
+        const userData = await promisify(getUser)(req.uid);
+        req.body.username = userData.username;
+        req.body.g_user = req.uid;
+        req.body.ip = req.ip;
+        const form = formUrlencoded(req.body);
+        const response = await axios.post(url, form, { headers: form.getHeaders() });
+        res.send(response.data);
+      } catch (error) {
+        res.status(500).send();
+      }
+    })
+  );
 };
 
 function augmentMessage(msg, done) {

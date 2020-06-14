@@ -29,7 +29,7 @@ class Username extends Component {
           bold={this.props.bold}
           style={this.props.style}
         >
-          {this.props.children}
+          {this.props.children === '[[global:guest]]' ? 'Deleted' : this.props.children}
         </Name>
       </Link>
     );

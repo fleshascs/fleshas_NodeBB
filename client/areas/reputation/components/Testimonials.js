@@ -24,16 +24,19 @@ export const Date = styled.span`
   font-weight: normal;
 `;
 
+export const RepCount = styled.div`
+  color: #ccc;
+`;
+export const Description = styled.div`
+  word-break: break-all;
+`;
+
 export const Testimonials = ({ testimonials, loading }) => {
   const { t } = useTranslation();
   const total = testimonials.length;
-
-  console.log('testimonials', testimonials);
-
   return (
     <>
       <List
-        className='demo-loadmore-list'
         loading={loading}
         itemLayout='horizontal'
         loadMore={null}
@@ -61,15 +64,15 @@ export const Testimonials = ({ testimonials, loading }) => {
                   </Tooltip>
                 </>
               }
-              description={<div dangerouslySetInnerHTML={{ __html: testimonial.reason }} />}
+              description={<Description dangerouslySetInnerHTML={{ __html: testimonial.reason }} />}
             />
             <div className='mr-3'>
               <RepType type={testimonial.type} />
             </div>
-            <div className='mr-3'>
+            <RepCount className='mr-3'>
               <NumberOutlined />
               {total - index}
-            </div>
+            </RepCount>
           </List.Item>
         )}
       />

@@ -2,9 +2,9 @@ const gravatar = require('gravatar');
 const controllers = require('../../src/controllers');
 const recent = require('../../src/controllers/recent');
 const user = require('../../src/user');
-const utils = require('./utils');
+const { promisify, asyncUtil } = require('./utils');
 const meta = require('../../src/meta');
-const getRecentPosts = utils.promisify(recent.getData);
+const getRecentPosts = promisify(recent.getData);
 const setupPageRoute = function (router, name, middleware, middlewares, controller) {
   middlewares = [
     middleware.maintenanceMode,
@@ -19,19 +19,25 @@ module.exports.setupHomePageRoute = (app) =>
     console.log('params', Object.keys(params));
   };
 module.exports.setupRoutes = function (app, server, middleware) {
-  const generateHeaderAsync = utils.promisify(middleware.generateHeader);
-  setupPageRoute(server, '/', middleware, [], async (req, res) => {
-    const [recent, tags, header] = await Promise.all([
-      getRecentPosts(req, 'recent', 'recent'),
-      meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
-      generateHeaderAsync(req, res, {})
-    ]);
-    app.render(req, res, '/index', {
-      recent,
-      tags,
-      header
-    });
-  });
+  const generateHeaderAsync = promisify(middleware.generateHeader);
+  setupPageRoute(
+    server,
+    '/',
+    middleware,
+    [],
+    asyncUtil(async (req, res) => {
+      const [recent, tags, header] = await Promise.all([
+        getRecentPosts(req, 'recent', 'recent'),
+        meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
+        generateHeaderAsync(req, res, {})
+      ]);
+      app.render(req, res, '/index', {
+        recent,
+        tags,
+        header
+      });
+    })
+  );
   const profileMiddleware = [
     middleware.exposeUid,
     middleware.canViewUsers,
@@ -39,24 +45,30 @@ module.exports.setupRoutes = function (app, server, middleware) {
     overrideResRender,
     controllers.accounts.profile.get
   ];
-  setupPageRoute(server, '/user/:userslug', middleware, profileMiddleware, async (req, res) => {
-    const [tags, header] = await Promise.all([
-      meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
-      generateHeaderAsync(req, res, res.screenData)
-    ]);
-    app.render(req, res, '/user', {
-      id: req.params.userslug,
-      header,
-      tags,
-      screenData: res.screenData
-    });
-  });
+  setupPageRoute(
+    server,
+    '/user/:userslug',
+    middleware,
+    profileMiddleware,
+    asyncUtil(async (req, res) => {
+      const [tags, header] = await Promise.all([
+        meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
+        generateHeaderAsync(req, res, res.screenData)
+      ]);
+      app.render(req, res, '/user', {
+        id: req.params.userslug,
+        header,
+        tags,
+        screenData: res.screenData
+      });
+    })
+  );
   setupPageRoute(
     server,
     '/user/:userslug/reputation',
     middleware,
     profileMiddleware,
-    async (req, res) => {
+    asyncUtil(async (req, res) => {
       const [tags, header] = await Promise.all([
         meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
         generateHeaderAsync(req, res, res.screenData)
@@ -67,7 +79,7 @@ module.exports.setupRoutes = function (app, server, middleware) {
         tags,
         screenData: res.screenData
       });
-    }
+    })
   );
 
   const accountMiddlewares = [
@@ -82,7 +94,7 @@ module.exports.setupRoutes = function (app, server, middleware) {
     '/user/:userslug/edit',
     middleware,
     accountMiddlewares,
-    async (req, res) => {
+    asyncUtil(async (req, res) => {
       const [tags, header] = await Promise.all([
         meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
         generateHeaderAsync(req, res, res.screenData)
@@ -93,27 +105,33 @@ module.exports.setupRoutes = function (app, server, middleware) {
         tags,
         screenData: res.screenData
       });
-    }
+    })
   );
   const categoriesMiddleware = [overrideResRender, controllers.categories.list];
-  setupPageRoute(server, '/categories', middleware, categoriesMiddleware, async (req, res) => {
-    const [tags, header] = await Promise.all([
-      meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
-      generateHeaderAsync(req, res, res.screenData)
-    ]);
-    app.render(req, res, '/categories', {
-      header,
-      tags,
-      screenData: res.screenData
-    });
-  });
+  setupPageRoute(
+    server,
+    '/categories',
+    middleware,
+    categoriesMiddleware,
+    asyncUtil(async (req, res) => {
+      const [tags, header] = await Promise.all([
+        meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
+        generateHeaderAsync(req, res, res.screenData)
+      ]);
+      app.render(req, res, '/categories', {
+        header,
+        tags,
+        screenData: res.screenData
+      });
+    })
+  );
   const categoryMiddleware = [overrideResRender, controllers.category.get];
   setupPageRoute(
     server,
     '/category/:category_id/:slug',
     middleware,
     categoryMiddleware,
-    async (req, res) => {
+    asyncUtil(async (req, res) => {
       const [tags, header] = await Promise.all([
         meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
         generateHeaderAsync(req, res, res.screenData)
@@ -123,7 +141,7 @@ module.exports.setupRoutes = function (app, server, middleware) {
         tags,
         screenData: res.screenData
       });
-    }
+    })
   );
   const topicMiddleware = [overrideResRender, controllers.topics.get];
   setupPageRoute(
@@ -131,7 +149,7 @@ module.exports.setupRoutes = function (app, server, middleware) {
     '/topic/:topic_id/:slug/:post_index?',
     middleware,
     topicMiddleware,
-    async (req, res) => {
+    asyncUtil(async (req, res) => {
       const [tags, header] = await Promise.all([
         meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
         generateHeaderAsync(req, res, res.screenData)
@@ -141,14 +159,14 @@ module.exports.setupRoutes = function (app, server, middleware) {
         tags,
         screenData: res.screenData
       });
-    }
+    })
   );
   setupPageRoute(
     server,
     '/topic/:topic_id/:slug?',
     middleware,
     topicMiddleware,
-    async (req, res) => {
+    asyncUtil(async (req, res) => {
       const [tags, header] = await Promise.all([
         meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
         generateHeaderAsync(req, res, res.screenData)
@@ -158,70 +176,94 @@ module.exports.setupRoutes = function (app, server, middleware) {
         tags,
         screenData: res.screenData
       });
-    }
+    })
   );
-  setupPageRoute(server, '/new-topic/:cid', middleware, [], async (req, res) => {
-    const [tags, header] = await Promise.all([
-      meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
-      generateHeaderAsync(req, res, {})
-    ]);
-    app.render(req, res, '/new_topic', {
-      cid: req.params.cid,
-      header,
-      tags
-    });
-  });
+  setupPageRoute(
+    server,
+    '/new-topic/:cid',
+    middleware,
+    [],
+    asyncUtil(async (req, res) => {
+      const [tags, header] = await Promise.all([
+        meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
+        generateHeaderAsync(req, res, {})
+      ]);
+      app.render(req, res, '/new_topic', {
+        cid: req.params.cid,
+        header,
+        tags
+      });
+    })
+  );
   const registerMiddleware = [
     middleware.redirectToAccountIfLoggedIn,
     overrideResRender,
     controllers.register
   ];
-  setupPageRoute(server, '/register', middleware, registerMiddleware, async (req, res) => {
-    const [tags, header] = await Promise.all([
-      meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
-      generateHeaderAsync(req, res, res.screenData)
-    ]);
-    app.render(req, res, '/register', {
-      header,
-      tags,
-      screenData: res.screenData
-    });
-  });
+  setupPageRoute(
+    server,
+    '/register',
+    middleware,
+    registerMiddleware,
+    asyncUtil(async (req, res) => {
+      const [tags, header] = await Promise.all([
+        meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
+        generateHeaderAsync(req, res, res.screenData)
+      ]);
+      app.render(req, res, '/register', {
+        header,
+        tags,
+        screenData: res.screenData
+      });
+    })
+  );
   const loginMiddleware = [
     middleware.redirectToAccountIfLoggedIn,
     overrideResRender,
     controllers.login
   ];
-  setupPageRoute(server, '/login', middleware, loginMiddleware, async (req, res) => {
-    const [tags, header] = await Promise.all([
-      meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
-      generateHeaderAsync(req, res, res.screenData)
-    ]);
-    app.render(req, res, '/login', {
-      header,
-      tags,
-      screenData: res.screenData
-    });
-  });
+  setupPageRoute(
+    server,
+    '/login',
+    middleware,
+    loginMiddleware,
+    asyncUtil(async (req, res) => {
+      const [tags, header] = await Promise.all([
+        meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
+        generateHeaderAsync(req, res, res.screenData)
+      ]);
+      app.render(req, res, '/login', {
+        header,
+        tags,
+        screenData: res.screenData
+      });
+    })
+  );
   const resetMiddleware = [middleware.delayLoading, overrideResRender, controllers.reset];
-  setupPageRoute(server, '/reset/:code?', middleware, resetMiddleware, async (req, res) => {
-    const [tags, header] = await Promise.all([
-      meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
-      generateHeaderAsync(req, res, res.screenData)
-    ]);
-    app.render(req, res, '/reset', {
-      header,
-      tags,
-      screenData: res.screenData
-    });
-  });
+  setupPageRoute(
+    server,
+    '/reset/:code?',
+    middleware,
+    resetMiddleware,
+    asyncUtil(async (req, res) => {
+      const [tags, header] = await Promise.all([
+        meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
+        generateHeaderAsync(req, res, res.screenData)
+      ]);
+      app.render(req, res, '/reset', {
+        header,
+        tags,
+        screenData: res.screenData
+      });
+    })
+  );
   const registerCompleteMiddleware = [overrideResRender, controllers.registerInterstitial];
   setupPageRoute(
     server,
     '/register/complete',
     middleware,
     registerCompleteMiddleware,
-    async (req, res) => {
+    asyncUtil(async (req, res) => {
       const [tags, header] = await Promise.all([
         meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
         generateHeaderAsync(req, res, res.screenData)
@@ -231,39 +273,57 @@ module.exports.setupRoutes = function (app, server, middleware) {
         tags,
         screenData: res.screenData
       });
-    }
+    })
   );
-  setupPageRoute(server, '/lost-priv/:id', middleware, [], async (req, res) => {
-    const [tags, header] = await Promise.all([
-      meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
-      generateHeaderAsync(req, res, {})
-    ]);
-    app.render(req, res, '/lost_priv_request', {
-      header,
-      tags,
-      id: req.params.id
-    });
-  });
-  setupPageRoute(server, '/lost-priv', middleware, [], async (req, res) => {
-    const [tags, header] = await Promise.all([
-      meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
-      generateHeaderAsync(req, res, {})
-    ]);
-    app.render(req, res, '/lost_priv', {
-      header,
-      tags
-    });
-  });
-  setupPageRoute(server, '/csdownloads.php', middleware, [], async (req, res) => {
-    const [tags, header] = await Promise.all([
-      meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
-      generateHeaderAsync(req, res, {})
-    ]);
-    app.render(req, res, '/csdownload', {
-      header,
-      tags
-    });
-  });
+  setupPageRoute(
+    server,
+    '/lost-priv/:id',
+    middleware,
+    [],
+    asyncUtil(async (req, res) => {
+      const [tags, header] = await Promise.all([
+        meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
+        generateHeaderAsync(req, res, {})
+      ]);
+      app.render(req, res, '/lost_priv_request', {
+        header,
+        tags,
+        id: req.params.id
+      });
+    })
+  );
+  setupPageRoute(
+    server,
+    '/lost-priv',
+    middleware,
+    [],
+    asyncUtil(async (req, res) => {
+      const [tags, header] = await Promise.all([
+        meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
+        generateHeaderAsync(req, res, {})
+      ]);
+      app.render(req, res, '/lost_priv', {
+        header,
+        tags
+      });
+    })
+  );
+  setupPageRoute(
+    server,
+    '/csdownloads.php',
+    middleware,
+    [],
+    asyncUtil(async (req, res) => {
+      const [tags, header] = await Promise.all([
+        meta.tags.parse(req, {}, res.locals.metaTags, res.locals.linkTags),
+        generateHeaderAsync(req, res, {})
+      ]);
+      app.render(req, res, '/csdownload', {
+        header,
+        tags
+      });
+    })
+  );
   server.get('/api/search/users/:username', (req, res) => {
     user.search({ query: req.params.username }, (err, results) => {
       res.json({ search: req.params, results });

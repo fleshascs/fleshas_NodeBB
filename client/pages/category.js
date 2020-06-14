@@ -91,6 +91,7 @@ class Category extends React.Component {
             pageSize={20}
             total={pagination.pageCount * 20}
             onChange={this.onChange}
+            showSizeChanger={false}
           />
         </PaginationContainer>
       </div>

@@ -58,8 +58,9 @@ class Index extends React.Component {
           <Col xs={{ span: 24 }} lg={{ span: 15 }}>
             {/* <NewsCard />
     				<VideoPlayer /> */}
-            <LatestPosts topics={this.props.recent.topics} />
             {this.renderHelpButtons()}
+            <LatestPosts topics={this.props.recent.topics} className="mt-3" />
+            
           </Col>
         </Row>
       </div>
@@ -68,21 +69,21 @@ class Index extends React.Component {
 
   renderHelpButtons() {
     const { t } = this.props;
-    const ssDemo = buildCategoryUrl(1, '12/demo-ss-ir-wg-failai');
-    const unban = buildCategoryUrl(1, '5/unban');
+    const ssDemo = buildCategoryUrl(1, '74/demo-ss-ir-wg-failai');
+    const unban = buildCategoryUrl(1, '67/unban');
     return (
       <Row gutter={24}>
-        <Col xs={{ span: 24 }} lg={{ span: 8 }} className='mt-3'>
+        <Col xs={{ span: 24 }} lg={{ span: 8 }}>
           <Link href={ssDemo.path} as={ssDemo.url} passHref>
             <HelperButton>{t('ss-and-demo')}</HelperButton>
           </Link>
         </Col>
-        <Col xs={{ span: 24 }} lg={{ span: 8 }} className='mt-3'>
+        <Col xs={{ span: 24 }} lg={{ span: 8 }} >
           <Link href={{ pathname: '/lost_priv' }} as='/lost-priv' passHref>
             <HelperButton href='/lost-priv'>{t('recover-privilegies')}</HelperButton>
           </Link>
         </Col>
-        <Col xs={{ span: 24 }} lg={{ span: 8 }} className='mt-3'>
+        <Col xs={{ span: 24 }} lg={{ span: 8 }}>
           <Link href={unban.path} as={unban.url} passHref>
             <HelperButton>{t('unban-request')}</HelperButton>
           </Link>
