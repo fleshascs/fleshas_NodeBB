@@ -1,10 +1,12 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
+import { getConfig } from 'areas/general/selectors';
 
 const EmojiPickerContainer = styled.div`
   position: absolute;
@@ -14,8 +16,8 @@ const EmojiPickerContainer = styled.div`
 
 const EMOJI_PATH = '/plugins/nodebb-plugin-emoji/emoji';
 
-async function fetchEmojis() {
-  const response = await axios.get(EMOJI_PATH + '/table.json');
+async function fetchEmojis(cacheBuster) {
+  const response = await axios.get(EMOJI_PATH + '/table.json?' + cacheBuster);
   const filtered = Object.keys(response.data).reduce((emojis, emojiKey) => {
     const emoji = response.data[emojiKey];
     if (emoji.pack === 'customizations') {
@@ -32,44 +34,45 @@ async function fetchEmojis() {
   }, []);
   return filtered;
 }
+function Placeholder() {
+  const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+  return <Spin indicator={antIcon} />;
+}
 
-class EmojiPicker extends Component {
-  state = {
-    customEmojis: [],
-    customEmojiLoading: true
-  };
-  async componentDidMount() {
+export default function EmojiPicker({ onEmojiSelect }) {
+  const [customEmojis, setCustomEmojis] = useState([]);
+  const [customEmojiLoading, setCustomEmojiLoading] = useState(true);
+  const config = useSelector(getConfig);
+
+  async function getEmojis() {
     try {
-      const emojis = await fetchEmojis();
-      this.setState({ customEmojis: emojis, customEmojiLoading: false });
+      const emojis = await fetchEmojis(config?.['cache-buster']);
+      setCustomEmojis(emojis);
+      setCustomEmojiLoading(false);
     } catch {
-      this.setState({ customEmojis: [], customEmojiLoading: false });
+      setCustomEmojis([]);
+      setCustomEmojiLoading(false);
     }
   }
 
-  placeholder() {
-    const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
-    return <Spin indicator={antIcon} />;
-  }
+  useEffect(() => {
+    getEmojis();
+  }, []);
 
-  render() {
-    return (
-      <EmojiPickerContainer>
-        {this.state.customEmojiLoading ? (
-          this.placeholder()
-        ) : (
-          <Picker
-            onSelect={this.props.onEmojiSelect}
-            native={true}
-            emojiSize={18}
-            custom={this.state.customEmojis}
-            //set={'apple'}
-            title=''
-          />
-        )}
-      </EmojiPickerContainer>
-    );
-  }
+  return (
+    <EmojiPickerContainer>
+      {customEmojiLoading ? (
+        <Placeholder />
+      ) : (
+        <Picker
+          onSelect={onEmojiSelect}
+          native={true}
+          emojiSize={18}
+          custom={customEmojis}
+          //set={'apple'}
+          title=''
+        />
+      )}
+    </EmojiPickerContainer>
+  );
 }
-
-export default EmojiPicker;
