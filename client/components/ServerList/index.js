@@ -5,8 +5,7 @@ import OnlinePlayers from './OnlinePlayers';
 import ServersPlaceHolder from './ServersPlaceHolder';
 import TimePasedRealTime from '../TimePasedRealTime';
 import { withTranslation } from '_core/i18n';
-import Link from 'next/link';
-import { primaryColor, boxBGColor, rowHoverColor, rowLinkColor } from '_theme';
+import { boxBGColor, rowHoverColor, rowLinkColor } from '_theme';
 
 const Footer = styled.div`
   text-align: right;
@@ -65,14 +64,12 @@ class ServerList extends React.Component {
     return (
       <React.Fragment>
         <Box>
-          <Link as='/csdownloads.php' href='/csdownload'>
-            <a>
-              <Csdownload
-                src='http://fleshas.lt/themes/izi/image/cs16download.gif'
-                alt='Counter-Strike 1.6 Download'
-              />
-            </a>
-          </Link>
+          <a href='http://counter-strike-download.fleshas.lt/'>
+            <Csdownload
+              src='http://fleshas.lt/themes/izi/image/cs16download.gif'
+              alt='Counter-Strike 1.6 Download'
+            />
+          </a>
           {this.state.servsersLoading ? (
             <ServersPlaceHolder />
           ) : (
