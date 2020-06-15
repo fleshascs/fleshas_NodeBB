@@ -41,7 +41,6 @@ module.exports.setupRoutes = function (app, server, middleware) {
   const profileMiddleware = [
     middleware.exposeUid,
     middleware.canViewUsers,
-    middleware.checkAccountPermissions,
     overrideResRender,
     controllers.accounts.profile.get
   ];
