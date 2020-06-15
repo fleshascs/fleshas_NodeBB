@@ -33,7 +33,7 @@ class Topic extends PureComponent {
     const route = buildTopicUrl(null, topic.slug, topic.teaser && topic.teaser.index);
     const userRoute = buildUserUrl(topic.user.userslug);
     return (
-      <Container>
+      <Container deleted={topic.deleted}>
         <div>
           <Link href={userRoute.path} as={userRoute.url}>
             <a>

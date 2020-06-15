@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { primaryColor, rowHoverColor } from '_theme';
 
 export const Container = styled.div`
@@ -8,6 +8,12 @@ export const Container = styled.div`
   padding-top: 0.25rem;
   padding-right: 0.5rem;
   color: #9c9c9c;
+  ${(props) =>
+    props.deleted
+      ? css`
+          opacity: 0.3;
+        `
+      : ''}
 
   &:hover {
     text-decoration: none;
