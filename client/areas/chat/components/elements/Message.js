@@ -29,11 +29,6 @@ const MessageText = styled.div`
 const MyMessageText = styled(MessageText)`
   background: ${chatMyMessageColor};
   color: #fff;
-
-  & .emoji {
-    width: 25px;
-  }
-
   & p {
     margin: 0px;
     line-height: 25px;

@@ -108,9 +108,6 @@ export const CommnetMessage = styled.div`
   font-size: 0.9em;
   color: ${postTopMessageColor};
   word-wrap: break-word;
-  & .emoji {
-    width: 25px;
-  }
   a {
     color: #0089ff;
   }
