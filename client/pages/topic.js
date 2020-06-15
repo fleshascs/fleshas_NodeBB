@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import Topic from 'areas/forum/components/Topic';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { connect } from 'react-redux';
 import Router from 'next/router';
 import { Pagination, Modal, Result } from 'antd';
@@ -27,6 +27,15 @@ const PaginationContainer = styled.div`
 const TopicToolsContainer = styled.div`
   display: flex;
   justify-content: space-between;
+`;
+
+const TopicPosts = styled.div`
+  ${(props) =>
+    props.deleted
+      ? css`
+          opacity: 0.3;
+        `
+      : ''}
 `;
 
 class TopicScreenPure extends React.Component {
@@ -167,7 +176,9 @@ class TopicScreenPure extends React.Component {
           <h4>Delete this topic</h4>
         </Modal>
         {currentPagePosts ? (
-          <Topic topic={topic} posts={currentPagePosts} scrollTo={this.props.post_index - 1} />
+          <TopicPosts deleted={topic.deleted}>
+            <Topic topic={topic} posts={currentPagePosts} scrollTo={this.props.post_index - 1} />
+          </TopicPosts>
         ) : null}
         <PaginationContainer>
           {pagination && pagination.pageCount > 1 ? (
@@ -180,7 +191,7 @@ class TopicScreenPure extends React.Component {
             />
           ) : null}
         </PaginationContainer>
-        {!topic.locked && topic.privileges && topic.privileges['topics:reply'] ? (
+        {!topic.locked && !topic.deleted && topic.privileges && topic.privileges['topics:reply'] ? (
           <MarkdownEditor
             ref={this.markdownEditor}
             onSave={this.onNewPost}

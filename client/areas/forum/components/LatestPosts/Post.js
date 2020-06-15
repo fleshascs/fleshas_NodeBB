@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Avatar, Username } from 'ui';
 import Link from 'next/link';
 import { withTranslation } from '_core/i18n';
@@ -14,13 +14,19 @@ const Container = styled.div`
   padding-right: 0.5rem;
   color: #000;
 
+  ${(props) =>
+    props.deleted
+      ? css`
+          opacity: 0.3;
+        `
+      : ''}
+
   &:hover {
     color: ${primaryColor} !important;
     text-decoration: none;
     background: ${rowHoverColor};
   }
 `;
-
 const AuthorColumn = styled.div`
   display: flex;
   flex: 1.4;
@@ -33,12 +39,10 @@ const ViewsColumn = styled.div`
   flex: 1;
   text-align: center;
 `;
-
 const AnswersColumn = styled.div`
   flex: 1;
   text-align: center;
 `;
-
 const Important = styled.div`
   color: ${defaultFontColor};
   font-weight: 100;
@@ -48,7 +52,6 @@ const NotImportant = styled.div`
   font-size: 12px;
   color: #9c9c9c;
 `;
-
 const ThreadNameNCategoryContainer = styled.div`
   overflow: hidden;
   width: 100%;
@@ -96,13 +99,14 @@ class Post extends PureComponent {
     }
 
     return (
-      <Container>
+      <Container deleted={topic.deleted}>
         <ThreadNameNCategoryContainer>
           <Link href={link.path} as={link.url} passHref>
             <ThreadLink>
               <ThreadName
                 dangerouslySetInnerHTML={{
                   __html: `${topic.locked ? '🔒 ' : ''}
+                ${topic.unread ? '🔵 ' : ''}
                 ${topic.pinned ? '📌 ' : ''}
                 ${title}`
                 }}

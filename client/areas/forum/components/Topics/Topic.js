@@ -32,7 +32,6 @@ class Topic extends PureComponent {
     const { topic, t } = this.props;
     const route = buildTopicUrl(null, topic.slug, topic.teaser && topic.teaser.index);
     const userRoute = buildUserUrl(topic.user.userslug);
-
     return (
       <Container>
         <div>
@@ -52,6 +51,7 @@ class Topic extends PureComponent {
             <TopicLink
               dangerouslySetInnerHTML={{
                 __html: `${topic.locked ? '🔒 ' : ''}
+              ${topic.unread ? '🔵 ' : ''}
               ${topic.pinned ? '📌 ' : ''}
               ${topic.title}`
               }}
