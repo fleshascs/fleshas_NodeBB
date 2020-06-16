@@ -48,7 +48,7 @@ module.exports = function (User) {
 			picture.path = await getTempPath(data);
 
 			const extension = file.typeToExtension(getMimeType(data));
-			const filename = data.uid + '-profilecover' + extension;
+			const filename = data.uid + '-profilecover-' + Date.now() + extension;
 			const uploadData = await image.uploadImage(filename, 'profile', picture);
 
 			await User.setUserField(data.uid, 'cover:url', uploadData.url);
