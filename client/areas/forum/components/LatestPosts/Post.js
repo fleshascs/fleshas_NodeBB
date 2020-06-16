@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import styled, { css } from 'styled-components';
 import { Avatar, Username } from 'ui';
+import UnreadIndicator from 'ui/UnreadIndicator';
 import Link from 'next/link';
 import { withTranslation } from '_core/i18n';
 import { messageDate, buildTopicUrl } from '_core/utils';
@@ -103,14 +104,16 @@ class Post extends PureComponent {
         <ThreadNameNCategoryContainer>
           <Link href={link.path} as={link.url} passHref>
             <ThreadLink>
-              <ThreadName
-                dangerouslySetInnerHTML={{
-                  __html: `${topic.locked ? '🔒 ' : ''}
-                ${topic.unread ? '🔵 ' : ''}
-                ${topic.pinned ? '📌 ' : ''}
-                ${title}`
-                }}
-              />
+              <ThreadName>
+                {topic.unread ? <UnreadIndicator className='mr-1' /> : ''}
+                {topic.locked ? '🔒 ' : ''}
+                {topic.pinned ? '📌 ' : ''}
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: title
+                  }}
+                />
+              </ThreadName>
               <ThreadCategory
                 dangerouslySetInnerHTML={{ __html: teaser.content.substring(0, 60) }}
               />

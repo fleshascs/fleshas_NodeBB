@@ -2,13 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { Switch, Drawer } from 'antd';
 import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
 import { useTranslation } from '_core/i18n';
 import { primaryColor, leftBarIconColor } from '_theme';
 import { LINKS } from './NavBar/links';
 import { renderLink } from 'ui/NavBar/renderLink';
 import { MoonIcon } from './MoonIcon';
-import UsersList from './UsersList';
 
 const NavLink = styled.a`
   padding: 10px 0px;

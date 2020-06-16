@@ -4,6 +4,7 @@ import { Avatar, Username } from 'ui';
 import Link from 'next/link';
 import { messageDate, buildTopicUrl, buildUserUrl } from '_core/utils';
 import { withTranslation } from '_core/i18n';
+import UnreadIndicator from 'ui/UnreadIndicator';
 import {
   Container,
   AuthorColumn,
@@ -48,14 +49,16 @@ class Topic extends PureComponent {
         </div>
         <SubjectContainer>
           <Link href={route.path} as={route.url} passHref>
-            <TopicLink
-              dangerouslySetInnerHTML={{
-                __html: `${topic.locked ? '🔒 ' : ''}
-              ${topic.unread ? '🔵 ' : ''}
-              ${topic.pinned ? '📌 ' : ''}
-              ${topic.title}`
-              }}
-            />
+            <TopicLink>
+              {topic.unread ? <UnreadIndicator className='mr-1' /> : ''}
+              {topic.locked ? '🔒 ' : ''}
+              {topic.pinned ? '📌 ' : ''}
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: topic.title
+                }}
+              />
+            </TopicLink>
           </Link>
           <SmallText>
             {messageDate(topic.timestamp)} •{' '}
