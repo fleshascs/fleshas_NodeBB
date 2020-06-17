@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
+import Link from 'next/link';
 import { Comment, Tooltip } from 'antd';
 import { Username, Avatar } from 'ui';
 
@@ -44,7 +45,13 @@ class Message extends PureComponent {
         className='ml-1'
         //actions={actions}
         author={<Username user={user}>{user.username}</Username>}
-        avatar={<Avatar user={user} imgUrl={user.picture} showIndicator={true} />}
+        avatar={
+          <Link as={`/user/${user.userslug}`} href={`/user?slug=${user.userslug}`}>
+            <a>
+              <Avatar user={user} imgUrl={user.picture} showIndicator={true} />
+            </a>
+          </Link>
+        }
         content={<MessageWrapper dangerouslySetInnerHTML={content} />}
         datetime={
           <div className='d-flex'>
