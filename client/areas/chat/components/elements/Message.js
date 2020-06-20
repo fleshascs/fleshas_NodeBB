@@ -22,7 +22,7 @@ const MessageText = styled.div`
   & p {
     margin: 0px;
     line-height: 25px;
-    word-break: break-all;
+    word-break: break-word;
   }
 `;
 
@@ -32,7 +32,7 @@ const MyMessageText = styled(MessageText)`
   & p {
     margin: 0px;
     line-height: 25px;
-    word-break: break-all;
+    word-break: break-word;
   }
 
   a {
