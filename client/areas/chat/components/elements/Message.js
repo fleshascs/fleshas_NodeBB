@@ -45,7 +45,9 @@ class Message extends Component {
     const { user, message, previousSenderSame, secondSenderSame } = this.props;
     let css = '';
 
-    css += previousSenderSame ? ' previousMsgFromSameSender' : ' mt-1';
+    if (previousSenderSame) {
+      css += ' previousMsgFromSameSender';
+    }
     if (secondSenderSame) {
       css += ' secondMsgFromSameSender';
     }
@@ -54,7 +56,10 @@ class Message extends Component {
     }
     if (user.uid == message.fromUser.uid) {
       return (
-        <MessageContainer className={`${css} right`} style={{ justifyContent: 'flex-end' }}>
+        <MessageContainer
+          className={`${css} ${!previousSenderSame ? 'mt-1' : ''} right`}
+          style={{ justifyContent: 'flex-end' }}
+        >
           <Tooltip title={moment(message.timestamp).format('YYYY-MM-DD HH:mm:ss')}>
             <MyMessageText className={`${css} right`} dangerouslySetInnerHTML={createMarkup()} />
           </Tooltip>
