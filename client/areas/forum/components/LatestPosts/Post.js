@@ -88,7 +88,7 @@ const ThreadLink = styled.a`
 
 class Post extends PureComponent {
   render() {
-    const { topic, t } = this.props;
+    const { topic, t, isLoggedIn } = this.props;
     let { teaser, viewcount, postcount, title } = topic;
     const link = buildTopicUrl(null, topic.slug, topic.teaser ? topic.teaser.index : null);
     if (!teaser) {
@@ -105,7 +105,7 @@ class Post extends PureComponent {
           <Link href={link.path} as={link.url} passHref>
             <ThreadLink>
               <ThreadName>
-                {topic.unread ? <UnreadIndicator className='mr-1' /> : ''}
+                {topic.unread && isLoggedIn ? <UnreadIndicator className='mr-1' /> : ''}
                 {topic.locked ? '🔒 ' : ''}
                 {topic.pinned ? '📌 ' : ''}
                 <span

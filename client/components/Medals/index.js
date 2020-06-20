@@ -12,7 +12,7 @@ export default function Medals({ medals }) {
   return (
     <MedalsContainer>
       {medals.map((medal) => (
-        <Medal url={medal.award.url} name={medal.award.name} />
+        <Medal key={medal.gid} url={medal.award.url} name={medal.award.name} />
       ))}
     </MedalsContainer>
   );

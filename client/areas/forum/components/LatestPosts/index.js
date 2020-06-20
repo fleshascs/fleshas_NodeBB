@@ -1,19 +1,20 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { Box } from 'ui';
 import Post from './Post';
-import { withTranslation } from '_core/i18n';
+import { useTranslation } from '_core/i18n';
+import { getIsLoggedIn } from 'areas/session/selectors';
+import { useSelector } from 'react-redux';
 
-class LatestPosts extends PureComponent {
-  render() {
-    if (!this.props.topics) return null;
-    return (
-      <Box className={this.props.className} headerText={this.props.t('panel-newest-posts')}>
-        {this.props.topics.map((topic) => {
-          return <Post topic={topic} key={topic.slug} />;
-        })}
-      </Box>
-    );
-  }
+export default function LatestPosts({ topics, className }) {
+  if (!topics) return null;
+  const { t } = useTranslation();
+  const isLoggedIn = useSelector(getIsLoggedIn);
+
+  return (
+    <Box className={className} headerText={t('panel-newest-posts')}>
+      {topics.map((topic) => {
+        return <Post topic={topic} key={topic.slug} isLoggedIn={isLoggedIn} />;
+      })}
+    </Box>
+  );
 }
-
-export default withTranslation('common')(LatestPosts);

@@ -42,5 +42,5 @@ export function whenAllImagesLoads(messages) {
     });
   }
 
-  return Promise.all(promises);
+  return Promise.allSettled(promises);
 }

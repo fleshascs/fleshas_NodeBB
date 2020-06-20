@@ -36,7 +36,7 @@ const MyMessageText = styled(MessageText)`
   }
 
   a {
-    color: #ff7878;
+    color: #b5e5ec;
   }
 `;
 
@@ -45,9 +45,7 @@ class Message extends Component {
     const { user, message, previousSenderSame, secondSenderSame } = this.props;
     let css = '';
 
-    if (previousSenderSame) {
-      css += ' previousMsgFromSameSender';
-    }
+    css += previousSenderSame ? ' previousMsgFromSameSender' : ' mt-1';
     if (secondSenderSame) {
       css += ' secondMsgFromSameSender';
     }
