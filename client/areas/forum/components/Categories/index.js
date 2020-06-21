@@ -14,17 +14,29 @@ const CategoriesContainer = styled.div`
   }
 `;
 
-class Categories extends Component {
-  render() {
-    const categories = this.props.categories || [];
-    return (
-      <CategoriesContainer>
-        {categories.map((category) => (
-          <Category category={category} key={category.cid} />
-        ))}
-      </CategoriesContainer>
-    );
-  }
-}
+const Section = styled.div`
+  background: #292c35;
+  padding: 1rem;
+  color: #ffca3e;
+`;
 
-export default Categories;
+export default function Categories(props) {
+  const categories = props.categories || [];
+  return (
+    <CategoriesContainer>
+      {categories.map((category) => {
+        if (category.isSection) {
+          const components = [];
+          components.push(
+            <Section key={category.cid} dangerouslySetInnerHTML={{ __html: category.name }} />
+          );
+          const childCategories = category.children.map((childCategory) => {
+            return <Category category={childCategory} key={childCategory.cid} />;
+          });
+          return components.concat(childCategories);
+        }
+        return <Category category={category} key={category.cid} />;
+      })}
+    </CategoriesContainer>
+  );
+}
