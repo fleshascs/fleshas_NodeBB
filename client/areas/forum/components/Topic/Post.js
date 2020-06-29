@@ -39,7 +39,7 @@ class Post extends Component {
         const postContainer = this.container.current;
         const postPosition = postContainer.offsetTop;
         middleContainer.scrollTo({ top: postPosition - 50 });
-      }, 200); //poor solution to wait for middle/images to be loaded.
+      }, 0); //poor solution to wait for middle/images to be loaded.
     }
   }
 
