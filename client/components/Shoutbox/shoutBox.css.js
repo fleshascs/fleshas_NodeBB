@@ -4,7 +4,8 @@ import { shoutboxInputBorderColor } from '_theme';
 export const ShoutboxContainer = styled.div`
   flex: 1;
   overflow-y: auto;
-  //padding-top: 10px;
+  display: flex;
+  flex-direction: column-reverse; // https://stackoverflow.com/a/44051405
 
   &::-webkit-scrollbar {
     display: none;
