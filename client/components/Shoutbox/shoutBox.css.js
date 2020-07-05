@@ -5,7 +5,7 @@ export const ShoutboxContainer = styled.div`
   flex: 1;
   overflow-y: auto;
   display: flex;
-  flex-direction: column-reverse; // https://stackoverflow.com/a/44051405
+  flex-direction: column-reverse; // https://stackoverflow.com/a/44051405 (helps to scroll to bottom, but disables scroll on firefox)
 
   &::-webkit-scrollbar {
     display: none;
@@ -24,7 +24,7 @@ export const Container = styled.div`
   flex-direction: column;
   flex: 1;
   position: relative;
-  overflow: auto; //sito reikejo del firefox
+  overflow: hidden; //horizontal scroll was visible for a sec on loading
 `;
 
 export const Top = styled.div`

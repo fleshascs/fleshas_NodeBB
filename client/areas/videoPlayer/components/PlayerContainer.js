@@ -61,10 +61,12 @@ function PlayerContainer({ isPlayerVisible }) {
 
   useEffect(() => {
     if (window.innerWidth >= 900) {
-      document.querySelector('.middle-container').addEventListener('scroll', handleScroll);
+      document.querySelector('.simplebar-content-wrapper').addEventListener('scroll', handleScroll);
     }
     return () => {
-      document.querySelector('.middle-container').removeEventListener('scroll', handleScroll);
+      document
+        .querySelector('.simplebar-content-wrapper')
+        .removeEventListener('scroll', handleScroll);
     };
   }, []);
 

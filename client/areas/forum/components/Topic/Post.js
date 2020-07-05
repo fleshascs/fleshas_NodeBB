@@ -35,7 +35,7 @@ class Post extends Component {
   componentDidMount() {
     if (this.props.scrollTo === this.props.post.index) {
       setTimeout(() => {
-        const middleContainer = document.querySelector('.middle-container');
+        const middleContainer = document.querySelector('.simplebar-content-wrapper');
         const postContainer = this.container.current;
         const postPosition = postContainer.offsetTop;
         middleContainer.scrollTo({ top: postPosition - 50 });
