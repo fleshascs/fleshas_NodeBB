@@ -8,14 +8,14 @@ import * as actions from '../actions';
 import { error, formUrlencoded, axiosHandler } from '_core/utils';
 import { translate } from '_core/i18n';
 
-
 export default [
   takeEvery(actions.LOGOUT, logout),
   takeLeading(actions.LOGIN, login),
   takeLeading(actions.REGISTER, register),
   takeLeading(actions.RESET_PASSWORD, resetPasword),
   takeLeading(actions.REGISTER_COMPLETE, registerComplete),
-  takeLeading(actions.REGISTER_ABORT, registerAbort)
+  takeLeading(actions.REGISTER_ABORT, registerAbort),
+  takeLeading(actions.RESET_PASSWORD_COMMIT, resetPasswordCommit)
 ];
 
 function* logout() {
@@ -137,6 +137,18 @@ function* resetPasword({ email }) {
   try {
     yield call(socket.emitAsync, 'user.reset.send', email);
     message.success(translate('reset_password-password_reset_sent'));
+  } catch (e) {
+    error.showError(e.message);
+  }
+}
+
+function* resetPasswordCommit({ password, code }) {
+  try {
+    yield call(socket.emitAsync, 'user.reset.commit', {
+      code: code,
+      password: password
+    });
+    window.location.href = '/login';
   } catch (e) {
     error.showError(e.message);
   }

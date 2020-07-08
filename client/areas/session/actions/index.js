@@ -11,6 +11,7 @@ export const LOGIN_REQUEST = 'USERS_LOGIN_REQUEST';
 export const LOGIN_FAILURE = 'USERS_LOGIN_FAILURE';
 export const AUTH_FAILURE = 'AUTH_FAILURE';
 export const GET_MY_DETAILS_REQUEST = 'USER_GET_MY_DETAILS_REQUEST';
+export const RESET_PASSWORD_COMMIT = 'areas/session/reset_password/commit';
 
 export function logout() {
   return {
@@ -49,6 +50,14 @@ export function resetPassword(email) {
   return {
     type: RESET_PASSWORD,
     email
+  };
+}
+
+export function resetPasswordCommit(password, code) {
+  return {
+    type: RESET_PASSWORD_COMMIT,
+    password,
+    code
   };
 }
 

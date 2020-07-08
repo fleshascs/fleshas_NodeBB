@@ -51,7 +51,7 @@ export function PasswordChange({ onSubmit }) {
       </Form.Item>
       <Form.Item
         name='newPasswordConfirm'
-        label={<span>Confirm Password</span>}
+        label={<span>{t('password-confirm')}</span>}
         rules={[
           {
             required: true,

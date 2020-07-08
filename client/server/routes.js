@@ -252,6 +252,7 @@ module.exports.setupRoutes = function (app, server, middleware) {
       app.render(req, res, '/reset', {
         header,
         tags,
+        code: req.params.code,
         screenData: res.screenData
       });
     })
