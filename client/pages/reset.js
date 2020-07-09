@@ -22,7 +22,7 @@ class ResetPasswordPure extends React.Component {
   static async getInitialProps({ query, req }) {
     const isServer = !!req;
     if (!isServer) {
-      const response = await axios.get('/api/reset' + query.code ? '/' + query.code : '');
+      const response = await axios.get('/api/reset' + (query.code ? '/' + query.code : ''));
       query.screenData = response.data;
       query.browserTitle = response.data.title;
     } else {
