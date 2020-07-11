@@ -4,7 +4,15 @@ import chatSagas from '../areas/chat/sagas';
 import sessionSagas from '../areas/session/sagas';
 import userSagas from '../areas/user/sagas';
 import { startStopChannel } from '../areas/socket/sagas';
+import videoSagas from '../areas/videoPlayer/sagas';
 
 export default function* rootSaga() {
-  yield all([...forumSagas, ...chatSagas, ...sessionSagas, ...userSagas, startStopChannel()]);
+  yield all([
+    ...forumSagas,
+    ...chatSagas,
+    ...sessionSagas,
+    ...userSagas,
+    ...videoSagas,
+    startStopChannel()
+  ]);
 }

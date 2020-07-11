@@ -9,11 +9,12 @@ Youtube.prototype.playVideo = function (videoId, startTime = 0) {
     player.embed.loadVideoById(videoId, startTime);
     return;
   }
+  player.cache = {};
   player.media = {};
   player.timers = {};
   player.embed = new YT.Player('videoContainer', {
     playerVars: {
-      //controls:0,
+      controls: 0,
       cc_load_policy: 0,
       modestbranding: 1,
       enablejsapi: 1,
@@ -43,9 +44,21 @@ Youtube.prototype.playVideo = function (videoId, startTime = 0) {
           return isMuted;
         };
 
+        player.media.unMute = () => {
+          instance.unMute();
+        };
+        player.media.mute = () => {
+          instance.mute();
+        };
+
         player.media.setVolume = (value) => {
-          console.log('setVolume ', value);
           instance.setVolume(value);
+          if (instance.isMuted === !!value) return;
+          if (value) {
+            instance.unMute();
+          } else {
+            instance.mute();
+          }
         };
 
         player.media.getVolume = () => {
@@ -95,7 +108,6 @@ Youtube.prototype.playVideo = function (videoId, startTime = 0) {
             player.media.lastBuffered < player.media.buffered
           ) {
             player.events.dispatch('buffered', player.media.buffered);
-            //console.log('player.media.buffered', player.media.buffered);
           }
           // Set last buffer point
           player.media.lastBuffered = player.media.buffered;
@@ -175,6 +187,17 @@ Youtube.prototype.playVideo = function (videoId, startTime = 0) {
                 const playerTimeDifference = playerCurrentTime / playerTotalTime;
                 //console.log('timeupdate', playerTimeDifference);
                 player.events.dispatch('progress', playerTimeDifference);
+                const isMuted = instance.isMuted();
+                const volume = instance.getVolume();
+
+                if (isMuted !== player.cache.isMuted) {
+                  player.events.dispatch('isMuted', isMuted);
+                  player.cache.isMuted = isMuted;
+                }
+                if (volume !== player.cache.volume) {
+                  player.events.dispatch('volume', volume);
+                  player.cache.volume = volume;
+                }
                 //triggerEvent.call(player, player.media, 'timeupdate');
               }, 200);
 

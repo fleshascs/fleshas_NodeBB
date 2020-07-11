@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import socket from 'areas/socket/services';
 import Youtube from './youtube';
 import Footer from './Footer';
 import { getVideo } from '../selectors';
 import { diff_seconds } from '../utils';
 import { useSelector } from 'react-redux';
+
 const Container = styled.div`
   background: #181717;
   width: 100%;
@@ -37,7 +37,7 @@ const ProgressContainer = styled.div`
 
 const ProgressLine = styled.div`
   background: ${(props) => props.color};
-  transform: scaleX(${(props) => props.progress});
+  transform: scaleX(0);
   position: absolute;
   left: 0;
   bottom: 0;
@@ -46,15 +46,18 @@ const ProgressLine = styled.div`
   transform-origin: 0 0;
 `;
 
+function Progress({ progress, color }) {
+  return <ProgressLine color={color} style={{ transform: `scaleX(${progress})` }} />;
+}
+
 export default function Player({ minimized }) {
-  const [inputValue, setInputValue] = useState('');
   const [buffered, setBuffered] = useState(0);
   const [progress, setProgress] = useState(0);
-  const [startTime, setStartTime] = useState(0);
-  const [id, setId] = useState(null);
+  const [isMuted, setIsMuted] = useState(false);
+  const [volume, setVolume] = useState(100);
   const video = useSelector(getVideo);
   const youtube = useRef();
-  const lastSend = useRef(null);
+  const initialised = useRef(false);
 
   const onBuffered = (buffered) => {
     setBuffered(buffered);
@@ -62,47 +65,20 @@ export default function Player({ minimized }) {
 
   const onProgress = (progress) => {
     setProgress(progress);
-  };
-
-  const handleVideoPlay = ({ url, id, startTime }) => {
-    console.log('handleVideoPlay', url, id, startTime);
-    loadPlayer(() => {
-      console.log('player loaded');
-      youtube.current.playVideo(id);
-    });
-
-    setInputValue(url);
-    setId(id);
-    setStartTime(startTime);
-  };
-
-  const submitLink = () => {
-    console.log('submit inputValue');
-    socket.emit('event:playVideo', { url: inputValue });
-  };
-
-  const onInputTextChange = (event) => {
-    setInputValue(event.target.value);
+    if (!initialised.current) {
+      setIsMuted(youtube.current.media.isMuted());
+      setVolume(youtube.current.media.getVolume());
+      initialised.current = true;
+    }
   };
 
   useEffect(() => {
-    console.log('***************************************************check for video', video);
-    if (video.update_time) {
-      lastSend.current = new Date(parseInt(video.update_time) * 1000);
-      var diff = diff_seconds(new Date(), lastSend.current);
-      console.log('diff', diff, 'duration', video.duration);
-      if (diff < video.duration) {
-        console.log('************Play');
-        loadPlayer(() => {
-          const videoId = parseId(video.videoUrl);
-          youtube.current.playVideo(videoId, diff);
-        });
-      }
-
-      console.log('************Play');
+    if (video?.id) {
+      const startTime = video.startTime ? video.startTime * 1000 : 0;
+      console.log('play startTime:', startTime);
+      const diff = video.createtime ? diff_seconds(+new Date() + startTime, video.createtime) : 0;
       loadPlayer(() => {
-        const videoId = parseId(video.videoUrl);
-        youtube.current.playVideo(videoId, 0);
+        youtube.current.playVideo(video.id, diff);
       });
     }
   }, [video]);
@@ -111,33 +87,31 @@ export default function Player({ minimized }) {
     youtube.current = new Youtube();
     youtube.current.events.on('buffered', onBuffered);
     youtube.current.events.on('progress', onProgress);
-    socket.on('event:playVideo', handleVideoPlay);
+    youtube.current.events.on('isMuted', setIsMuted);
+    youtube.current.events.on('volume', setVolume);
+    return () => {
+      youtube.current.events.off('volume', setVolume);
+      youtube.current.events.off('isMuted', setIsMuted);
+      youtube.current.events.off('buffered', onBuffered);
+      youtube.current.events.off('progress', onProgress);
+    };
   }, []);
 
-  const isMuted = () => {
-    if (youtube.current && youtube.current.media) {
-      return youtube.current.media.isMuted();
+  const setMediaVolume = useRef((value) => {
+    if (youtube.current.media) {
+      console.log('setMediaVolume');
+      setVolume(value);
+      youtube.current.media.setVolume(value);
     }
-    return false;
-  };
+  });
 
-  const setVolume = (value) => {
-    if (youtube.current && youtube.current.media) {
-      return youtube.current.media.setVolume(value);
-    }
-  };
-  const getVolume = () => {
-    if (youtube.current && youtube.current.media) {
-      return youtube.current.media.getVolume();
-    }
-  };
   const toggleAudio = () => {
-    if (youtube.current && youtube.current.media) {
-      if (getVolume() === 0) {
-        setVolume(100);
+    if (youtube.current.media) {
+      if (youtube.current.media.isMuted()) {
+        youtube.current.media.unMute();
         return;
       }
-      setVolume(0);
+      youtube.current.media.mute();
     }
   };
 
@@ -145,26 +119,23 @@ export default function Player({ minimized }) {
     <Container minimized={minimized}>
       <div>
         <IframeContainer>
-          {/* <Canvas/>  */}
-          {/* <EmojiContainer>
-					</EmojiContainer> */}
+          <Canvas />
           <div id='videoContainer' />
         </IframeContainer>
         <ProgressContainer>
-          <ProgressLine color='#464440' progress={1} />
-          <ProgressLine color='#6d6b6b' progress={buffered} />
-          <ProgressLine color='#ff0909' progress={progress} />
+          <Progress color='#464440' progress={1} />
+          <Progress color='#6d6b6b' progress={buffered} />
+          <Progress color='#ff0909' progress={progress} />
         </ProgressContainer>
       </div>
       <div>
         {!minimized ? (
           <Footer
-            onInputTextChange={onInputTextChange}
-            inputValue={inputValue}
-            isMuted={isMuted()}
-            onSubmitLink={submitLink}
-            setVolume={setVolume}
-            volume={getVolume()}
+            url={video?.url}
+            user={video.user}
+            isMuted={isMuted}
+            setVolume={setMediaVolume.current}
+            volume={volume}
             toggleAudio={toggleAudio}
           />
         ) : null}
@@ -186,13 +157,4 @@ function loadPlayer(callback) {
   } else {
     callback();
   }
-}
-
-function parseId(url) {
-  if (!url) {
-    return null;
-  }
-
-  const regex = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-  return url.match(regex) ? RegExp.$2 : url;
 }

@@ -17,11 +17,15 @@ import ShoutsPlaceHolder from './ShoutsPlaceHolder';
 import socket from 'areas/socket/services';
 import { withTranslation } from '_core/i18n';
 import { whenAllImagesLoads } from '_core/utils';
-import { OnlineUsersBadge } from 'ui';
+//import { OnlineUsersBadge } from 'ui';
 import { EmojiButton } from 'ui/EmojiButton';
 import { GifButton } from 'ui/GifButton';
 import { messageDate } from '_core/utils';
 import { getIsLoggedIn } from 'areas/session/selectors';
+import dynamic from 'next/dynamic';
+const YoutubeNotification = dynamic(() => import('./YoutubeNotification'), {
+  ssr: false
+});
 //import { getOnlineUsers } from 'areas/user/selectors';
 //https://codesandbox.io/s/04v892702v
 const { confirm } = Modal;
@@ -54,9 +58,15 @@ class ShoutboxComponent extends Component {
     this.input.current.focus();
   };
 
+  handleVideo = (video) => {
+    const messages = this.state.messages.concat([{ type: 'youtubePlayer', ...video }]);
+    this.setState({ messages });
+  };
+
   componentDidMount() {
     this.setState({ isServer: false });
     this.newMsgAudio = new Audio('/static/sound/newMessageShoutbox.mp3');
+    socket.on('event:playVideo', this.handleVideo);
     socket.on('shoutbox::message', this.addMessage);
     socket.on('event:shoutbox.edit', this.updateMessageList);
     socket.on('event:shoutbox.delete', (data) => {
@@ -196,6 +206,16 @@ class ShoutboxComponent extends Component {
   };
 
   renderMessage = (msg) => {
+    if (msg.type === 'youtubePlayer') {
+      return (
+        <YoutubeNotification
+          user={msg.user}
+          url={msg.url}
+          title={msg.title}
+          thumbnail={msg.thumbnail}
+        />
+      );
+    }
     const { auth } = this.props;
     const canDelete = auth?.user.isAdmin || auth?.user.isGlobalMod || auth?.user.isMod;
     return (

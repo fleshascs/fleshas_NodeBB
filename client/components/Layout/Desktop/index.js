@@ -8,15 +8,15 @@ import Background from './Background';
 import {
   defaultFontColor,
   breadcrumbLinkColor,
-  inputBackgorundColor,
-  inputBorderColor,
-  inputLabelColor,
   disabledPrimaryButtomColor,
   disabledPrimaryButtomBackground,
-  disabledPrimaryButtomBorder,
-  usernameColor
+  disabledPrimaryButtomBorder
 } from '_theme';
 import { createGlobalStyle } from 'styled-components';
+import dynamic from 'next/dynamic';
+const VideoPlayerContainer = dynamic(() => import('areas/videoPlayer/components/PlayerContainer'), {
+  ssr: false
+});
 
 const AntdStyle = createGlobalStyle`
   h1, h2, h3, h4, h5, h6 {
@@ -121,26 +121,6 @@ const ContainerWrapper = styled.div`
   .breadcrumb a {
     color: ${breadcrumbLinkColor};
   }
-
-  // .ant-form-item-children input {
-  //   background-color: ${inputBackgorundColor};
-  //   border-color: ${inputBorderColor};
-  // }
-
-  // .ant-form-item-children input::placeholder {
-  //   background-color: ${inputBackgorundColor};
-  //   color: grey;
-  // }
-
-  // .ant-form-item-label > label,
-  // .ant-checkbox-wrapper,
-  // .ant-form {
-  //   color: ${inputLabelColor} !important;
-  // }
-
-  // .ant-comment-content-author-name > * {
-  //   color: ${usernameColor};
-  // }
 `;
 
 const ColumnsWrapper = styled.div`
@@ -170,7 +150,7 @@ class Layout extends Component {
           <ColumnsWrapper>
             <Middle>
               <JustAnotherWrapper>
-                {/* <VideoPlayerContainer/> */}
+                <VideoPlayerContainer />
                 {this.props.children}
               </JustAnotherWrapper>
               <Bottom />

@@ -1,6 +1,7 @@
 const utils = require('./utils');
 const user = require('../../src/user');
 const SocketIndex = require('../../src/socket.io/index');
+const { youtubeVideoPlayer } = require('./youtube');
 
 const getUserData = utils.promisify(user.getUserData);
 
@@ -14,22 +15,6 @@ async function onlineUsersSocket(socket) {
   socket.on('disconnect', async (reason) => {
     const userData = await getUserData(socket.uid);
     SocketIndex.server.sockets.emit('event:userdisconnected', userData);
-  });
-}
-
-async function youtubeVideoPlayer(socket) {
-  socket.on('event:playVideo', async ({ url }) => {
-    console.log('server event:playVideo ', url);
-    if (!url || !socket.uid) return;
-    const { id, startTime } = parseVideo(url);
-    if (!id) return;
-    const userData = await getUserData(socket.uid);
-    SocketIndex.server.sockets.emit('event:playVideo', {
-      url,
-      id,
-      startTime,
-      user: userData
-    });
   });
 }
 

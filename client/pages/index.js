@@ -59,8 +59,7 @@ class Index extends React.Component {
             {/* <NewsCard />
     				<VideoPlayer /> */}
             {this.renderHelpButtons()}
-            <LatestPosts topics={this.props.recent.topics} className="mt-3" />
-            
+            <LatestPosts topics={this.props.recent.topics} className='mt-3' />
           </Col>
         </Row>
       </div>
@@ -78,7 +77,7 @@ class Index extends React.Component {
             <HelperButton>{t('ss-and-demo')}</HelperButton>
           </Link>
         </Col>
-        <Col xs={{ span: 24 }} lg={{ span: 8 }} >
+        <Col xs={{ span: 24 }} lg={{ span: 8 }}>
           <Link href={{ pathname: '/lost_priv' }} as='/lost-priv' passHref>
             <HelperButton href='/lost-priv'>{t('recover-privilegies')}</HelperButton>
           </Link>

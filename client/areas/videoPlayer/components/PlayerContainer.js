@@ -1,9 +1,12 @@
-import VideoPlayer from './Player';
 import React, { useEffect, useState, useCallback } from 'react';
 import Router, { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { isPlayerVisible } from '../selectors';
+import dynamic from 'next/dynamic';
+const VideoPlayer = dynamic(() => import('./Player'), {
+  ssr: false
+});
 
 const PlayerWrapper = styled.div`
   background: #181717;
