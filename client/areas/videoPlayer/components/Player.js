@@ -14,7 +14,7 @@ const Container = styled.div`
 const IframeContainer = styled.div`
   position: relative;
   flex: 1;
-  height: 360px;
+  height: ${(props) => (props.minimized ? '250px' : '360px')};
   & > iframe {
     height: 100%;
     width: 100%;
@@ -116,9 +116,9 @@ export default function Player({ minimized }) {
   };
 
   return (
-    <Container minimized={minimized}>
+    <Container>
       <div>
-        <IframeContainer>
+        <IframeContainer minimized={minimized}>
           <Canvas />
           <div id='videoContainer' />
         </IframeContainer>
