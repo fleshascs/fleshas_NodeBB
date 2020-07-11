@@ -41,7 +41,7 @@ async function onGetCurrent(socket) {
       console.log('video has ended diff:', diff, 'video.duration:', video.duration);
       return;
     }
-    const userData = await getUserData(socket.uid);
+    const userData = await getUserData(video.uid);
     if (!userData) return;
     video.user = userData;
     return video;
