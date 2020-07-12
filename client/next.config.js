@@ -2,7 +2,7 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const withCSS = require('@zeit/next-css');
-const withTM = require('next-transpile-modules');
+//const withTM = require('next-transpile-modules');
 const lessToJS = require('less-vars-to-js');
 const withBundleAnalyzer = require('@zeit/next-bundle-analyzer');
 const withLess = require('@zeit/next-less');
@@ -40,12 +40,12 @@ const plugins = [
       }
     }
   ],
-  [
-    withTM,
-    {
-      transpileModules: ['perfect-scrollbar']
-    }
-  ],
+  // [
+  //   withTM,
+  //   {
+  //     transpileModules: ['perfect-scrollbar']
+  //   }
+  // ],
   [
     withLess,
     {

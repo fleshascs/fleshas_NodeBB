@@ -24,10 +24,11 @@ module.exports.youtubeVideoPlayer = async function (socket) {
 async function onGetCurrent(socket) {
   try {
     let video = await db.getObject(currentVideoKey);
-    console.log('onGetCurrent', video);
     if (!video) {
       return;
     }
+    video.createtime = parseInt(video.createtime);
+    video.startTime = parseInt(video.startTime);
     let info;
     if (lastVideoCache.id === video.id) {
       info = lastVideoCache;
@@ -36,9 +37,16 @@ async function onGetCurrent(socket) {
       lastVideoCache = info;
     }
     video.duration = info.videoDetails.lengthSeconds || 0;
-    var diff = diff_seconds(+new Date(), video.createtime);
+    var diff = diff_seconds(+new Date(), video.createtime) + video.startTime;
     if (diff > video.duration) {
-      console.log('video has ended diff:', diff, 'video.duration:', video.duration);
+      console.log(
+        'video has ended diff:',
+        diff,
+        'video.startTime',
+        video.startTime,
+        'video.duration:',
+        video.duration
+      );
       return;
     }
     const userData = await getUserData(video.uid);

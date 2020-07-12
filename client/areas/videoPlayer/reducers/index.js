@@ -7,6 +7,12 @@ export default function reducer(state = initialState, action) {
       return { ...state, playerVisible: action.playerVisible };
     }
     case actions.SET_VIDEO: {
+      if (action.video.createtime) {
+        action.video.createtime = parseInt(action.video.createtime);
+      }
+      if (action.video.startTime) {
+        action.video.startTime = parseInt(action.video.startTime);
+      }
       return { ...state, video: action.video };
     }
     default:

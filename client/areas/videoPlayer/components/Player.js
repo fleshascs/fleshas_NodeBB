@@ -74,11 +74,10 @@ export default function Player({ minimized }) {
 
   useEffect(() => {
     if (video?.id) {
-      const startTime = video.startTime ? video.startTime * 1000 : 0;
-      console.log('play startTime:', startTime);
-      const diff = video.createtime ? diff_seconds(+new Date() + startTime, video.createtime) : 0;
+      const diff = video.createtime ? diff_seconds(+new Date(), video.createtime) : 0;
+      console.log('diff', diff, 'startTime', video.startTime, ' sum', diff + video.startTime);
       loadPlayer(() => {
-        youtube.current.playVideo(video.id, diff);
+        youtube.current.playVideo(video.id, diff + video.startTime);
       });
     }
   }, [video]);
