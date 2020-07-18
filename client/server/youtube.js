@@ -30,7 +30,7 @@ async function onGetCurrent(socket) {
     video.createtime = parseInt(video.createtime);
     video.startTime = parseInt(video.startTime);
     let info;
-    if (lastVideoCache.id === video.id) {
+    if (lastVideoCache.videoDetails && lastVideoCache.videoDetails.videoId === video.id) {
       info = lastVideoCache;
     } else {
       info = await ytdl.getInfo(video.url);

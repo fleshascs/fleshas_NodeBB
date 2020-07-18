@@ -45,7 +45,6 @@ class ShoutboxComponent extends Component {
     };
 
     this.handleScroll = throttle(this.handleScroll, 500);
-    this.messagesEnd = React.createRef();
     this.scrollableBox = React.createRef();
     this.input = React.createRef();
   }
@@ -139,7 +138,6 @@ class ShoutboxComponent extends Component {
         </Top>
         <ShoutboxContainer onScroll={this.handleScroll} ref={this.scrollableBox}>
           {MessagesHTML}
-          <div ref={this.messagesEnd} />
         </ShoutboxContainer>
 
         <MoreMessagesToScroll show={this.state.showScrollHelper} onClick={this.scrollToBottom} />

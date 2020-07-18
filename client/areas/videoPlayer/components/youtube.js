@@ -14,6 +14,7 @@ Youtube.prototype.playVideo = function (videoId, startTime = 0) {
   player.timers = {};
   player.embed = new YT.Player('videoContainer', {
     playerVars: {
+      autoplay: 1,
       controls: 0,
       cc_load_policy: 0,
       modestbranding: 1,
