@@ -147,6 +147,11 @@ class MyAppPure extends App {
           <meta name='verify-paysera' content='26362ca8db03c45c75e3ea24bb5b8329' />
           {tags && tags.link.map(renderLinkTag)}
           <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet' />
+          <script
+            data-ad-client='ca-pub-8300648839719622'
+            async
+            src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'
+          ></script>
         </Head>
         <Provider store={store}>
           <Theme>
