@@ -2,7 +2,11 @@ import React, { useEffect } from 'react';
 
 const AdSencePanel = (slotId) => {
   useEffect(() => {
-    (window.adsbygoogle = window.adsbygoogle || []).push({});
+    try {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (error) {
+      console.error('adSence error', error);
+    }
   }, []);
 
   return (
