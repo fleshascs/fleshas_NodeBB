@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-const AdSencePanel = (slotId) => {
+const AdSencePanel = ({ slotId }) => {
   useEffect(() => {
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
