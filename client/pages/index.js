@@ -1,16 +1,18 @@
 import React from 'react';
 import LatestPosts from 'areas/forum/components/LatestPosts';
 import Head from 'next/head';
-//import { TeamSpeakPanel } from 'areas/teamSpeak/components';
+import dynamic from 'next/dynamic';
 import { DiscordPanel } from 'areas/discord/components';
 import axios from 'axios';
 import styled from 'styled-components';
 import { Row, Col } from 'antd';
 import { ServerList } from 'ui';
-//import VideoPlayer from 'areas/VideoPlayer/components/Player';
-//import NewsCard from 'ui/News';
-import FaceBookPanel from 'ui/FaceBookPanel';
-//import Placeholder from 'areas/videoPlayer/components/Placeholder';
+const FaceBookPanel = dynamic(() => import('ui/FaceBookPanel'), {
+  ssr: false
+});
+const AdSencePanel = dynamic(() => import('ui/AdSencePanel'), {
+  ssr: false
+});
 import { withTranslation, translateNodeBBTemplate } from '_core/i18n';
 import { buildCategoryUrl } from '_core/utils';
 import Link from 'next/link';
@@ -49,15 +51,12 @@ class Index extends React.Component {
         </Head>
         <Row gutter={24}>
           <Col xs={{ span: 24 }} lg={{ span: 8 }} className='mb-3'>
-            {/* <Placeholder/> */}
             <ServerList />
-            {/* <TeamSpeakPanel /> */}
             <DiscordPanel />
             <FaceBookPanel />
+            <AdSencePanel slotId='8875325074' />
           </Col>
           <Col xs={{ span: 24 }} lg={{ span: 15 }}>
-            {/* <NewsCard />
-    				<VideoPlayer /> */}
             {this.renderHelpButtons()}
             <LatestPosts topics={this.props.recent.topics} className='mt-3' />
           </Col>

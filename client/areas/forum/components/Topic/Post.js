@@ -34,12 +34,12 @@ class Post extends Component {
 
   componentDidMount() {
     if (this.props.scrollTo === this.props.post.index) {
-      setTimeout(() => {
+      window.requestAnimationFrame(() => {
         const middleContainer = document.querySelector('.simplebar-content-wrapper');
         const postContainer = this.container.current;
         const postPosition = postContainer.offsetTop;
         middleContainer.scrollTo({ top: postPosition - 50 });
-      }, 0); //poor solution to wait for middle/images to be loaded.
+      });
     }
   }
 

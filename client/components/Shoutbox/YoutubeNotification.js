@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import { Username, Avatar } from 'ui';
@@ -35,7 +35,7 @@ export default function YoutubeNotification({ user, url, title, thumbnail }) {
         <a href={url} target='_blank'>
           {title}
           <br />
-          <img classNmae='img-responsive' src={thumbnail} />
+          <img className='img-responsive' src={thumbnail} />
         </a>
       </div>
     </Container>

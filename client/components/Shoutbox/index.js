@@ -209,6 +209,7 @@ class ShoutboxComponent extends Component {
         <YoutubeNotification
           user={msg.user}
           url={msg.url}
+          key={msg.url}
           title={msg.title}
           thumbnail={msg.thumbnail}
         />
