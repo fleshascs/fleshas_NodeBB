@@ -148,7 +148,6 @@ class MyAppPure extends App {
           {tags && tags.link.map(renderLinkTag)}
           <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet' />
           <script
-            data-ad-client='ca-pub-8300648839719622'
             async
             src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'
           ></script>
