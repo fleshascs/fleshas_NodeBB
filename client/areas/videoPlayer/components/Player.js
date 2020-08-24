@@ -98,7 +98,6 @@ export default function Player({ minimized }) {
 
   const setMediaVolume = useRef((value) => {
     if (youtube.current.media) {
-      console.log('setMediaVolume');
       setVolume(value);
       youtube.current.media.setVolume(value);
     }
@@ -114,10 +113,16 @@ export default function Player({ minimized }) {
     }
   };
 
+  const play = () => {
+    if (youtube.current.media) {
+      youtube.current.media.play();
+    }
+  };
+
   return (
     <Container>
       <div>
-        <IframeContainer minimized={minimized}>
+        <IframeContainer onClick={play} minimized={minimized}>
           <Canvas />
           <div id='videoContainer' />
         </IframeContainer>
