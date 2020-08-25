@@ -34,7 +34,7 @@ const AdSencePanel = ({ slotId }) => {
   return (
     <ins
       className='adsbygoogle mt-3'
-      style={{ display: 'inline-block', width: `100%`, maxHeight: `300px`, textAlign: 'center' }}
+      style={{ display: 'inline-block', width: `100%`, height: `300px`, textAlign: 'center' }}
       data-ad-client='ca-pub-8300648839719622'
       data-ad-slot={slotId}
     />
