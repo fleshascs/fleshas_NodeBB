@@ -52,9 +52,9 @@ class Index extends React.Component {
         <Row gutter={24}>
           <Col xs={{ span: 24 }} lg={{ span: 8 }} className='mb-3'>
             <ServerList />
+            <AdSencePanel slotId='8875325074' />
             <DiscordPanel />
             <FaceBookPanel />
-            <AdSencePanel slotId='8875325074' />
           </Col>
           <Col xs={{ span: 24 }} lg={{ span: 15 }}>
             {this.renderHelpButtons()}
