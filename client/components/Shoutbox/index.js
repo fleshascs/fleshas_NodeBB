@@ -279,18 +279,11 @@ class ShoutboxComponent extends Component {
   };
 
   scrollToBottom = () => {
-    const scrollContent = this.scrollableBox.current;
-    // scrollableBox.scrollTo(0, scrollableBox.scrollHeight);
-    // scrollableBox.scrollTop =
-    // 	scrollableBox.scrollHeight - scrollableBox.clientHeight;
-
-    scrollContent && (scrollContent.scrollTop = scrollContent.scrollHeight);
-
-    // var e = this.scrollableBox.current;
-    // e && (e.scrollTo ? e.scrollTo({
-    // 	top: e.scrollHeight,
-    // 	behavior: "smooth"
-    // }) : e.lastElementChild && (e.scrollTop = e.scrollHeight));
+    window.cancelAnimationFrame(this.frameRequest || 0);
+    this.frameRequest = window.requestAnimationFrame(() => {
+      const scrollContent = this.scrollableBox.current;
+      scrollContent && (scrollContent.scrollTop = scrollContent.scrollHeight);
+    });
   };
 
   handleMessageChange = (e) => {
