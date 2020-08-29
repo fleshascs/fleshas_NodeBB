@@ -4,12 +4,12 @@ import { Box } from 'ui';
 const FaceBookPanel = () => {
   useEffect(() => {
     (function (d, s, id) {
-      var js,
-        fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) {
+      if (window.FB?.XFBML) {
         FB.XFBML.parse(); // https://developers.facebook.com/docs/reference/javascript/FB.XFBML.parse/
         return;
       }
+      var js,
+        fjs = d.getElementsByTagName(s)[0];
       js = d.createElement(s);
       js.id = id;
       js.src = '//connect.facebook.net/en_EN/sdk.js#xfbml=1&version=v2.5';
