@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 import { shoutboxInputBorderColor } from '_theme';
 
+//flex-direction: column-reverse; // https://stackoverflow.com/a/44051405 (helps to scroll to bottom, but disables scroll on firefox)
+//from chrome Version 85.0.4183.83 (Official Build) (64-bit)  it makes some differences in calc scrolled area height.
 export const ShoutboxContainer = styled.div`
   flex: 1;
   overflow-y: auto;
   display: flex;
-  flex-direction: column-reverse; // https://stackoverflow.com/a/44051405 (helps to scroll to bottom, but disables scroll on firefox)
 
   &::-webkit-scrollbar {
     display: none;
