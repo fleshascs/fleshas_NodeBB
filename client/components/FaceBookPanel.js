@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { Box } from 'ui';
 
-export default class FaceBookPanel extends React.Component {
-  componentDidMount() {
+const FaceBookPanel = () => {
+  useEffect(() => {
     (function (d, s, id) {
       var js,
         fjs = d.getElementsByTagName(s)[0];
@@ -15,9 +15,9 @@ export default class FaceBookPanel extends React.Component {
       js.src = '//connect.facebook.net/en_EN/sdk.js#xfbml=1&version=v2.5';
       fjs.parentNode.insertBefore(js, fjs);
     })(document, 'script', 'facebook-jssdk');
-  }
+  }, []);
 
-  render() {
+  const panel = useMemo(() => {
     return (
       <Box headerText='FaceBook' className='mt-3'>
         <div
@@ -29,5 +29,9 @@ export default class FaceBookPanel extends React.Component {
         ></div>
       </Box>
     );
-  }
-}
+  }, []);
+
+  return panel;
+};
+
+export default FaceBookPanel;
