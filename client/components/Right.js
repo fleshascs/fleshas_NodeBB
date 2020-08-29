@@ -8,6 +8,7 @@ const Container = styled.div`
   height: 100%;
   width: 25%;
   max-width: 22rem;
+  min-width: 20rem;
   border-left: 1px solid ${boxBorderColor};
   background: ${rightPanelColor};
 
