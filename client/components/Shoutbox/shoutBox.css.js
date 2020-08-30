@@ -11,6 +11,10 @@ export const ShoutboxContainer = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+
+  & svg {
+    width: 100%;
+  }
 `;
 
 export const MessgesList = styled.div``;
