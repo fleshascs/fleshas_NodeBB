@@ -8,6 +8,7 @@ import { Username, Avatar } from 'ui';
 const MessageWrapper = styled.div`
   width: 100%;
   padding-right: 5px;
+  word-break: break-word;
 
   a {
     color: #0089ff;
