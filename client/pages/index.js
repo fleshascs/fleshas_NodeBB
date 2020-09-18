@@ -10,9 +10,9 @@ import { ServerList } from 'ui';
 const FaceBookPanel = dynamic(() => import('ui/FaceBookPanel'), {
   ssr: false
 });
-const AdSencePanel = dynamic(() => import('ui/AdSencePanel'), {
-  ssr: false
-});
+// const AdSencePanel = dynamic(() => import('ui/AdSencePanel'), {
+//   ssr: false
+// });
 import { withTranslation, translateNodeBBTemplate } from '_core/i18n';
 import { buildCategoryUrl } from '_core/utils';
 import Link from 'next/link';
@@ -52,7 +52,7 @@ class Index extends React.Component {
         <Row gutter={24}>
           <Col xs={{ span: 24 }} lg={{ span: 8 }} className='mb-3'>
             <ServerList />
-            <AdSencePanel slotId='8875325074' />
+            {/* <AdSencePanel slotId='8875325074' /> */}
             <DiscordPanel />
             <FaceBookPanel />
           </Col>
