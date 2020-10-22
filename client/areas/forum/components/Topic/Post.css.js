@@ -41,7 +41,7 @@ export const ContainerWrapper = styled.div`
 export const Container = styled.div`
   flex: 1;
   display: inline-block;
-  word-break: break-all;
+  word-break: break-word;
   background: ${postBGColor};
   border-radius: 3px;
   box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.2);
