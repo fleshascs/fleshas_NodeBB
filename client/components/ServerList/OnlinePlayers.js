@@ -5,7 +5,7 @@ import { Button } from 'antd';
 import { ArrowRightOutlined } from '@ant-design/icons';
 import { playerListHeaderColor } from '_theme';
 
-const REST_API_URL = 'http://ts.fleshas.lt/api/players/index.php';
+const REST_API_URL = '/php/api/servers/players/index.php';
 
 const PlayerListContainer = styled.div`
   width: 100%;
