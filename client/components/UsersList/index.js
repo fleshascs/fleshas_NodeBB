@@ -14,7 +14,7 @@ const Container = styled.div`
   }
 `;
 
-export default (props) => {
+export default function UserList(props) {
   return (
     <Container opened={props.opened}>
       {props.users.map((user) => (
@@ -22,4 +22,4 @@ export default (props) => {
       ))}
     </Container>
   );
-};
+}

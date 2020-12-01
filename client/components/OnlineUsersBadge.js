@@ -10,7 +10,7 @@ export const ViewerCount = styled.span`
   align-items: center;
 `;
 
-export default ({ online }) => {
+export default function OnlineUsersBadge({ online }) {
   const { t } = useTranslation();
 
   return (
@@ -29,4 +29,4 @@ export default ({ online }) => {
       </ViewerCount>
     </Tooltip>
   );
-};
+}

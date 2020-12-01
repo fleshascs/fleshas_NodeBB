@@ -1,4 +1,4 @@
-import includes from 'core-js/library/fn/string/virtual/includes';
+//import includes from 'core-js/library/fn/string/virtual/includes';
 import repeat from 'core-js/library/fn/string/virtual/repeat';
 import assign from 'core-js/library/fn/object/assign';
 //import arrayIncludes from 'core-js/library/fn/array/includes';
@@ -6,7 +6,7 @@ import assign from 'core-js/library/fn/object/assign';
 import 'core-js/modules/es7.array.includes.js';
 //import 'core-js/features/promise/all-settled';
 
-String.prototype.includes = includes;
+//String.prototype.includes = includes;
 String.prototype.repeat = repeat;
 Object.assign = assign;
 //Array.prototype.includes = arrayIncludes;

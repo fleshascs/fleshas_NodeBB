@@ -17,7 +17,7 @@ const AvatarWrapper = styled.a`
   }
 `;
 
-export default (props) => {
+export default function OnlineUser(props) {
   const { leftBarOpened, user } = props;
   return (
     <UserContainer
@@ -51,4 +51,4 @@ export default (props) => {
       ) : null}
     </UserContainer>
   );
-};
+}

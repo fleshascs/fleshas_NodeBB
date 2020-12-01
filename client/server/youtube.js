@@ -39,14 +39,6 @@ async function onGetCurrent(socket) {
     video.duration = info.videoDetails.lengthSeconds || 0;
     var diff = diff_seconds(+new Date(), video.createtime) + video.startTime;
     if (diff > video.duration) {
-      console.log(
-        'video has ended diff:',
-        diff,
-        'video.startTime',
-        video.startTime,
-        'video.duration:',
-        video.duration
-      );
       return;
     }
     const userData = await getUserData(video.uid);

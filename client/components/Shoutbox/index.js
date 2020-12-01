@@ -176,6 +176,8 @@ class ShoutboxComponent extends Component {
   };
 
   handleScroll = (e) => {
+    e.persist();
+    if (!e.isTrusted) return;
     const target = this.scrollableBox.current;
     const containerHeight = target.offsetHeight;
     const scrollableAreaHeight = target.scrollHeight;
