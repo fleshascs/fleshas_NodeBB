@@ -68,6 +68,12 @@ export function setCookie(name, value, days) {
   document.cookie = name + '=' + (value || '') + expires + '; path=/';
 }
 
+export function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
 // issue persist with html entity display in <meta /> tags
 // https://github.com/facebook/react/issues/13838
 // https://github.com/zeit/next.js/issues/2006
