@@ -14,6 +14,8 @@ const commands = {
 };
 
 let lastVideoCache = {};
+let errorCount = [];
+const MAX_FETCH_RETRY = 5;
 
 module.exports.youtubeVideoPlayer = async function (socket) {
   socket.on('plugins.shoutbox.send', (data) => onShoutboxMessage(socket, data));
@@ -22,8 +24,9 @@ module.exports.youtubeVideoPlayer = async function (socket) {
 };
 
 async function onGetCurrent(socket) {
+  let video;
   try {
-    let video = await db.getObject(currentVideoKey);
+    video = await db.getObject(currentVideoKey);
     if (!video) {
       return;
     }
@@ -33,6 +36,9 @@ async function onGetCurrent(socket) {
     if (lastVideoCache.videoDetails && lastVideoCache.videoDetails.videoId === video.id) {
       info = lastVideoCache;
     } else {
+      if (errorCount[0] === video.id && errorCount[1] >= MAX_FETCH_RETRY) {
+        throw new Error('MAX FETCH RERTRY reached, videoId=' + errorCount[1]);
+      }
       info = await ytdl.getInfo(video.url);
       lastVideoCache = info;
     }
@@ -46,6 +52,10 @@ async function onGetCurrent(socket) {
     video.user = userData;
     return video;
   } catch (error) {
+    if (video?.id) {
+      errorCount[0] = video.id;
+      errorCount[1] = errorCount[1] ? errorCount[1] : 0 + 1;
+    }
     console.log('onGetCurrent error', error);
     return error;
   }
