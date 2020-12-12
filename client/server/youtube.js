@@ -52,7 +52,7 @@ async function onGetCurrent(socket) {
     video.user = userData;
     return video;
   } catch (error) {
-    if (video?.id) {
+    if (video && video.id) {
       errorCount[0] = video.id;
       errorCount[1] = errorCount[1] ? errorCount[1] : 0 + 1;
     }
