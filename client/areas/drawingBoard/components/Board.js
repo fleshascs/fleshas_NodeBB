@@ -53,13 +53,13 @@ export default class Board {
     this.ctx.closePath();
   };
 
-  onMouseMove = (e) => {
+  onMove = (clientX, clientY) => {
     if (this.flag) {
       this.prevX = this.currX;
       this.prevY = this.currY;
       const rect = this.canvas.getBoundingClientRect();
-      this.currX = e.clientX - rect.left;
-      this.currY = e.clientY - rect.top;
+      this.currX = clientX - rect.left;
+      this.currY = clientY - rect.top;
       this.draw();
       if (this.onMouseMove77) {
         this.onMouseMove77([this.currX, this.currY]);
@@ -67,12 +67,12 @@ export default class Board {
     }
   };
 
-  onMouseDown = (e) => {
+  onDown = (clientX, clientY) => {
     this.prevX = this.currX;
     this.prevY = this.currY;
     const rect = this.canvas.getBoundingClientRect();
-    this.currX = e.clientX - rect.left;
-    this.currY = e.clientY - rect.top;
+    this.currX = clientX - rect.left;
+    this.currY = clientY - rect.top;
     this.flag = true;
     this.ctx.beginPath();
     this.ctx.fillStyle = this.x;
@@ -83,6 +83,24 @@ export default class Board {
     }
   };
 
+  onMouseMove = (e) => {
+    this.onMove(e.clientX, e.clientY);
+  };
+
+  onTouchMove = (e) => {
+    e.preventDefault();
+    this.onMove(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+  };
+
+  onMouseDown = (e) => {
+    this.onDown(e.clientX, e.clientY);
+  };
+
+  onTouchStart = (e) => {
+    e.preventDefault();
+    this.onDown(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+  };
+
   onMouseOut = () => {
     if (this.flag && this.onMouseUp77) {
       this.onMouseUp77();
@@ -91,6 +109,11 @@ export default class Board {
   };
 
   addEventListeners() {
+    this.canvas.addEventListener('touchmove', this.onTouchMove, false);
+    this.canvas.addEventListener('touchstart', this.onTouchStart, false);
+    this.canvas.addEventListener('touchend', this.onMouseOut, false);
+    this.canvas.addEventListener('touchcancel', this.onMouseOut, false);
+
     this.canvas.addEventListener('mousemove', this.onMouseMove, false);
     this.canvas.addEventListener('mousedown', this.onMouseDown, false);
     this.canvas.addEventListener('mouseup', this.onMouseOut, false);

@@ -17,6 +17,7 @@ const Container = styled.div`
 const Rapper = styled.div`
   display: flex;
   flex-direction: row;
+  overflow-y: auto;
 `;
 
 const Avatar = styled.img`
@@ -70,7 +71,6 @@ export default function Canvas() {
           component: createRef(),
           imgSrc: OnlineUser && OnlineUser.picture ? OnlineUser.picture : DEFAULT_AVATAR
         };
-        console.log('onlineUsers', onlineUsers);
 
         if (OnlineUser && OnlineUser.picture) {
           getOnlineUsers().then((data) => {
@@ -119,7 +119,6 @@ export default function Canvas() {
       }
     });
   }, [canvas, myBoard]);
-  console.log('users', users);
 
   return (
     <Rapper>
