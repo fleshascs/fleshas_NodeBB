@@ -74,9 +74,9 @@ export default function Canvas() {
     };
 
     function getUserComponent(uid) {
-      const picture = OnlineUser && OnlineUser.picture;
       if (!users.current[uid]) {
-        const OnlineUser = onlineUsers[uid];
+        const onlineUser = onlineUsers[uid];
+        const picture = onlineUser && onlineUser.picture;
         users.current[uid] = {
           timeoutId: null,
           component: createRef(),
