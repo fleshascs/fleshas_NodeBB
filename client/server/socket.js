@@ -2,6 +2,7 @@ const utils = require('./utils');
 const user = require('../../src/user');
 const SocketIndex = require('../../src/socket.io/index');
 const { youtubeVideoPlayer } = require('./youtube');
+const { drawingBoard } = require('./drawingBoard');
 
 const getUserData = utils.promisify(user.getUserData);
 
@@ -22,6 +23,7 @@ function addSocketListeners() {
   SocketIndex.server.on('connection', (socket) => {
     onlineUsersSocket(socket);
     youtubeVideoPlayer(socket);
+    drawingBoard(socket);
   });
 }
 

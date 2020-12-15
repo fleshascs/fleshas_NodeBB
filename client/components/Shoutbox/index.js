@@ -104,8 +104,6 @@ class ShoutboxComponent extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { showScrollHelper, isServer, messages } = this.state;
-    //palyginimas bus false neigu bus pamegta zinute nors ir masyvai skirsis
-    //taciau tai yra gerai, nes mes nenorim nuscrollint i apacia, kai gaunamas like
     const haveNewMessages = messages != prevState.messages;
     const shouldScrollDown = haveNewMessages && !isServer && !this.state.messagesLoading;
     if ((shouldScrollDown || this.props.isOpenOnMobile === true) && !showScrollHelper) {
@@ -176,8 +174,8 @@ class ShoutboxComponent extends Component {
   };
 
   handleScroll = (e) => {
-    e.persist();
-    if (!e.isTrusted) return;
+    // e.persist();
+    // if (!e.isTrusted) return;
     const target = this.scrollableBox.current;
     const containerHeight = target.offsetHeight;
     const scrollableAreaHeight = target.scrollHeight;
@@ -307,7 +305,6 @@ class ShoutboxComponent extends Component {
 
 function mapStateToProps(state) {
   return {
-    //onlineUsers: getOnlineUsers(state),
     loggedIn: getIsLoggedIn(state),
     auth: state.authentication
   };

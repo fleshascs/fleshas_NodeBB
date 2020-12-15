@@ -13,6 +13,11 @@ const FaceBookPanel = dynamic(() => import('ui/FaceBookPanel'), {
 // const AdSencePanel = dynamic(() => import('ui/AdSencePanel'), {
 //   ssr: false
 // });
+
+const DrawingBoard = dynamic(() => import('areas/drawingBoard/components/Container'), {
+  ssr: false
+});
+
 import { withTranslation, translateNodeBBTemplate } from '_core/i18n';
 import { buildCategoryUrl } from '_core/utils';
 import Link from 'next/link';
@@ -49,6 +54,7 @@ class Index extends React.Component {
         <Head>
           <title>{translateNodeBBTemplate('[[pages:home]]', t)}</title>
         </Head>
+        <DrawingBoard />
         <Row gutter={24}>
           <Col xs={{ span: 24 }} lg={{ span: 8 }} className='mb-3'>
             <ServerList />
