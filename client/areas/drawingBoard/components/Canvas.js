@@ -74,15 +74,16 @@ export default function Canvas() {
     };
 
     function getUserComponent(uid) {
+      const picture = OnlineUser && OnlineUser.picture;
       if (!users.current[uid]) {
         const OnlineUser = onlineUsers[uid];
         users.current[uid] = {
           timeoutId: null,
           component: createRef(),
-          imgSrc: OnlineUser && OnlineUser.picture ? OnlineUser.picture : DEFAULT_AVATAR
+          imgSrc: picture || DEFAULT_AVATAR
         };
 
-        if (OnlineUser && OnlineUser.picture) {
+        if (!picture) {
           getOnlineUsers().then((data) => {
             const user = data.find((u) => u.uid === uid);
             users.current[uid].imgSrc = user.picture || DEFAULT_AVATAR;
@@ -97,6 +98,7 @@ export default function Canvas() {
 
     socket.on('event:drawPath', (result) => {
       const { uid, path, color } = result;
+      // ???? this will work incorectly if 2+ tabs opened
       if (currentUser && currentUser.uid === uid) {
         return;
       }
@@ -122,11 +124,25 @@ export default function Canvas() {
         console.log('error getBoard', err);
         return;
       }
-      if (result.board.length) {
-        result.board.forEach(({ path, color }) => {
-          myBoard.current.drawPatah(path, color);
-        });
+      function loadImg(callback) {
+        if (result.currentBoardImg) {
+          var img = new window.Image();
+          img.addEventListener('load', function () {
+            canvas.current.getContext('2d').drawImage(img, 0, 0);
+            callback();
+          });
+          img.setAttribute('src', result.currentBoardImg);
+          return;
+        }
+        callback();
       }
+      loadImg(() => {
+        if (result.board.length) {
+          result.board.forEach(({ path, color }) => {
+            myBoard.current.drawPatah(path, color);
+          });
+        }
+      });
     });
   }, [canvas, myBoard]);
 

@@ -1,5 +1,5 @@
-export default class Board {
-  constructor(canvas) {
+class Board {
+  constructor(canvas, addEventListener = true) {
     this.allowEdit = true;
     this.flag = false;
     this.prevX = 0;
@@ -12,7 +12,9 @@ export default class Board {
     this.ctx = canvas.getContext('2d');
     this.width = canvas.width;
     this.height = canvas.height;
-    this.addEventListeners();
+    if (addEventListener) {
+      this.addEventListeners();
+    }
 
     this.ctx.fillStyle = '#fff';
     this.ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -128,3 +130,5 @@ export default class Board {
     this.canvas.addEventListener('mouseout', this.onMouseOut, false);
   }
 }
+
+module.exports = Board;
