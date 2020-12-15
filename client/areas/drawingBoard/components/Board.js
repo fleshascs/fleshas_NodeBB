@@ -18,11 +18,15 @@ class Board {
 
     this.ctx.fillStyle = '#fff';
     this.ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    this.setAllowEdit = this.setAllowEdit.bind(this);
+    this.changeColor = this.changeColor.bind(this);
+    this.getColor = this.getColor.bind(this);
   }
 
-  setAllowEdit = (allowEdit) => {
+  setAllowEdit(allowEdit) {
     this.allowEdit = allowEdit;
-  };
+  }
 
   draw() {
     this.ctx.beginPath();
@@ -34,15 +38,15 @@ class Board {
     this.ctx.closePath();
   }
 
-  changeColor = (colorHex) => {
+  changeColor(colorHex) {
     this.x = colorHex;
-  };
+  }
 
-  getColor = () => {
+  getColor() {
     return this.x;
-  };
+  }
 
-  drawPatah = (path, colorHex) => {
+  drawPatah(path, colorHex) {
     const color = colorHex || this.x;
     this.ctx.beginPath();
     if (path.length === 1) {
@@ -58,7 +62,7 @@ class Board {
       this.ctx.stroke();
     }
     this.ctx.closePath();
-  };
+  }
 
   onMove = (clientX, clientY) => {
     if (!this.allowEdit) return;
