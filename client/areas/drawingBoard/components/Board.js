@@ -1,4 +1,4 @@
-class Board {
+export default class Board {
   constructor(canvas, addEventListener = true) {
     this.allowEdit = true;
     this.flag = false;
@@ -134,5 +134,3 @@ class Board {
     this.canvas.addEventListener('mouseout', this.onMouseOut, false);
   }
 }
-
-module.exports = Board;

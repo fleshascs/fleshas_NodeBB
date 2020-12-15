@@ -1,6 +1,6 @@
 const SocketIndex = require('../../src/socket.io/index');
 const sockets = require('../../src/socket.io/plugins');
-const Board = require('../areas/drawingBoard/components/Board');
+const Board = require('./Board');
 const { createCanvas, loadImage, Image } = require('canvas');
 const makeQuerablePromise = require('./makeQuerablePromise');
 const pluginName = 'drawingBoard';
@@ -82,7 +82,7 @@ function generateImg() {
       } else {
         //trash
         const canvas = createCanvas(800, 400);
-        const board = new Board(canvas, false);
+        const board = new Board(canvas);
         const copyOfArray = Array.from(currentBoard);
         copyOfArray.forEach(({ path, color }) => {
           board.drawPatah(path, color);
