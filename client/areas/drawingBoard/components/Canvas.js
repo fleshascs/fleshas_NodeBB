@@ -51,8 +51,18 @@ export default function Canvas() {
     }
   };
 
+  const setIsEnabled = () => {
+    const isEnabled = !!(currentUser && currentUser.uid);
+    if (myBoard.current) myBoard.current.setAllowEdit(isEnabled);
+  };
+
+  useEffect(() => {
+    setIsEnabled();
+  }, [currentUser]);
+
   useEffect(() => {
     myBoard.current = new Board(canvas.current);
+    setIsEnabled();
     const drawControl = new DrawControl();
     myBoard.current.onMouseMove77 = drawControl.onMouseMove;
     myBoard.current.onMouseDown77 = drawControl.onMouseDown;

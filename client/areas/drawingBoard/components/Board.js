@@ -1,5 +1,6 @@
 export default class Board {
   constructor(canvas) {
+    this.allowEdit = true;
     this.flag = false;
     this.prevX = 0;
     this.currX = 0;
@@ -16,6 +17,10 @@ export default class Board {
     this.ctx.fillStyle = '#fff';
     this.ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
+
+  setAllowEdit = (allowEdit) => {
+    this.allowEdit = allowEdit;
+  };
 
   draw() {
     this.ctx.beginPath();
@@ -54,6 +59,7 @@ export default class Board {
   };
 
   onMove = (clientX, clientY) => {
+    if (!this.allowEdit) return;
     if (this.flag) {
       this.prevX = this.currX;
       this.prevY = this.currY;
@@ -68,6 +74,7 @@ export default class Board {
   };
 
   onDown = (clientX, clientY) => {
+    if (!this.allowEdit) return;
     this.prevX = this.currX;
     this.prevY = this.currY;
     const rect = this.canvas.getBoundingClientRect();
@@ -102,6 +109,7 @@ export default class Board {
   };
 
   onMouseOut = () => {
+    if (!this.allowEdit) return;
     if (this.flag && this.onMouseUp77) {
       this.onMouseUp77();
     }
