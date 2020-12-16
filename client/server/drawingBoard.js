@@ -26,7 +26,7 @@ async function drawPath(socket, data) {
     if (!socket.uid) return;
     const board = { path: data.path, color: data.color };
     currentBoard.push(board);
-    SocketIndex.server.sockets.emit('event:drawPath', { uid: socket.uid, ...board });
+    socket.broadcast.emit('event:drawPath', { uid: socket.uid, ...board });
   } catch (error) {
     console.log('drawPath error', error);
     return error;

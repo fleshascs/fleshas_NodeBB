@@ -104,10 +104,6 @@ export default function Canvas() {
 
     socket.on('event:drawPath', (result) => {
       const { uid, path, color } = result;
-      // ???? this will work incorectly if 2+ tabs opened
-      if (currentUser && currentUser.uid === uid) {
-        return;
-      }
       const user = getUserComponent(uid);
       myBoard.current.drawPatah(path, color);
       if (user && user.component.current) {
