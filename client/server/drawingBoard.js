@@ -74,7 +74,7 @@ function generateImg() {
             board.drawPatah(path, color);
           });
           currentBoard.splice(0, copyOfArray.length);
-          currentBoardImg = canvas.toDataURL();
+          currentBoardImg = canvas.toDataURL('image/jpeg', 0.7);
           resolve();
         };
         img.onerror = reject;
@@ -88,7 +88,7 @@ function generateImg() {
           board.drawPatah(path, color);
         });
         currentBoard.splice(0, copyOfArray.length);
-        currentBoardImg = canvas.toDataURL();
+        currentBoardImg = canvas.toDataURL('image/jpeg', 0.7);
         resolve();
       }
     } catch (error) {

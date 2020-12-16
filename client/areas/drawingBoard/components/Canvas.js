@@ -84,9 +84,11 @@ export default function Canvas() {
         };
 
         if (!picture) {
-          getOnlineUsers().then((data) => {
-            const user = data.find((u) => u.uid === uid);
-            users.current[uid].imgSrc = user.picture || DEFAULT_AVATAR;
+          socket.emit('user.getUserByUID', uid, (err, data) => {
+            if (err) {
+              return;
+            }
+            users.current[uid].imgSrc = data.picture || DEFAULT_AVATAR;
             forceUpdate((n) => !n);
           });
         }
