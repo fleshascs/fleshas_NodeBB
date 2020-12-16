@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef, createRef } from 'react';
 import styled from 'styled-components';
 import Board from './Board';
 import DrawControl from './DrawControl';
-import { CompactPicker } from 'react-color';
+import { CompactPicker, SketchPicker } from 'react-color';
 import socket from 'areas/socket/services';
 import { getOnlineUsersObj } from 'areas/user/selectors';
 import { useSelector } from 'react-redux';
 import { getUser } from 'areas/session/selectors';
-import { getOnlineUsers } from '../services';
+import { Checkbox } from 'antd';
 
 const Container = styled.div`
   position: relative;
@@ -43,7 +43,11 @@ export default function Canvas() {
   const canvas = useRef();
   const [, forceUpdate] = React.useState(0);
   const [color, setColor] = useState('#000');
+  const [isSupaColors, setIsSupaColors] = useState(false);
   const users = useRef({});
+  const onPickerChange = (e) => {
+    setIsSupaColors(e.target.checked);
+  };
   const handleColor = (color) => {
     if (myBoard.current) {
       myBoard.current.changeColor(color.hex);
@@ -170,8 +174,15 @@ export default function Canvas() {
           style={{ border: '1px solid' }}
           ref={canvas}
         ></canvas>
-        <div className='mt-1'>
-          <CompactPicker color={color} onChangeComplete={handleColor} />
+        <div className='mt-1 d-flex'>
+          {isSupaColors ? (
+            <SketchPicker color={color} onChangeComplete={handleColor} />
+          ) : (
+            <CompactPicker color={color} onChangeComplete={handleColor} />
+          )}
+          <div className='ml-3'>
+            <Checkbox onChange={onPickerChange}>more colors</Checkbox>
+          </div>
         </div>
       </Container>
     </Rapper>
