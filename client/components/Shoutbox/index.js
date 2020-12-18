@@ -174,8 +174,7 @@ class ShoutboxComponent extends Component {
   };
 
   handleScroll = (e) => {
-    // e.persist();
-    // if (!e.isTrusted) return;
+    e.persist();
     const target = this.scrollableBox.current;
     const containerHeight = target.offsetHeight;
     const scrollableAreaHeight = target.scrollHeight;
@@ -188,6 +187,8 @@ class ShoutboxComponent extends Component {
     if (scrolledPercent < 90) {
       showScrollHelper = true;
     }
+    if (!e.isTrusted && showScrollHelper) return;
+
     if (this.state.showScrollHelper === showScrollHelper) return;
     this.setState({ showScrollHelper });
   };

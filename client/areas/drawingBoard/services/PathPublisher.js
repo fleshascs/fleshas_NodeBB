@@ -1,4 +1,4 @@
-export default class DrawControl {
+export default class PathPublisher {
   constructor() {
     this.path = [];
     this.tail = [];
@@ -19,7 +19,7 @@ export default class DrawControl {
     this.path.push(Cords);
   };
 
-  onMouseUp = () => {
+  onMouseOut = () => {
     this.checkForSendTask && clearInterval(this.checkForSendTask);
     if (this.path.length) {
       this.send();
