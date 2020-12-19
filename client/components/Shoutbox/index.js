@@ -26,6 +26,9 @@ import dynamic from 'next/dynamic';
 const YoutubeNotification = dynamic(() => import('./YoutubeNotification'), {
   ssr: false
 });
+const ServerChatMessage = dynamic(() => import('./ServerChatMessage'), {
+  ssr: false
+});
 //import { getOnlineUsers } from 'areas/user/selectors';
 //https://codesandbox.io/s/04v892702v
 const { confirm } = Modal;
@@ -62,10 +65,16 @@ class ShoutboxComponent extends Component {
     this.setState({ messages });
   };
 
+  handleServerChatMessage = (data) => {
+    const messages = this.state.messages.concat([{ type: 'serverChatMessage', ...data }]);
+    this.setState({ messages });
+  };
+
   componentDidMount() {
     this.setState({ isServer: false });
     this.newMsgAudio = new Audio('/static/sound/newMessageShoutbox.mp3');
     socket.on('event:playVideo', this.handleVideo);
+    socket.on('event:serverChatMessage', this.handleServerChatMessage);
     socket.on('shoutbox::message', this.addMessage);
     socket.on('event:shoutbox.edit', this.updateMessageList);
     socket.on('event:shoutbox.delete', (data) => {
@@ -215,6 +224,9 @@ class ShoutboxComponent extends Component {
           thumbnail={msg.thumbnail}
         />
       );
+    }
+    if (msg.type === 'serverChatMessage') {
+      return <ServerChatMessage message={msg.message} key={msg.message} />;
     }
     const { auth } = this.props;
     const canDelete = auth?.user.isAdmin || auth?.user.isGlobalMod || auth?.user.isMod;

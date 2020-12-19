@@ -1,17 +1,23 @@
 const SocketIndex = require('../../src/socket.io/index');
 const sockets = require('../../src/socket.io/plugins');
+const user = require('../../src/user');
 const Board = require('./Board');
-const { createCanvas, loadImage, Image } = require('canvas');
+const { createCanvas, Image } = require('canvas');
 const makeQuerablePromise = require('./makeQuerablePromise');
+const utils = require('./utils');
+const getUserData = utils.promisify(user.getUserData);
 const pluginName = 'drawingBoard';
 
 const commands = {
-  '!draw': toggleDrawingBoard
+  '!draw': toggleDrawingBoard,
+  '!lock': lockDrawingBoard,
+  '!unlock': unlockDrawingBoard
 };
 
 let isBoardEnabled = false;
 let currentBoard = [];
 let currentBoardImg = null;
+let isLocked = false;
 
 module.exports.drawingBoard = async function (socket) {
   socket.on('plugins.shoutbox.send', (data) => onShoutboxMessage(socket, data));
@@ -20,6 +26,24 @@ module.exports.drawingBoard = async function (socket) {
   sockets[pluginName].getBoard = getBoard;
   sockets[pluginName].drawPath = drawPath;
 };
+
+async function lockDrawingBoard(socket) {
+  return toggleLockDrawingBoard(socket, true);
+}
+async function unlockDrawingBoard(socket) {
+  return toggleLockDrawingBoard(socket, false);
+}
+
+async function toggleLockDrawingBoard(socket, value) {
+  if (!socket.uid) return;
+  const isAdminOrGlobalMod = await user.isAdminOrGlobalMod(socket.uid);
+  if (!isAdminOrGlobalMod) {
+    sendServerChatMessage('Only admins can use this command');
+    return;
+  }
+  sendServerChatMessage(value ? '!draw command is now locked' : '!draw command is now unlocked');
+  isLocked = value;
+}
 
 async function drawPath(socket, data) {
   try {
@@ -109,10 +133,22 @@ async function getBoard(socket) {
 
 async function toggleDrawingBoard(socket) {
   if (!socket.uid) return;
+  if (isLocked) {
+    sendServerChatMessage('!draw command is locked by administrator');
+    return;
+  }
   isBoardEnabled = !isBoardEnabled;
   currentBoard = [];
   currentBoardImg = null;
   SocketIndex.server.sockets.emit('event:toggleDrawingBoard', isBoardEnabled);
+}
+
+function sendServerChatMessage(message) {
+  setTimeout(() => {
+    SocketIndex.server.sockets.emit('event:serverChatMessage', {
+      message: message
+    });
+  }, 200); //lidl solution, server message will apear after user message
 }
 
 function onShoutboxMessage(socket, { message }) {
