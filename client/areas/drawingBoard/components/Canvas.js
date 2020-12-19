@@ -89,7 +89,7 @@ export default function Canvas() {
           )}
           <MenuBlock className='ml-3'>
             <Checkbox onChange={onPickerChange}>more colors</Checkbox>
-            <a download='masterpiece.png' onClick={download}>
+            <a download='masterpiece.png' style={{ color: '#9c9c9c' }} onClick={download}>
               download
             </a>
           </MenuBlock>
