@@ -21,6 +21,13 @@ const Rapper = styled.div`
   overflow-x: auto;
 `;
 
+const MenuBlock = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
 export default function Canvas() {
   const onlineUsers = useSelector(getOnlineUsersObj);
   const [animationElements, setUserAvatarPosition] = useAvatarAnimation(onlineUsers);
@@ -58,6 +65,11 @@ export default function Canvas() {
     setDrawingAccess();
   }, [currentUser]);
 
+  function download(e) {
+    var image = canvas.current.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+    e.currentTarget.setAttribute('href', image);
+  }
+
   return (
     <Rapper>
       <Container className='mb-3'>
@@ -75,9 +87,12 @@ export default function Canvas() {
           ) : (
             <CompactPicker color={color} onChangeComplete={handleColor} />
           )}
-          <div className='ml-3'>
+          <MenuBlock className='ml-3'>
             <Checkbox onChange={onPickerChange}>more colors</Checkbox>
-          </div>
+            <a download='masterpiece.png' onClick={download}>
+              download
+            </a>
+          </MenuBlock>
         </div>
       </Container>
     </Rapper>
