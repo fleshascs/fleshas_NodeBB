@@ -17,7 +17,8 @@ const Container = styled.div`
 const Rapper = styled.div`
   display: flex;
   flex-direction: row;
-  overflow-y: auto;
+  overflow-y: hidden;
+  overflow-x: auto;
 `;
 
 export default function Canvas() {
