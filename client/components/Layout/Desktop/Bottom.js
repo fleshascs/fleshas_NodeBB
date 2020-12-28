@@ -41,7 +41,11 @@ class Footer extends Component {
         <div className='container'>
           <Row gutter={24}>
             <Col xs={{ span: 24 }} lg={{ span: 8 }}>
-              <img src='/static/images/sticker.png' style={{ width: '100%', maxWidth: '260px' }} />
+              <img
+                src='/static/images/sticker260.png'
+                style={{ width: '100%', maxWidth: '260px' }}
+                alt='fleshas-sticker'
+              />
             </Col>
             <Col xs={{ span: 24 }} lg={{ span: 8 }}>
               <ColHeader>{t('links')}</ColHeader>

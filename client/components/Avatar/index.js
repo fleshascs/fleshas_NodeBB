@@ -12,7 +12,7 @@ const AvatarImg = styled.img`
   border-style: solid;
   border-color: rgb(255, 255, 255);
   border-image: initial;
-  border-radius:${(props) => (props.circle ? '50%' : '3px')} !important;
+  border-radius: ${(props) => (props.circle ? '50%' : '3px')} !important;
 
   /* &:hover {
     box-shadow: ${avatarHoverShadowColor} 0px 0px 4px
@@ -47,7 +47,13 @@ const Avatar = (props) => {
   return (
     <Container className={className}>
       {imgUrl ? (
-        <AvatarImg size={getSize(size)} src={imgUrl} onClick={onClick} circle={circle} />
+        <AvatarImg
+          size={getSize(size)}
+          src={imgUrl}
+          onClick={onClick}
+          circle={circle}
+          alt='avatar'
+        />
       ) : (
         <PlaceHolder size={getSize(size)} className={className} circle={circle} />
       )}

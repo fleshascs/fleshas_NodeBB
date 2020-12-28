@@ -156,6 +156,7 @@ class Left extends Component {
                 <img
                   src={`/static/images/locale/${this.props.i18n.language}.png`}
                   className='py-3'
+                  alt='language'
                 />
               </CollapseButtonIcon>
             </CollapseButton>
