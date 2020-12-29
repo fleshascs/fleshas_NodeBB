@@ -36,7 +36,7 @@ class ServerList extends React.Component {
 
   requestForServers = () => {
     axios
-      .get('http://fleshas.lt/php/api/servers/index.php')
+      .get('/php/api/servers/index.php')
       .then((response) => {
         if (response.data) {
           this.setState({

@@ -39,7 +39,7 @@ const Indicator = styled.div`
 `;
 
 const DEFAULT_AVATAR =
-  'http://www.gravatar.com/avatar/ae69fa0d674d490c99c4d8fdca23f1e2?s=100&r=x&d=retro';
+  'https://www.gravatar.com/avatar/ae69fa0d674d490c99c4d8fdca23f1e2?s=100&r=x&d=retro';
 
 const Avatar = (props) => {
   const { className, size, circle, onClick, isOnline } = props;

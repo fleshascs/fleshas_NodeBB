@@ -4,7 +4,7 @@ const user = require('../../src/user');
 
 const fleshasLegacyLogin = module.exports;
 fleshasLegacyLogin.authLegacyFleshas = async function (username, password) {
-  const response = await axios.post('http://legacy.fleshas.lt/api_login.php?api_login=true', {
+  const response = await axios.post('https://legacy.fleshas.lt/api_login.php?api_login=true', {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     },
