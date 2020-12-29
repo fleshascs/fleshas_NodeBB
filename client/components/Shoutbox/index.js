@@ -17,7 +17,6 @@ import ShoutsPlaceHolder from './ShoutsPlaceHolder';
 import socket from 'areas/socket/services';
 import { withTranslation } from '_core/i18n';
 import { whenAllImagesLoads } from '_core/utils';
-//import { OnlineUsersBadge } from 'ui';
 import { EmojiButton } from 'ui/EmojiButton';
 import { GifButton } from 'ui/GifButton';
 import { messageDate } from '_core/utils';
@@ -29,7 +28,7 @@ const YoutubeNotification = dynamic(() => import('./YoutubeNotification'), {
 const ServerChatMessage = dynamic(() => import('./ServerChatMessage'), {
   ssr: false
 });
-//import { getOnlineUsers } from 'areas/user/selectors';
+
 //https://codesandbox.io/s/04v892702v
 const { confirm } = Modal;
 
@@ -61,12 +60,12 @@ class ShoutboxComponent extends Component {
   };
 
   handleVideo = (video) => {
-    const messages = this.state.messages.concat([{ type: 'youtubePlayer', ...video }]);
+    const messages = [...this.state.messages, { type: 'youtubePlayer', ...video }];
     this.setState({ messages });
   };
 
   handleServerChatMessage = (data) => {
-    const messages = this.state.messages.concat([{ type: 'serverChatMessage', ...data }]);
+    const messages = [...this.state.messages, { type: 'serverChatMessage', ...data }];
     this.setState({ messages });
   };
 
@@ -158,6 +157,7 @@ class ShoutboxComponent extends Component {
             onChange={this.handleMessageChange}
             value={this.state.message}
             ref={this.input}
+            aria-label='Send a message'
           />
           <div className='d-flex'>
             <EmojiButton onEmojiSelect={this.onEmojiSelect} />
