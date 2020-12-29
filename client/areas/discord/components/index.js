@@ -63,30 +63,28 @@ class DiscordPanelPure extends PureComponent {
     return list;
   };
 
-
   render() {
-    const {loadingError, loading} = this.state;
+    const { loadingError, loading } = this.state;
     if (loadingError) return null;
 
     return (
       <>
         <Box className='mt-3'>
           <BoxHeaderContainer style={{ paddingLeft: '12px' }}>
-            <DiscordIcon src='/static/images/icons8-discord.svg' />
+            <DiscordIcon src='/static/images/icons8-discord.svg' alt='discord' />
             <BoxHeaderTitle className='pl-2'>Discord</BoxHeaderTitle>
             {this.renderButton()}
           </BoxHeaderContainer>
           {loading ? <UsersPlaceholder /> : this.renderUsers()}
         </Box>
-        {!loading ?
-         (<Footer>
+        {!loading ? (
+          <Footer>
             <b>{this.state.users.length}</b> Members Online{' '}
             <UpdateButton onClick={this.toggleExpand}>
               {this.props.t(this.state.expanded ? 'show-less' : 'show-more')}
             </UpdateButton>
-          </Footer>)
-          : null
-        }
+          </Footer>
+        ) : null}
       </>
     );
   }
@@ -100,7 +98,7 @@ function TeamSpeakItem({ username, avatar }) {
       <Row>
         <ServerNameColumn>
           <ServerNameContainer>
-            <Avatar src={avatar} />
+            <Avatar src={avatar} alt={username} />
             <CircleOnlineStatus /> {username}
           </ServerNameContainer>
         </ServerNameColumn>

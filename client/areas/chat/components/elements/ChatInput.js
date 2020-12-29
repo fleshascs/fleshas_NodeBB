@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { EmojiButton } from 'ui/EmojiButton';
 import { withTranslation } from '_core/i18n';
-//https://www.npmjs.com/package/emoji-picker-react
 import { primaryColor, chatBackgroundColor, chatInnerBorderColor } from '_theme';
 
 const InputContainer = styled.div`
@@ -21,8 +20,18 @@ const Input = styled.input`
   }
 `;
 
+const fadeIn = keyframes`
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+
 const SubmitIcon = styled.i`
   color: ${primaryColor};
+  animation: ${fadeIn} 0.5s linear;
   filter: brightness(150%);
   &:hover {
     filter: brightness(300%);
@@ -75,7 +84,7 @@ class ChatInput extends Component {
           </div>
           <div className='ml-auto'>
             {this.state.message ? (
-              <SubmitIcon className='material-icons mr-1 fadeMe' onClick={this.onSubmitClick}>
+              <SubmitIcon className='material-icons mr-1' onClick={this.onSubmitClick}>
                 send
               </SubmitIcon>
             ) : null}

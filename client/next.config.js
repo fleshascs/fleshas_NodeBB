@@ -20,6 +20,11 @@ const nextConfig = {
   //   spaceID: process.env.spaceID,
   //   accessTokenDelivery: process.env.accessTokenDelivery
   // }
+  i18n: {
+    //https://github.com/vercel/next.js/issues/9160#issuecomment-748599333 works for nextjs 10+
+    locales: ['en-US'],
+    defaultLocale: 'en-US'
+  }
 };
 
 const plugins = [

@@ -53,6 +53,10 @@ class Index extends React.Component {
       <div className='container mt-3'>
         <Head>
           <title>{translateNodeBBTemplate('[[pages:home]]', t)}</title>
+          <meta
+            name='description'
+            content='Counter Strike 1.6 - one of the most popular FPS games in the world.'
+          />
         </Head>
         <DrawingBoard />
         <Row gutter={24}>

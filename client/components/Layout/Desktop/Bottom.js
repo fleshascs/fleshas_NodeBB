@@ -51,7 +51,12 @@ class Footer extends Component {
               <ColHeader>{t('links')}</ColHeader>
               <LinkContainer>
                 <li>
-                  <a title='CS 1.6 download' href='https://www.cybersports.lt/ ' target='_blank'>
+                  <a
+                    title='CS 1.6 download'
+                    href='https://www.cybersports.lt/ '
+                    target='_blank'
+                    rel='noopener'
+                  >
                     CS 1.6 download cybersports.lt
                   </a>
                 </li>
@@ -61,6 +66,7 @@ class Footer extends Component {
                     target='_blank'
                     title='cs 1.6 download '
                     alt='counter-strike 1.6 download , cs 1.6 download , cs 1.6 siustis , download cs 1.6'
+                    rel='noopener'
                   >
                     cs 1.6 download
                   </a>
