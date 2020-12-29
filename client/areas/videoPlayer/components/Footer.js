@@ -40,7 +40,7 @@ export default function Footer(props) {
   return (
     <Container>
       <UrlContainer>
-        <a href={url} target='_blank'>
+        <a href={url} target='_blank' rel='noopener'>
           {url}
         </a>
       </UrlContainer>

@@ -32,7 +32,7 @@ export default function YoutubeNotification({ user, url, title, thumbnail }) {
         </div>
       </div>
       <div className='px-2'>
-        <a href={url} target='_blank'>
+        <a href={url} target='_blank' rel='noopener'>
           {title}
           <br />
           <img className='img-responsive' src={thumbnail} />
