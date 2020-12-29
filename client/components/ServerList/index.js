@@ -66,7 +66,7 @@ class ServerList extends React.Component {
         <Box>
           <a href='http://counter-strike-download.fleshas.lt/'>
             <Csdownload
-              src='http://fleshas.lt/themes/izi/image/cs16download.gif'
+              src='https://fleshas.lt/themes/izi/image/cs16download.gif'
               alt='Counter-Strike 1.6 Download'
             />
           </a>

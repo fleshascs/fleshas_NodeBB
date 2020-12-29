@@ -331,7 +331,7 @@ module.exports.setupRoutes = function (app, server, middleware) {
   });
   const registerHandllerMiddleware = (req, res, next) => {
     const settings = { s: '100', r: 'x', d: 'retro' };
-    req.body.picture = gravatar.url(req.body.email, settings, false);
+    req.body.picture = gravatar.url(req.body.email, settings, true);
     next();
   };
   server.post(
