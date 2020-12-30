@@ -1,11 +1,15 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import axios from 'axios';
+import dynamic from 'next/dynamic';
 import styled from 'styled-components';
-import OnlinePlayers from './OnlinePlayers';
 import ServersPlaceHolder from './ServersPlaceHolder';
 import TimePasedRealTime from '../TimePasedRealTime';
 import { withTranslation } from '_core/i18n';
 import { boxBGColor, rowHoverColor, rowLinkColor } from '_theme';
+
+const OnlinePlayers = dynamic(() => import('./OnlinePlayers'), {
+  ssr: false
+});
 
 const Footer = styled.div`
   text-align: right;
@@ -36,7 +40,7 @@ class ServerList extends React.Component {
 
   requestForServers = () => {
     axios
-      .get('/php/api/servers/index.php')
+      .get('https://fleshas.lt/php/api/servers/index.php')
       .then((response) => {
         if (response.data) {
           this.setState({

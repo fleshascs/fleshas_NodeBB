@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import dynamic from 'next/dynamic';
 import { connect } from 'react-redux';
 import { NavBar, LoginRegisterBlock, UserBlock } from 'ui';
 import { withRouter } from 'next/router';
@@ -11,7 +12,10 @@ import { setTheme } from 'areas/general/actions';
 import { getTheme } from 'areas/general/selectors';
 import { setCookie } from '_core/utils';
 import { getIsLoggedIn } from 'areas/session/selectors';
-import LeftDrawer from './LeftDrawer';
+
+const LeftDrawer = dynamic(() => import('./LeftDrawer'), {
+  ssr: false
+});
 
 const Container = styled.header`
   color: #fff;
@@ -66,11 +70,12 @@ export const MessagesButtonContainer = styled.div`
 `;
 
 class Header extends Component {
-  state = { visible: false };
+  state = { visible: false, hasBeenToggled: false };
 
   showDrawer = () => {
     this.setState({
-      visible: true
+      visible: true,
+      hasBeenToggled: true
     });
   };
 
@@ -112,13 +117,15 @@ class Header extends Component {
           </Top>
           <NavBar />
         </Container>
-        <LeftDrawer
-          onClose={this.onClose}
-          visible={this.state.visible}
-          toggleTheme={this.toggleTheme}
-          theme={theme}
-          onLangChange={this.onLangChange}
-        />
+        {this.state.hasBeenToggled ? (
+          <LeftDrawer
+            onClose={this.onClose}
+            visible={this.state.visible}
+            toggleTheme={this.toggleTheme}
+            theme={theme}
+            onLangChange={this.onLangChange}
+          />
+        ) : null}
       </>
     );
   }

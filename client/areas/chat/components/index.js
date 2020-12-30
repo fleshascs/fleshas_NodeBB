@@ -1,30 +1,11 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
-import Chat from './ChatPopUp';
+import dynamic from 'next/dynamic';
 import { connect } from 'react-redux';
 import socket from 'areas/socket/services';
-import * as chatActions from '../actions';
-
-const Container = styled.div`
-  display: flex;
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  justify-content: flex-end;
-`;
-const ContainerWrapper = styled.div`
-  width: 80%;
-  display: flex;
-  position: relative;
-
-  @media (max-width: 1370px) {
-    width: 74%;
-  }
-
-  @media (max-width: 600px) {
-    width: 100%;
-  }
-`;
+import { updateUnreadCount, openChat } from '../actions';
+const ChatContainer = dynamic(() => import('./ChatContainer'), {
+  ssr: false
+});
 
 class ChatController extends Component {
   componentDidMount() {
@@ -32,7 +13,7 @@ class ChatController extends Component {
 
     socket.on('event:chats.receive', this.onNewMessage);
     socket.on('event:unread.updateChatCount', (count) => {
-      this.props.dispatch(chatActions.updateUnreadCount(count));
+      this.props.dispatch(updateUnreadCount(count));
     });
 
     if (this.props.auth.user && this.props.auth.user.uid) {
@@ -51,7 +32,7 @@ class ChatController extends Component {
     }
 
     if (!this.props.chatsOpened[data.roomId]) {
-      this.props.dispatch(chatActions.openChat(data));
+      this.props.dispatch(openChat(data));
     }
   };
 
@@ -59,30 +40,19 @@ class ChatController extends Component {
     const user = this.props.auth.user;
     const storeKey = 'chatsOpened-' + user.uid;
     const chatsOpened = JSON.parse(localStorage.getItem(storeKey)) || {};
-    //render opened chats
-    Object.keys(chatsOpened).map((key) =>
-      this.props.dispatch(chatActions.openChat(chatsOpened[key]))
-    );
+    Object.keys(chatsOpened).map((key) => this.props.dispatch(openChat(chatsOpened[key])));
   }
 
   render() {
     const { chatsOpened } = this.props.chat;
-    if (!this.props.auth.loggedIn) {
+    if (!this.props.auth.loggedIn || !Object.keys(chatsOpened).length) {
       return null;
     }
-    return (
-      <ContainerWrapper>
-        <Container>
-          {Object.keys(chatsOpened).map((chatKey) => (
-            <Chat key={chatsOpened[chatKey].roomId} room={chatsOpened[chatKey]} />
-          ))}
-        </Container>
-      </ContainerWrapper>
-    );
+    return <ChatContainer chatsOpened={chatsOpened} />;
   }
 }
 
-function mapStateToProps(state, props) {
+function mapStateToProps(state) {
   return {
     chatsOpened: state.chat.chatsOpened,
     auth: state.authentication,
