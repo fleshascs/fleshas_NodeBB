@@ -51,13 +51,7 @@ export default function LeftDrawer(props) {
   const router = useRouter();
 
   return (
-    <Drawer
-      title='Navigation'
-      placement='left'
-      closable={false}
-      onClose={onClose}
-      visible={visible}
-    >
+    <Drawer placement='left' closable={false} onClose={onClose} visible={visible}>
       {LINKS.map((url, index) => (
         <MenuListItem key={url.to + index}>
           {renderLink(

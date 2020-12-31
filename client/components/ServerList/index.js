@@ -2,10 +2,9 @@ import React from 'react';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
 import styled from 'styled-components';
-import ServersPlaceHolder from './ServersPlaceHolder';
 import TimePasedRealTime from '../TimePasedRealTime';
 import { withTranslation } from '_core/i18n';
-import { boxBGColor, rowHoverColor, rowLinkColor } from '_theme';
+import { boxBGColor, rowHoverColor, rowLinkColor, contentPlaceholderColor } from '_theme';
 
 const OnlinePlayers = dynamic(() => import('./OnlinePlayers'), {
   ssr: false
@@ -74,21 +73,19 @@ class ServerList extends React.Component {
               alt='Counter-Strike 1.6 Download'
             />
           </a>
-          {this.state.servsersLoading ? (
-            <ServersPlaceHolder />
-          ) : (
-            this.state.servers.map((server, index) => (
-              <ServerListItem
-                key={server.name + server.css_qs_server_port}
-                id={index + 1 < 10 ? '0' + (index + 1) : index + 1}
-                name={server.name && server.name.replace('[Fleshas.lt]', '').replace('24/7', '')}
-                map={server.map}
-                onlinePlayers={server.activeplayers}
-                maxOnlinePlayers={server.maxplayers}
-                server={server}
-              />
-            ))
-          )}
+          {this.state.servsersLoading
+            ? createPlaceHolder(7)
+            : this.state.servers.map((server, index) => (
+                <ServerListItem
+                  key={server.name + server.css_qs_server_port}
+                  id={index + 1 < 10 ? '0' + (index + 1) : index + 1}
+                  name={server.name && server.name.replace('[Fleshas.lt]', '').replace('24/7', '')}
+                  map={server.map}
+                  onlinePlayers={server.activeplayers}
+                  maxOnlinePlayers={server.maxplayers}
+                  server={server}
+                />
+              ))}
         </Box>
         {!this.state.servsersLoading ? (
           <Footer>
@@ -106,7 +103,16 @@ class ServerList extends React.Component {
 
 export default withTranslation('common')(ServerList);
 
-//--------------------------server list item------------------------------------//
+function createPlaceHolder(shoutsNum) {
+  let placeHolders = [];
+  for (let j = 0; j < shoutsNum; j++) {
+    placeHolders.push(
+      <ServerListItemPlaceholder key={j} id={j + 1 < 10 ? '0' + (j + 1) : j + 1} />
+    );
+  }
+  return placeHolders;
+}
+
 const ServerListItemContainer = styled.div`
   position: relative;
 `;
@@ -215,6 +221,39 @@ class ServerListItem extends React.Component {
           </SmallDataColumn>
         </Row>
         {this.state.showPlayers ? <OnlinePlayers server={this.props.server} /> : null}
+      </ServerListItemContainer>
+    );
+  }
+}
+
+const Placeholder = styled.div`
+  background: ${contentPlaceholderColor};
+  height: 14px;
+  width: ${(props) => props.w};
+  display: inline-block;
+  margin-left: 3px;
+  margin-right: 3px;
+  border-radius: 4px;
+`;
+
+class ServerListItemPlaceholder extends React.Component {
+  render() {
+    return (
+      <ServerListItemContainer>
+        <Row>
+          <NumberColumn>{this.props.id}</NumberColumn>
+          <ServerNameColumn>
+            <ServerNameContainer>
+              <CircleOnlineStatus /> <Placeholder w='38px' />
+            </ServerNameContainer>
+            <ServerMap>
+              <Placeholder w='74px' />
+            </ServerMap>
+          </ServerNameColumn>
+          <SmallDataColumn>
+            <Placeholder w='25px' />
+          </SmallDataColumn>
+        </Row>
       </ServerListItemContainer>
     );
   }

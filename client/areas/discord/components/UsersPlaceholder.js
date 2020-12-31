@@ -1,28 +1,38 @@
 import React from 'react';
-import ContentLoader from 'react-content-loader';
+import styled from 'styled-components';
+import ListItem from './ListItem';
+import { contentPlaceholderColor } from '_theme';
 
-const PlaceHolder = () => (
-	<div className="mb-3 px-2" style={{ height: '20px' }}>
-		<ContentLoader
-			height={30}
-			primaryColor={'#9494941a'}
-			secondaryColor={'#9494941a'}
-		>
-			<circle cx="35" cy="15" r="15" />
-			<rect x="60" y="0" rx="4" ry="10" width="360" height="25" />
-		</ContentLoader>
-	</div>
-);
+const PPlaceholder = styled.div`
+  background: ${contentPlaceholderColor};
+  height: ${(props) => props.h};
+  width: ${(props) => props.w};
+  display: inline-block;
+  margin-left: 3px;
+  margin-right: 3px;
+  border-radius: 4px;
+`;
+
+const Avatar = styled.div`
+  background: ${contentPlaceholderColor};
+  border-radius: 100%;
+  width: 24px;
+  height: 24px;
+  border: solid 2px #fff;
+  border-color: #3a3a3a;
+  margin-right: 5px;
+  display: inline-block;
+`;
 
 function createPlaceHolder(shoutsNum = 1) {
-	let placeHolders = [];
-	for (let j = 0; j < shoutsNum; j++) {
-		placeHolders.push(<PlaceHolder key={j} />);
-	}
-	return placeHolders;
+  let placeHolders = [];
+  for (let j = 0; j < shoutsNum; j++) {
+    placeHolders.push(
+      <ListItem key={j} username={<PPlaceholder h='14px' w='50px' />} avatar={<Avatar />} />
+    );
+  }
+  return placeHolders;
 }
 
-const ShoutsPlaceHolder = () => (
-	<div className="mt-3">{createPlaceHolder(11)}</div>
-);
+const ShoutsPlaceHolder = () => createPlaceHolder(11);
 export default ShoutsPlaceHolder;

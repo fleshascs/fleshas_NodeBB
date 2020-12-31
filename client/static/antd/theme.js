@@ -101,6 +101,10 @@ export const inputBackgorundColor = theme('mode', {
   light: '#fafbfc',
   dark: '#424c58'
 });
+export const contentPlaceholderColor = theme('mode', {
+  light: '#eff1ef',
+  dark: '#424c58'
+});
 export const chatInnerBorderColor = theme('mode', {
   light: themeLight.CHAT_INNER_BORDER_COLOR,
   dark: themeDark.CHAT_INNER_BORDER_COLOR
