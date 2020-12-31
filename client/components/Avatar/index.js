@@ -44,18 +44,27 @@ const DEFAULT_AVATAR =
 const Avatar = (props) => {
   const { className, size, circle, onClick, isOnline } = props;
   const imgUrl = props.imgUrl || DEFAULT_AVATAR;
+  const sizeInPixels = getSize(size);
   return (
     <Container className={className}>
       {imgUrl ? (
         <AvatarImg
-          size={getSize(size)}
+          size={sizeInPixels}
+          width={sizeInPixels}
+          height={sizeInPixels}
           src={imgUrl}
           onClick={onClick}
           circle={circle}
           alt='avatar'
         />
       ) : (
-        <PlaceHolder size={getSize(size)} className={className} circle={circle} />
+        <PlaceHolder
+          size={sizeInPixels}
+          width={sizeInPixels}
+          height={sizeInPixels}
+          className={className}
+          circle={circle}
+        />
       )}
       {isOnline ? <Indicator /> : null}
     </Container>
