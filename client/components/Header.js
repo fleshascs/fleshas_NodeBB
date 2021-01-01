@@ -28,10 +28,7 @@ const Container = styled.header`
   color: #efefef;
 `;
 
-const Logo = styled.div`
-  font-family: bauerg;
-  font-size: 2em;
-
+const Logo = styled.img`
   @media (max-width: 750px) {
     display: none;
   }
@@ -110,7 +107,7 @@ class Header extends Component {
                     <i className='material-icons'>menu</i>
                   </Button>
                 </MobileNavButton>
-                <Logo>fleshas.lt</Logo>
+                <Logo src='/static/images/logo.png' width='236' height='44' />
               </LogoContainer>
               <div style={{ flex: 1 }}>{loggedIn ? <UserBlock /> : <LoginRegisterBlock />}</div>
             </div>
