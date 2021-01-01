@@ -43,7 +43,8 @@ class Footer extends Component {
             <Col xs={{ span: 24 }} lg={{ span: 8 }}>
               <img
                 src='/static/images/sticker260.png'
-                style={{ width: '100%', maxWidth: '260px' }}
+                width='260'
+                height='185'
                 alt='fleshas-sticker'
               />
             </Col>

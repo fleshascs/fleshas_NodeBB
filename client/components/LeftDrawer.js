@@ -20,17 +20,10 @@ const NavLink = styled.a`
   transition: all 0.2s ease;
 `;
 
-const CollapseButtonIcon = styled.i`
-  color: ${leftBarIconColor};
-`;
-
 const CollapseButton = styled.div`
   cursor: pointer;
   &:hover {
     background: ${primaryColor};
-  }
-  &:hover ${CollapseButtonIcon} {
-    color: #06183c;
   }
 
   &.lul {
@@ -62,10 +55,8 @@ export default function LeftDrawer(props) {
           )}
         </MenuListItem>
       ))}
-      <CollapseButton className='mt-2' onClick={onLangChange}>
-        <CollapseButtonIcon>
-          <img src={`/static/images/locale/${i18n.language}.png`} className='py-3' />
-        </CollapseButtonIcon>
+      <CollapseButton className='mt-2 py-3' onClick={onLangChange}>
+        <img src={`/static/images/locale/${i18n.language}.png`} width='16px' height='11px' />
       </CollapseButton>
       <div
         className='mt-2 mb-4'

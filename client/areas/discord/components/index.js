@@ -7,9 +7,6 @@ import { rowLinkColor } from '_theme';
 import UsersPlaceholder from './UsersPlaceholder';
 import ListItem from './ListItem';
 
-const DiscordIcon = styled.img`
-  width: 3rem;
-`;
 const Footer = styled.div`
   text-align: right;
   color: #878787;
@@ -92,7 +89,7 @@ class DiscordPanelPure extends PureComponent {
         <ListItem
           key={user.username}
           username={user.username}
-          avatar={<Avatar src={user.avatar_url} alt={user.username} />}
+          avatar={<Avatar src={user.avatar_url} alt={user.username} width='24px' height='24px' />}
         />
       );
     }
@@ -107,7 +104,7 @@ class DiscordPanelPure extends PureComponent {
       <>
         <Box className='mt-3'>
           <BoxHeaderContainer style={{ paddingLeft: '12px' }}>
-            <DiscordIcon src='/static/images/icons8-discord.svg' alt='discord' />
+            <img src='/static/images/icons8-discord.svg' alt='discord' width='48px' height='48px' />
             <BoxHeaderTitle className='pl-2'>Discord</BoxHeaderTitle>
             {this.renderButton()}
           </BoxHeaderContainer>

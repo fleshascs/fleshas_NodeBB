@@ -20,6 +20,7 @@ const nextConfig = {
   //   spaceID: process.env.spaceID,
   //   accessTokenDelivery: process.env.accessTokenDelivery
   // }
+  productionBrowserSourceMaps: true
 };
 
 const plugins = [

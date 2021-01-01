@@ -151,17 +151,18 @@ class Left extends Component {
           <UsersList users={users} opened={opened} />
           <div className='mt-auto' />
           {!opened ? (
-            <CollapseButton className={opened ? 'mb-2' : 'mb-5'} onClick={this.onLangChange}>
-              <CollapseButtonIcon>
-                <img
-                  src={`/static/images/locale/${this.props.i18n.language}.png`}
-                  className='py-3'
-                  alt='language'
-                />
-              </CollapseButtonIcon>
+            <CollapseButton
+              className={`py-3 ${opened ? 'mb-2' : 'mb-5'}`}
+              onClick={this.onLangChange}
+            >
+              <img
+                src={`/static/images/locale/${this.props.i18n.language}.png`}
+                alt='language'
+                width='16px'
+                height='11px'
+              />
             </CollapseButton>
           ) : null}
-
           {opened ? (
             <div
               className='mt-2 mb-4'
