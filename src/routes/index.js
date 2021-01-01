@@ -148,7 +148,7 @@ function addCoreRoutes(app, router, middleware) {
 		{ route: '/plugins', path: path.join(__dirname, '../../build/public/plugins') },
 	];
 	var staticOptions = {
-		maxAge: app.enabled('cache') ? 5184000000 : 0,
+		maxAge: app.enabled('cache') ? 31536000000 : 0,
 	};
 
 	if (path.resolve(__dirname, '../../public/uploads') !== nconf.get('upload_path')) {

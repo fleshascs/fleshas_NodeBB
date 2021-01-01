@@ -12,9 +12,9 @@ const app = next({ dev, dir: './client' });
 
 function initApp(params) {
   const { router, middleware } = params;
-  router.use('/_next', express.static('client/.next'));
-  router.use('/static', express.static('client/static'));
-  router.use('/client/static', express.static('client/static')); //fix for localePath
+  router.use('/_next', express.static('client/.next', { maxAge: 31536000000 })); // 365days
+  router.use('/static', express.static('client/static', { maxAge: 31536000000 }));
+  router.use('/client/static', express.static('client/static', { maxAge: 31536000000 })); //fix for localePath
   router.use(nextI18NextMiddleware(nextI18next));
 
   app.prepare().catch((ex) => {
