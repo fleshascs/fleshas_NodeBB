@@ -107,7 +107,7 @@ class Header extends Component {
                     <i className='material-icons'>menu</i>
                   </Button>
                 </MobileNavButton>
-                <Logo src='/static/images/logo.png' width='236' height='44' />
+                <Logo src='/static/images/logo.png' width='236' height='44' alt='logo' />
               </LogoContainer>
               <div style={{ flex: 1 }}>{loggedIn ? <UserBlock /> : <LoginRegisterBlock />}</div>
             </div>
