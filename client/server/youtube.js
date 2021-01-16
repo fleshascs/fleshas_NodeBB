@@ -37,7 +37,7 @@ async function onGetCurrent(socket) {
       info = lastVideoCache;
     } else {
       if (errorCount[0] === video.id && errorCount[1] >= MAX_FETCH_RETRY) {
-        throw new Error('MAX FETCH RERTRY reached, videoId=' + errorCount[1]);
+        throw new Error('MAX FETCH RERTRY reached, error count=' + errorCount[1]);
       }
       info = await ytdl.getInfo(video.url);
       lastVideoCache = info;
@@ -53,8 +53,12 @@ async function onGetCurrent(socket) {
     return video;
   } catch (error) {
     if (video && video.id) {
-      errorCount[0] = video.id;
-      errorCount[1] = errorCount[1] ? errorCount[1] : 0 + 1;
+      if (errorCount[0] === video.id) {
+        errorCount[1] = errorCount[1] + 1;
+      } else {
+        errorCount[0] = video.id;
+        errorCount[1] = 1;
+      }
     }
     console.log('onGetCurrent error', error);
     return error;
