@@ -39,7 +39,7 @@ async function onGetCurrent(socket) {
       if (errorCount[0] === video.id && errorCount[1] >= MAX_FETCH_RETRY) {
         throw new Error('MAX FETCH RERTRY reached, error count=' + errorCount[1]);
       }
-      info = await ytdl.getInfo(video.url);
+      info = await ytdl.getBasicInfo(video.url);
       lastVideoCache = info;
     }
     video.duration = info.videoDetails.lengthSeconds || 0;
@@ -79,7 +79,7 @@ async function play(socket, args) {
     uid: socket.uid
   };
   await db.setObject(currentVideoKey, video);
-  const info = await ytdl.getInfo(video.url);
+  const info = await ytdl.getBasicInfo(video.url);
   lastVideoCache = info;
   const userData = await getUserData(socket.uid);
   SocketIndex.server.sockets.emit('event:playVideo', {
