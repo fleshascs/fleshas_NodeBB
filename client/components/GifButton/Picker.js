@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Picker from 'react-giphy-picker';
+import Picker from 'react-giphy-picker-ololo';
 
 const EmojiPickerContainer = styled.div`
   position: absolute;

@@ -68,7 +68,11 @@ class ServerList extends React.Component {
       <React.Fragment>
         <Box>
           <a href='http://counter-strike-download.fleshas.lt/'>
-            <Csdownload src='/static/images/cs16download.gif' alt='Counter-Strike 1.6 Download' />
+            <Csdownload
+              src='/static/images/cs16download.gif'
+              alt='Counter-Strike 1.6 Download'
+              height='60px'
+            />
           </a>
           {this.state.servsersLoading
             ? createPlaceHolder(7)
