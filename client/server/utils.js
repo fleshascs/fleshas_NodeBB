@@ -1,3 +1,5 @@
+const SocketIndex = require('../../src/socket.io/index');
+
 module.exports.promisify = function (nodeFunction) {
   function promisified(...args) {
     return new Promise((resolve, reject) => {
@@ -19,3 +21,11 @@ module.exports.asyncUtil = (fn) =>
     const next = args[args.length - 1];
     return Promise.resolve(fnReturn).catch(next);
   };
+
+module.exports.sendServerChatMessage = (message) => {
+  setTimeout(() => {
+    SocketIndex.server.sockets.emit('event:serverChatMessage', {
+      message: message
+    });
+  }, 200); //lidl solution, server message will apear after user message
+};
