@@ -70,12 +70,6 @@ async function play(socket, args) {
   if (!socket.uid) return;
   const { id, startTime } = parseVideo(url);
   if (!id) return;
-  const userData = await getUserData(socket.uid);
-  const info = await ytdl.getBasicInfo(video.url);
-  const title = info.videoDetails.title;
-  if (title.toLowerCase().indexOf('rape') != -1) {
-    return;
-  }
   const createTime = Date.now();
   const video = {
     url,
@@ -84,6 +78,12 @@ async function play(socket, args) {
     createtime: createTime,
     uid: socket.uid
   };
+  const userData = await getUserData(socket.uid);
+  const title = info.videoDetails.title;
+  if (title.toLowerCase().indexOf('rape') != -1) {
+    return;
+  }
+  const info = await ytdl.getBasicInfo(video.url);
   await db.setObject(currentVideoKey, video);
   lastVideoCache = info;
   SocketIndex.server.sockets.emit('event:playVideo', {
