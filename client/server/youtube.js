@@ -12,6 +12,7 @@ const commands = {
   '!p': play,
   '!play': play
 };
+const MINIMUM_REPUTATION = 15;
 
 let lastVideoCache = {};
 let errorCount = [];
@@ -79,6 +80,10 @@ async function play(socket, args) {
     uid: socket.uid
   };
   const userData = await getUserData(socket.uid);
+  if (userData.reputation < MINIMUM_REPUTATION) {
+    utils.sendServerChatMessage('Minimum reputation to use this feature is ' + MINIMUM_REPUTATION);
+    return;
+  }
   const info = await ytdl.getBasicInfo(video.url);
   const title = info.videoDetails.title;
   if (title.toLowerCase().indexOf('rape') != -1) {
