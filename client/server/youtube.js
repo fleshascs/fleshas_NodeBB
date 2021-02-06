@@ -73,7 +73,7 @@ async function play(socket, args) {
   const userData = await getUserData(socket.uid);
   const info = await ytdl.getBasicInfo(video.url);
   const title = info.videoDetails.title;
-  if (title.indexOf('rape') != -1) {
+  if (title.toLowerCase().indexOf('rape') != -1) {
     return;
   }
   const createTime = Date.now();
