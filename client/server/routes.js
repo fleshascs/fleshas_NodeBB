@@ -340,7 +340,7 @@ module.exports.setupRoutes = function (app, server, middleware) {
   }
   const registerHandllerMiddleware = async (req, res, next) => {
     if (await isUsingVPN(req.ip)) {
-      throw new Error('[[error:blacklisted-ip]]');
+      return next(new Error('[[error:blacklisted-ip]]'));
     }
 
     const settings = { s: '100', r: 'x', d: 'retro' };
