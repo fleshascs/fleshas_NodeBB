@@ -12,7 +12,7 @@ const commands = {
   '!p': play,
   '!play': play
 };
-const MINIMUM_REPUTATION = 15;
+const MINIMUM_REPUTATION = 5;
 
 let lastVideoCache = {};
 let errorCount = [];
