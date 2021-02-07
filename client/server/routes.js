@@ -333,7 +333,7 @@ module.exports.setupRoutes = function (app, server, middleware) {
   async function isUsingVPN(ip) {
     try {
       const response = await axios.get('https://blackbox.ipinfo.app/lookup/' + ip);
-      return response === 'Y';
+      return response.data === 'Y';
     } catch {
       return false;
     }
