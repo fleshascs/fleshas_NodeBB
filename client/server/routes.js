@@ -330,10 +330,16 @@ module.exports.setupRoutes = function (app, server, middleware) {
       res.json({ search: req.params, results });
     });
   });
+  // mem leak?
+  const cacheIPs = {};
   async function isUsingVPN(ip) {
     try {
+      if (cacheIPs[ip]) {
+        return cacheIPs[ip];
+      }
       const response = await axios.get('https://blackbox.ipinfo.app/lookup/' + ip);
-      return response.data === 'Y';
+      cacheIPs[ip] = response.data === 'Y';
+      return cacheIPs[ip];
     } catch {
       return false;
     }
