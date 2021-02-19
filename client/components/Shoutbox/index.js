@@ -121,7 +121,6 @@ class ShoutboxComponent extends Component {
   }
 
   render() {
-    //const { loggedIn, t, onlineUsers } = this.props;
     const { loggedIn, t } = this.props;
     if (this.state.loadingError) {
       return <div>{t('technical-error')}</div>;
@@ -153,6 +152,7 @@ class ShoutboxComponent extends Component {
 
         <div className='mx-3 py-2'>
           <Textarea
+            onKeyDown={this.onKeyPressed}
             className='w-100'
             onChange={this.handleMessageChange}
             value={this.state.message}
@@ -303,8 +303,15 @@ class ShoutboxComponent extends Component {
     this.setState({ message: e.currentTarget.value });
   };
 
+  onKeyPressed = (e) => {
+    if (e.which === 13 && !e.shiftKey) {
+      this.handleMessageSubmit();
+      e.preventDefault();
+    }
+  };
+
   handleMessageSubmit = () => {
-    if (!this.props.loggedIn) return;
+    if (!this.props.loggedIn || !this.state.message.trim().length) return;
     const msg = { message: this.state.message };
     socket.emit('plugins.shoutbox.send', msg, (error, response) => {
       if (error) {
