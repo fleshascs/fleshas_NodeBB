@@ -17,7 +17,9 @@ export const ShoutboxContainer = styled.div`
   }
 `;
 
-export const MessgesList = styled.div``;
+export const MessgesList = styled.div`
+  flex: 1;
+`;
 
 export const NotLoggedIn = styled.div`
   color: grey;
