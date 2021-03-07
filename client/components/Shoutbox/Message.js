@@ -4,6 +4,7 @@ import moment from 'moment';
 import Link from 'next/link';
 import { Comment, Tooltip } from 'antd';
 import { Username, Avatar } from 'ui';
+import { wrapEmojis } from '_core/utils';
 
 const MessageWrapper = styled.div`
   width: 100%;
@@ -29,7 +30,7 @@ class Message extends PureComponent {
       return '<i>Message deleted...</i>';
     }
     //remove 'break line' symbol at the end and unwrap from <p> tag
-    return content.trim().replace(/^<p[^>]*>|<\/p>$/g, '');
+    return wrapEmojis(content.trim().replace(/^<p[^>]*>|<\/p>$/g, ''));
   }
 
   delete = () => {

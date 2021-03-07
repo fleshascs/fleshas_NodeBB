@@ -157,7 +157,11 @@ class TopicScreenPure extends React.Component {
             {topic.pinned ? <span>📌</span> : null}
             {topic.deleted ? (
               <span>
-                This topic has been deleted. Only users with topic management privileges can see it.
+                This topic has been deleted by{' '}
+                <Username key={user.username} user={topic.deleter}>
+                  {topic.deleter.username}
+                </Username>
+                . Only users with topic management privileges can see it.
               </span>
             ) : null}
           </div>
