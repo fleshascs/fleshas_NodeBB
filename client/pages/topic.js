@@ -158,7 +158,7 @@ class TopicScreenPure extends React.Component {
             {topic.deleted ? (
               <span>
                 This topic has been deleted by{' '}
-                <Username key={user.username} user={topic.deleter}>
+                <Username key={topic.deleter.username} user={topic.deleter}>
                   {topic.deleter.username}
                 </Username>
                 . Only users with topic management privileges can see it.
