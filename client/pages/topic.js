@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import Router from 'next/router';
 import { Pagination, Modal, Result } from 'antd';
 import Head from 'next/head';
-import { Breadcrumbs } from 'ui';
+import { Breadcrumbs, Username } from 'ui';
 import * as actions from 'areas/forum/actions';
 import { getCurrentPageTopic, getCurrentPagePosts } from 'areas/forum/selectors';
 import { getIsLoggedIn } from 'areas/session/selectors';
