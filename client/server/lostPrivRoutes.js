@@ -5,7 +5,7 @@ const async = require('async');
 const FormData = require('form-data');
 const { promisify, asyncUtil } = require('./utils');
 
-const ROOT_URL = 'http://fleshas.lt';
+const ROOT_URL = 'https://fleshas.lt';
 
 function formUrlencoded(body) {
   const params = new FormData();

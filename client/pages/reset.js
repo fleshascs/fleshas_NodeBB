@@ -50,10 +50,6 @@ class ResetPasswordPure extends React.Component {
     this.props.resetPassword(email);
   };
 
-  componentDidMount() {
-    console.log('screenData', this.props.screenData);
-  }
-
   render() {
     const { t, screenData, browserTitle, code } = this.props;
     return (

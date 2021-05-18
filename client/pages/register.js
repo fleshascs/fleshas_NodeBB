@@ -38,27 +38,10 @@ class RegisterPure extends React.Component {
   constructor(props) {
     super(props);
     this.formRef = React.createRef();
-    this.state = {
-      confirmDirty: false
-    };
   }
 
   onFinish = (values) => {
     this.props.register(values);
-  };
-
-  handleConfirmBlur = (e) => {
-    const { value } = e.target;
-    this.setState({ confirmDirty: this.state.confirmDirty || !!value });
-  };
-
-  compareToFirstPassword = (rule, value) => {
-    const { t } = this.props;
-    if (value && value !== this.formRef.current.getFieldValue('password')) {
-      return Promise.reject(t('passwords-dont-match'));
-    }
-
-    return Promise.resolve();
   };
 
   validateUsername = async (rule, value) => {
@@ -81,13 +64,6 @@ class RegisterPure extends React.Component {
       }
     }
     return;
-  };
-
-  validateToNextPassword = (rule, value) => {
-    if (value && this.state.confirmDirty) {
-      this.formRef.current.validateFields(['confirm'], { force: true });
-    }
-    return Promise.resolve();
   };
 
   render() {
@@ -155,7 +131,6 @@ class RegisterPure extends React.Component {
               <Form.Item
                 name='password'
                 label={t('password')}
-                hasFeedback
                 rules={[
                   {
                     required: true,
@@ -166,29 +141,33 @@ class RegisterPure extends React.Component {
                     message: t('minimum-symbols', {
                       number: screenData.minimumPasswordLength
                     })
-                  },
-                  {
-                    validator: this.validateToNextPassword
                   }
                 ]}
+                hasFeedback
               >
                 <Input.Password autoComplete='off' />
               </Form.Item>
               <Form.Item
                 name='password-confirm'
                 label={t('password-confirm')}
+                dependencies={['password']}
                 hasFeedback
                 rules={[
                   {
                     required: true,
                     message: t('password-confirm-required')
                   },
-                  {
-                    validator: this.compareToFirstPassword
-                  }
+                  ({ getFieldValue }) => ({
+                    validator(rule, value) {
+                      if (!value || getFieldValue('password') === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(t('passwords-dont-match'));
+                    }
+                  })
                 ]}
               >
-                <Input.Password onBlur={this.handleConfirmBlur} autoComplete='off' />
+                <Input.Password autoComplete='off' />
               </Form.Item>
               <Form.Item>
                 <div>

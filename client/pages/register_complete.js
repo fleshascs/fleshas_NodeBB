@@ -69,7 +69,7 @@ class RegistrationCompletePure extends React.Component {
   renderSection = (template, index) => {
     console.log('***************');
     console.log('template', template);
-    
+
     const content = translateNodeBBTemplate(template, this.props.t); //this.fillContent(template);
     return (
       <div key={'section' + index} dangerouslySetInnerHTML={{ __html: content }} className='p-2' />
@@ -82,24 +82,20 @@ class RegistrationCompletePure extends React.Component {
 
   render() {
     const { t, screenData, csrf, browserTitle } = this.props;
-    console.log('screenData', screenData);
     return (
       <div className='container mt-2'>
         <Head>
           <title>{translateNodeBBTemplate(browserTitle, t)}</title>
         </Head>
         <Container>
-          <Box className="mt-3">
-            <form
-              method="POST"
-              action={'/register/complete/?_csrf=' + csrf}
-            >
+          <Box className='mt-3'>
+            <form method='POST' action={'/register/complete/?_csrf=' + csrf}>
               <input type='hidden' value={csrf} name='_csrf' />
               <Result
                 status='success'
                 title={t('pages-registration-complete')}
                 extra={[
-                  <div className="mb-3">{screenData.sections.map(this.renderSection)}</div>,
+                  <div className='mb-3'>{screenData.sections.map(this.renderSection)}</div>,
                   <Button onClick={this.abort}>{t('cancel_registration')}</Button>,
                   <Button type='primary' htmlType='submit' key='console'>
                     {t('login')}

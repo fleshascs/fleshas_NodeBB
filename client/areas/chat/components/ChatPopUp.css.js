@@ -18,6 +18,7 @@ export const ChatContainer = styled.div`
   @media (max-width: 600px) {
     margin-left: 0px;
     width: 100%;
+    position: absolute;
   }
 `;
 

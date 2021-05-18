@@ -13,6 +13,11 @@ const FaceBookPanel = dynamic(() => import('ui/FaceBookPanel'), {
 // const AdSencePanel = dynamic(() => import('ui/AdSencePanel'), {
 //   ssr: false
 // });
+
+const DrawingBoard = dynamic(() => import('areas/drawingBoard/components/Container'), {
+  ssr: false
+});
+
 import { withTranslation, translateNodeBBTemplate } from '_core/i18n';
 import { buildCategoryUrl } from '_core/utils';
 import Link from 'next/link';
@@ -48,7 +53,12 @@ class Index extends React.Component {
       <div className='container mt-3'>
         <Head>
           <title>{translateNodeBBTemplate('[[pages:home]]', t)}</title>
+          <meta
+            name='description'
+            content='Counter Strike 1.6 - one of the most popular FPS games in the world.'
+          />
         </Head>
+        <DrawingBoard />
         <Row gutter={24}>
           <Col xs={{ span: 24 }} lg={{ span: 8 }} className='mb-3'>
             <ServerList />

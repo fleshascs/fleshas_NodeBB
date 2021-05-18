@@ -12,7 +12,7 @@ const AvatarImg = styled.img`
   border-style: solid;
   border-color: rgb(255, 255, 255);
   border-image: initial;
-  border-radius:${(props) => (props.circle ? '50%' : '3px')} !important;
+  border-radius: ${(props) => (props.circle ? '50%' : '3px')} !important;
 
   /* &:hover {
     box-shadow: ${avatarHoverShadowColor} 0px 0px 4px
@@ -39,17 +39,32 @@ const Indicator = styled.div`
 `;
 
 const DEFAULT_AVATAR =
-  'http://www.gravatar.com/avatar/ae69fa0d674d490c99c4d8fdca23f1e2?s=100&r=x&d=retro';
+  'https://www.gravatar.com/avatar/ae69fa0d674d490c99c4d8fdca23f1e2?s=100&r=x&d=retro';
 
 const Avatar = (props) => {
   const { className, size, circle, onClick, isOnline } = props;
   const imgUrl = props.imgUrl || DEFAULT_AVATAR;
+  const sizeInPixels = getSize(size);
   return (
     <Container className={className}>
       {imgUrl ? (
-        <AvatarImg size={getSize(size)} src={imgUrl} onClick={onClick} circle={circle} />
+        <AvatarImg
+          size={sizeInPixels}
+          width={sizeInPixels}
+          height={sizeInPixels}
+          src={imgUrl}
+          onClick={onClick}
+          circle={circle}
+          alt='avatar'
+        />
       ) : (
-        <PlaceHolder size={getSize(size)} className={className} circle={circle} />
+        <PlaceHolder
+          size={sizeInPixels}
+          width={sizeInPixels}
+          height={sizeInPixels}
+          className={className}
+          circle={circle}
+        />
       )}
       {isOnline ? <Indicator /> : null}
     </Container>

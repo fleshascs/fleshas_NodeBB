@@ -1,13 +1,3 @@
-@font-face {
-  font-family: bauerg;
-  src: url('/static/fonts/Bauer.woff') format('truetype');
-}
-
-// @font-face {
-//   font-family: Lakes;
-//   src: url("/static/fonts/TTLakes-Medium.otf") format("truetype");
-// }
-
 #__next,
 body,
 html {
@@ -17,21 +7,6 @@ html {
   flex-direction: column;
   overflow: hidden;
   position: relative;
-  // font-family: Lakes !important;
-}
-
-.fadeMe {
-  animation: fadeIn 0.5s linear;
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
 }
 
 /* userblock menu icons fix(logout buttom had padding from bottom) */
@@ -54,6 +29,7 @@ html {
 
 .emoji {
   width: 28px;
+  font-size: 2em;
 }
 
 @media (max-width: 768px) {

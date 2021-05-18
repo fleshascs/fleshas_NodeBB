@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import Router from 'next/router';
 import { Pagination, Modal, Result } from 'antd';
 import Head from 'next/head';
-import { Breadcrumbs } from 'ui';
+import { Breadcrumbs, Username } from 'ui';
 import * as actions from 'areas/forum/actions';
 import { getCurrentPageTopic, getCurrentPagePosts } from 'areas/forum/selectors';
 import { getIsLoggedIn } from 'areas/session/selectors';
@@ -157,7 +157,11 @@ class TopicScreenPure extends React.Component {
             {topic.pinned ? <span>📌</span> : null}
             {topic.deleted ? (
               <span>
-                This topic has been deleted. Only users with topic management privileges can see it.
+                This topic has been deleted by{' '}
+                <Username key={topic.deleter.username} user={topic.deleter}>
+                  {topic.deleter.username}
+                </Username>
+                . Only users with topic management privileges can see it.
               </span>
             ) : null}
           </div>

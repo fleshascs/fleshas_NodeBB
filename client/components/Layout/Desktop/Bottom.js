@@ -41,13 +41,23 @@ class Footer extends Component {
         <div className='container'>
           <Row gutter={24}>
             <Col xs={{ span: 24 }} lg={{ span: 8 }}>
-              <img src='/static/images/sticker.png' style={{ width: '100%', maxWidth: '260px' }} />
+              <img
+                src='/static/images/sticker260.png'
+                width='260'
+                height='185'
+                alt='fleshas-sticker'
+              />
             </Col>
             <Col xs={{ span: 24 }} lg={{ span: 8 }}>
               <ColHeader>{t('links')}</ColHeader>
               <LinkContainer>
                 <li>
-                  <a title='CS 1.6 download' href='https://www.cybersports.lt/ ' target='_blank'>
+                  <a
+                    title='CS 1.6 download'
+                    href='https://www.cybersports.lt/ '
+                    target='_blank'
+                    rel='noopener'
+                  >
                     CS 1.6 download cybersports.lt
                   </a>
                 </li>
@@ -57,6 +67,7 @@ class Footer extends Component {
                     target='_blank'
                     title='cs 1.6 download '
                     alt='counter-strike 1.6 download , cs 1.6 download , cs 1.6 siustis , download cs 1.6'
+                    rel='noopener'
                   >
                     cs 1.6 download
                   </a>

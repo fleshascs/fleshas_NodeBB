@@ -12,8 +12,11 @@ const commands = {
   '!p': play,
   '!play': play
 };
+const MINIMUM_REPUTATION = 5;
 
 let lastVideoCache = {};
+let errorCount = [];
+const MAX_FETCH_RETRY = 5;
 
 module.exports.youtubeVideoPlayer = async function (socket) {
   socket.on('plugins.shoutbox.send', (data) => onShoutboxMessage(socket, data));
@@ -22,8 +25,9 @@ module.exports.youtubeVideoPlayer = async function (socket) {
 };
 
 async function onGetCurrent(socket) {
+  let video;
   try {
-    let video = await db.getObject(currentVideoKey);
+    video = await db.getObject(currentVideoKey);
     if (!video) {
       return;
     }
@@ -33,7 +37,10 @@ async function onGetCurrent(socket) {
     if (lastVideoCache.videoDetails && lastVideoCache.videoDetails.videoId === video.id) {
       info = lastVideoCache;
     } else {
-      info = await ytdl.getInfo(video.url);
+      if (errorCount[0] === video.id && errorCount[1] >= MAX_FETCH_RETRY) {
+        throw new Error('MAX FETCH RERTRY reached, error count=' + errorCount[1]);
+      }
+      info = await ytdl.getBasicInfo(video.url);
       lastVideoCache = info;
     }
     video.duration = info.videoDetails.lengthSeconds || 0;
@@ -46,6 +53,14 @@ async function onGetCurrent(socket) {
     video.user = userData;
     return video;
   } catch (error) {
+    if (video && video.id) {
+      if (errorCount[0] === video.id) {
+        errorCount[1] = errorCount[1] + 1;
+      } else {
+        errorCount[0] = video.id;
+        errorCount[1] = 1;
+      }
+    }
     console.log('onGetCurrent error', error);
     return error;
   }
@@ -64,16 +79,24 @@ async function play(socket, args) {
     createtime: createTime,
     uid: socket.uid
   };
-  await db.setObject(currentVideoKey, video);
-  const info = await ytdl.getInfo(video.url);
-  lastVideoCache = info;
   const userData = await getUserData(socket.uid);
+  if (userData.reputation < MINIMUM_REPUTATION) {
+    utils.sendServerChatMessage('Minimum reputation to use this feature is ' + MINIMUM_REPUTATION);
+    return;
+  }
+  const info = await ytdl.getBasicInfo(video.url);
+  const title = info.videoDetails.title;
+  if (title.toLowerCase().indexOf('rape') != -1) {
+    return;
+  }
+  await db.setObject(currentVideoKey, video);
+  lastVideoCache = info;
   SocketIndex.server.sockets.emit('event:playVideo', {
     url,
     id,
     startTime,
     user: userData,
-    title: info.videoDetails.title,
+    title,
     thumbnail: info.videoDetails.thumbnail.thumbnails[0].url
   });
 }

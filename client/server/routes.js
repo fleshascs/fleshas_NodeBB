@@ -1,4 +1,5 @@
 const gravatar = require('gravatar');
+const axios = require('axios');
 const controllers = require('../../src/controllers');
 const recent = require('../../src/controllers/recent');
 const user = require('../../src/user');
@@ -329,9 +330,27 @@ module.exports.setupRoutes = function (app, server, middleware) {
       res.json({ search: req.params, results });
     });
   });
-  const registerHandllerMiddleware = (req, res, next) => {
+  // mem leak?
+  const cacheIPs = {};
+  async function isUsingVPN(ip) {
+    try {
+      if (cacheIPs[ip]) {
+        return cacheIPs[ip];
+      }
+      const response = await axios.get('https://blackbox.ipinfo.app/lookup/' + ip);
+      cacheIPs[ip] = response.data === 'Y';
+      return cacheIPs[ip];
+    } catch {
+      return false;
+    }
+  }
+  const registerHandllerMiddleware = async (req, res, next) => {
+    if (await isUsingVPN(req.ip)) {
+      return next(new Error('[[error:blacklisted-ip]]'));
+    }
+
     const settings = { s: '100', r: 'x', d: 'retro' };
-    req.body.picture = gravatar.url(req.body.email, settings, false);
+    req.body.picture = gravatar.url(req.body.email, settings, true);
     next();
   };
   server.post(

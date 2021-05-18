@@ -17,7 +17,6 @@ import ShoutsPlaceHolder from './ShoutsPlaceHolder';
 import socket from 'areas/socket/services';
 import { withTranslation } from '_core/i18n';
 import { whenAllImagesLoads } from '_core/utils';
-//import { OnlineUsersBadge } from 'ui';
 import { EmojiButton } from 'ui/EmojiButton';
 import { GifButton } from 'ui/GifButton';
 import { messageDate } from '_core/utils';
@@ -26,7 +25,10 @@ import dynamic from 'next/dynamic';
 const YoutubeNotification = dynamic(() => import('./YoutubeNotification'), {
   ssr: false
 });
-//import { getOnlineUsers } from 'areas/user/selectors';
+const ServerChatMessage = dynamic(() => import('./ServerChatMessage'), {
+  ssr: false
+});
+
 //https://codesandbox.io/s/04v892702v
 const { confirm } = Modal;
 
@@ -58,7 +60,12 @@ class ShoutboxComponent extends Component {
   };
 
   handleVideo = (video) => {
-    const messages = this.state.messages.concat([{ type: 'youtubePlayer', ...video }]);
+    const messages = [...this.state.messages, { type: 'youtubePlayer', ...video }];
+    this.setState({ messages });
+  };
+
+  handleServerChatMessage = (data) => {
+    const messages = [...this.state.messages, { type: 'serverChatMessage', ...data }];
     this.setState({ messages });
   };
 
@@ -66,6 +73,7 @@ class ShoutboxComponent extends Component {
     this.setState({ isServer: false });
     this.newMsgAudio = new Audio('/static/sound/newMessageShoutbox.mp3');
     socket.on('event:playVideo', this.handleVideo);
+    socket.on('event:serverChatMessage', this.handleServerChatMessage);
     socket.on('shoutbox::message', this.addMessage);
     socket.on('event:shoutbox.edit', this.updateMessageList);
     socket.on('event:shoutbox.delete', (data) => {
@@ -104,8 +112,6 @@ class ShoutboxComponent extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { showScrollHelper, isServer, messages } = this.state;
-    //palyginimas bus false neigu bus pamegta zinute nors ir masyvai skirsis
-    //taciau tai yra gerai, nes mes nenorim nuscrollint i apacia, kai gaunamas like
     const haveNewMessages = messages != prevState.messages;
     const shouldScrollDown = haveNewMessages && !isServer && !this.state.messagesLoading;
     if ((shouldScrollDown || this.props.isOpenOnMobile === true) && !showScrollHelper) {
@@ -115,7 +121,6 @@ class ShoutboxComponent extends Component {
   }
 
   render() {
-    //const { loggedIn, t, onlineUsers } = this.props;
     const { loggedIn, t } = this.props;
     if (this.state.loadingError) {
       return <div>{t('technical-error')}</div>;
@@ -147,10 +152,12 @@ class ShoutboxComponent extends Component {
 
         <div className='mx-3 py-2'>
           <Textarea
+            onKeyDown={this.onKeyPressed}
             className='w-100'
             onChange={this.handleMessageChange}
             value={this.state.message}
             ref={this.input}
+            aria-label='Send a message'
           />
           <div className='d-flex'>
             <EmojiButton onEmojiSelect={this.onEmojiSelect} />
@@ -177,7 +184,6 @@ class ShoutboxComponent extends Component {
 
   handleScroll = (e) => {
     e.persist();
-    if (!e.isTrusted) return;
     const target = this.scrollableBox.current;
     const containerHeight = target.offsetHeight;
     const scrollableAreaHeight = target.scrollHeight;
@@ -190,6 +196,8 @@ class ShoutboxComponent extends Component {
     if (scrolledPercent < 90) {
       showScrollHelper = true;
     }
+    if (!e.isTrusted && showScrollHelper) return;
+
     if (this.state.showScrollHelper === showScrollHelper) return;
     this.setState({ showScrollHelper });
   };
@@ -216,6 +224,9 @@ class ShoutboxComponent extends Component {
           thumbnail={msg.thumbnail}
         />
       );
+    }
+    if (msg.type === 'serverChatMessage') {
+      return <ServerChatMessage message={msg.message} key={msg.message} />;
     }
     const { auth } = this.props;
     const canDelete = auth?.user.isAdmin || auth?.user.isGlobalMod || auth?.user.isMod;
@@ -292,8 +303,15 @@ class ShoutboxComponent extends Component {
     this.setState({ message: e.currentTarget.value });
   };
 
+  onKeyPressed = (e) => {
+    if (e.which === 13 && !e.shiftKey) {
+      this.handleMessageSubmit();
+      e.preventDefault();
+    }
+  };
+
   handleMessageSubmit = () => {
-    if (!this.props.loggedIn) return;
+    if (!this.props.loggedIn || !this.state.message.trim().length) return;
     const msg = { message: this.state.message };
     socket.emit('plugins.shoutbox.send', msg, (error, response) => {
       if (error) {
@@ -307,7 +325,6 @@ class ShoutboxComponent extends Component {
 
 function mapStateToProps(state) {
   return {
-    //onlineUsers: getOnlineUsers(state),
     loggedIn: getIsLoggedIn(state),
     auth: state.authentication
   };

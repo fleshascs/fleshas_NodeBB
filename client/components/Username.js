@@ -25,7 +25,7 @@ class Username extends Component {
       <Link href={route.path} as={route.url} passHref>
         <Name
           size={this.props.size}
-          className={`${this.props.className}`}
+          className={this.props.className}
           bold={this.props.bold}
           style={this.props.style}
         >

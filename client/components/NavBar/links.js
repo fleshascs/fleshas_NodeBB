@@ -13,15 +13,15 @@ export const LINKS = [
   },
   {
     textId: 'nav-shop',
-    to: 'http://fleshas.lt/sms'
+    to: 'https://fleshas.lt/sms'
   },
   {
     textId: 'nav-xp-shop',
-    to: 'http://fleshas.lt/xp-shop.php'
+    to: 'https://fleshas.lt/xp-shop.php'
   },
   {
     textId: 'nav-amxbans',
-    to: 'http://fleshas.lt/amxbans'
+    to: 'https://fleshas.lt/amxbans'
   },
   {
     textId: 'nav-csdownload',

@@ -1,23 +1,36 @@
 import React from 'react';
-import ContentLoader from 'react-content-loader';
+import styled from 'styled-components';
+import { Comment } from 'antd';
+import { contentPlaceholderColor } from '_theme';
 
-const PlaceHolder = () => (
-  <div className='mb-3 px-2' style={{ height: '40px' }}>
-    <ContentLoader height={140} primaryColor={'#9494941a'} secondaryColor={'#9494941a'}>
-      <rect x='0' y='0' rx='5' ry='5' width='30' height='30' />
-      <rect x='60' y='0' rx='4' ry='4' width='270' height='13' />
-      <rect x='60' y='20' rx='3' ry='3' width='250' height='10' />
-    </ContentLoader>
-  </div>
-);
-
-function createPlaceHolder(shoutsNum = 1) {
+function createPlaceHolder(shoutsNum) {
   let placeHolders = [];
   for (let j = 0; j < shoutsNum; j++) {
-    placeHolders.push(<PlaceHolder key={j} />);
+    placeHolders.push(<Placeholder key={j} />);
   }
   return placeHolders;
 }
 
-const ShoutsPlaceHolder = () => <div>{createPlaceHolder(11)}</div>;
+const ShoutsPlaceHolder = () => <div>{createPlaceHolder(31)}</div>;
 export default ShoutsPlaceHolder;
+
+const PPlaceholder = styled.div`
+  background: ${contentPlaceholderColor};
+  height: ${(props) => props.h};
+  width: ${(props) => props.w};
+  display: inline-block;
+  margin-left: 3px;
+  margin-right: 3px;
+  border-radius: 4px;
+`;
+
+function Placeholder() {
+  return (
+    <Comment
+      className='ml-1'
+      author={<PPlaceholder w='38px' h='14px' />}
+      avatar={<PPlaceholder w='32px' h='32px' />}
+      content={<PPlaceholder w='128px' h='14px' />}
+    />
+  );
+}
