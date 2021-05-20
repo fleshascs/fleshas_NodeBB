@@ -97,7 +97,7 @@ async function play(socket, args) {
     startTime,
     user: userData,
     title,
-    thumbnail: info.videoDetails.thumbnails[0].url
+    thumbnail: info.videoDetails.thumbnail.thumbnails[0].url
   });
 }
 
