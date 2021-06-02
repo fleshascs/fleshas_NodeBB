@@ -96,6 +96,7 @@
     "nodebb-plugin-shoutbox": "git://github.com/fleshascs/nodebb-plugin-shoutbox.git",
     "nodebb-plugin-soundpack-default": "1.0.0",
     "nodebb-plugin-spam-be-gone": "0.6.7",
+    "nodebb-plugin-testimonials": "^1.0.4",
     "nodebb-rewards-essentials": "0.1.3",
     "nodebb-theme-lavender": "5.0.11",
     "nodebb-theme-persona": "10.1.39",
